@@ -1,4 +1,5 @@
 visualHUD.util.DragZoneBase = function(options) {
+    options = _.extend({}, this.defaults, options || {});
     this.setOptions(options);
     this.initialize.apply(this, arguments);
 }
@@ -110,16 +111,17 @@ _.extend(visualHUD.util.DragZoneBase.prototype, {
             if(this.options.grid) {
                 pos.left -= pos.left % this.options.grid;
                 pos.top -= pos.top % this.options.grid;
-            };
+            }
 
             if(this.options.ondrag) {
                 this.options.ondrag.apply(this.scope, [this, event, pos, _mouse]);
-            };
+            }
 
             this.ticker = 0;
-        } else {
+        }
+        else {
             this.ticker++;
-        };
+        }
         if (event.stopPropagation) event.stopPropagation();
         if (event.preventDefault) event.preventDefault();
         return false;
@@ -146,7 +148,8 @@ _.extend(visualHUD.util.DragZoneBase.prototype, {
     },
 
     setOptions: function(options){
-        this.options = _.extend({}, this.defaults, options || {});
+        this.options = this.options || {};
+        _.extend(this.options, options || {});
         if(options.dropables) this.options.dropables = $(options.dropables);
     },
 

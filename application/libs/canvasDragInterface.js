@@ -102,6 +102,7 @@ visualHUD.lib.canvasDragInterface = {
         this.resizeHandle = resizeHandle;
         return this;
     },
+
     startDrawRect: function(event, element){
         this.currentElement = this.drawBox.clone().css({top: Math.round(this.mouse.y), left: Math.round(this.mouse.x)}).appendTo(visualHUD.application.hudElementsWrap);
         this.mode = 'drawRect';
@@ -165,6 +166,7 @@ visualHUD.lib.canvasDragInterface = {
         this.currentElement.trigger('click');
         _data = this.currentElement.data('HUDItem');
     },
+
     startDragSelect: function(drag, event, element){
         var _this = this;
         this.rubberBox = this.rubberBox || $('<div />').addClass('rubber-box');
@@ -236,6 +238,7 @@ visualHUD.lib.canvasDragInterface = {
 
         return false;
     },
+
     startResizeBox: function(event, element){
         this.mode = 'resizeBox';
         for(var a = 0, b = this.compass.length; a < b; a++){

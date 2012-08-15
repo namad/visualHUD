@@ -40,27 +40,27 @@ visualHUD.controller.KeyboardManager = Backbone.Controller.extend({
         }
 
         if(event.keyCode == this.keyCodeMap.DEL) {
-            this.dispatch('keyboard', 'delete');
+            this.fireEvent('keyboard', 'delete');
         }
 
         if(event.keyCode == this.keyCodeMap.TAB){
-            this.dispatch('keyboard', 'tab');
+            this.fireEvent('keyboard', 'tab');
         }
 
         if(this.isMoveKeyPressed(event.keyCode)) {
             var delta = this.getMoveDelta(event);
             var direction = this.getMoveDirection(event.keyCode);
 
-            this.dispatch('keyboard', 'move', [direction, delta]);
+            this.fireEvent('keyboard', 'move', [direction, delta]);
         }
 
         if(this.isArrangeKeyPressed(event) && event.ctrlKey) {
             var arrangeAction = this.getArrangeAction(event);
-            this.dispatch('keyboard', 'arrange', [arrangeAction]);
+            this.fireEvent('keyboard', 'arrange', [arrangeAction]);
         }
 
         if(event.keyCode == this.keyCodeMap.A && event.ctrlKey) {
-            this.dispatch('keyboard', 'select.all', [event]);
+            this.fireEvent('keyboard', 'select.all', [event]);
         }
     },
 
