@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="/resources/js/underscore.js"></script>
+    <script type="text/javascript" src="/resources/js/backbone.js"></script>
+    <script type="text/javascript" src="/resources/js/backbone.application.js"></script>
+
+
+    <script type="text/javascript" src="application/bootstrap.js"></script>
+
+
+    <script type="text/javascript" src="application/models/ClientSettings.js"></script>
+    <script type="text/javascript" src="application/models/HUDItem.js"></script>
+
+    <script type="text/javascript" src="application/collections/DictionaryAbstract.js"></script>
+    <script type="text/javascript" src="application/collections/HUDItemIconEnums.js"></script>
+    <script type="text/javascript" src="application/collections/HUDItems.js"></script>
+    <script type="text/javascript" src="application/collections/HUDItemTemplates.js"></script>
+    <script type="text/javascript" src="application/collections/StageControlsDictionary.js"></script>
+    <script type="text/javascript" src="application/collections/StageControlsDefaults.js"></script>
+
+    <script type="text/javascript" src="application/views/Viewport.js"></script>
+    <script type="text/javascript" src="application/views/TopBar.js"></script>
+    <script type="text/javascript" src="application/views/CanvasToolbar.js"></script>
+    <script type="text/javascript" src="application/views/Canvas.js"></script>
+    <script type="text/javascript" src="application/views/HUDItem.js"></script>
+    <script type="text/javascript" src="application/views/StageControls.js"></script>
+    <script type="text/javascript" src="application/views/GroupActionsPanel.js"></script>
+    <script type="text/javascript" src="application/views/HUDItemForm.js"></script>
+    <script type="text/javascript" src="application/views/Window.js"></script>
+    <script type="text/javascript" src="application/views/DownloadWindow.js"></script>
+    <script type="text/javascript" src="application/views/ToolTip.js"></script>
+
+
+    <script type="text/javascript" src="application/libs/utility.js"></script>
+    <script type="text/javascript" src="application/libs/itemBuilderMixin.js"></script>
+    <script type="text/javascript" src="application/libs/layersManager.js"></script>
+    <script type="text/javascript" src="application/libs/canvasDragInterface.js"></script>
+    <script type="text/javascript" src="application/libs/selectionManagerInterface.js"></script>
+    <script type="text/javascript" src="application/libs/formControlsBuilder.js"></script>
+    <script type="text/javascript" src="application/libs/formBuilderMixin.js"></script>
+    <script type="text/javascript" src="application/libs/plugins.js"></script>
+    <script type="text/javascript" src="application/libs/colorHelper.js"></script>
+
+    <script type="text/javascript" src="application/utils/DragZoneBase.js"></script>
+
+
+    <script type="text/javascript" src="application/controllers/HUDManager.js"></script>
+    <script type="text/javascript" src="application/controllers/KeyboardManager.js"></script>
+    <script type="text/javascript" src="application/controllers/FocusManager.js"></script>
+    <script type="text/javascript" src="application/controllers/Viewport.js"></script>
+
+
+    <script type="text/javascript" src="resources/js/jquery.color.js"></script>
+    <script type="text/javascript" src="resources/js/string.format-1.0.js"></script>
+    <script type="text/javascript" src="resources/js/rangeinput.js?v004"></script>
+    <script type="text/javascript" src="resources/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="resources/js/jquery.easing.1.3.js"></script>
+
+
+    <script type="text/javascript" src="resources/js/xpk.growl.js"></script>
+    <script type="text/javascript" src="resources/js/xpk.menu.js"></script>
+
+
+    <link href="resources/css/vhud.css" rel="stylesheet" type="text/css"/>
+    <title>Visual HUD: Quake Live online HUD generator</title>
+</head>
+<body>
+
+<div id="preloader">
+    <div class="indicator">Please, wait...</div>
+</div>
+
+<script>
+
+    new Backbone.Application({
+        name: 'app',
+        nameSpace: 'visualHUD',
+        controllers: [
+            'visualHUD.controller.Viewport',
+            'visualHUD.controller.HUDManager',
+            'visualHUD.controller.KeyboardManager',
+            'visualHUD.controller.FocusManager'
+        ],
+        launch: function() {
+            $('#preloader').fadeOut(400, function() {
+                $(this).remove();
+            });
+        }
+    });
+
+</script>
+
+</body>
+</html>
