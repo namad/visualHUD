@@ -1,4 +1,4 @@
-visualHUD.lib.formBuilderMixin = {
+visualHUD.Libs.formBuilderMixin = {
     getByType: function(type) {
         return this[type];
     },
@@ -6,21 +6,7 @@ visualHUD.lib.formBuilderMixin = {
     getByName: function(name) {
         return this[name];
     },
-/*
-    type: 'fieldset',
-    label: 'Icon properties',
-    items: [
-        {
-            type: 'select'
-        },
-        {
-            type: 'select'
-        },
-        {
-            type: 'rangeinput'
-        }
-    ]
- */
+
     'general': {
         buildForm: function(markups) {
             var fragment = document.createDocumentFragment();
@@ -645,3 +631,4 @@ visualHUD.lib.formBuilderMixin = {
         }
     }
 };
+

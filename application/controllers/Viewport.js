@@ -1,25 +1,25 @@
-visualHUD.controller.Viewport = Backbone.Controller.extend({
+visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     views: [
-        'visualHUD.view.Viewport',
-        'visualHUD.view.CanvasToolbar',
-        'visualHUD.view.Canvas',
-        'visualHUD.view.TopBar',
-        'visualHUD.view.StageControls',
-        'visualHUD.view.GroupActionsPanel',
-        'visualHUD.view.DownloadWindow',
-        'visualHUD.view.ToolTip'
+        'visualHUD.Views.Viewport',
+        'visualHUD.Views.CanvasToolbar',
+        'visualHUD.Views.Canvas',
+        'visualHUD.Views.TopBar',
+        'visualHUD.Views.StageControls',
+        'visualHUD.Views.GroupActionsPanel',
+        'visualHUD.Views.DownloadWindow',
+        'visualHUD.Views.ToolTip'
     ],
 
     models: [
-        'visualHUD.model.ClientSettings',
-        'visualHUD.model.HUDItem'
+        'visualHUD.Models.ClientSettings',
+        'visualHUD.Models.HUDItem'
     ],
 
     collections: [
-        'visualHUD.collection.StageControlsDictionary',
-        'visualHUD.collection.HUDItemTemplates',
-        'visualHUD.collection.HUDItemIconEnums',
-        'visualHUD.collection.HUDItems'
+        'visualHUD.Collections.StageControlsDictionary',
+        'visualHUD.Collections.HUDItemTemplates',
+        'visualHUD.Collections.HUDItemIconEnums',
+        'visualHUD.Collections.HUDItems'
     ],
 
     initialize: function(options) {
@@ -84,7 +84,7 @@ visualHUD.controller.Viewport = Backbone.Controller.extend({
     },
 
     /**
-     * Event Handler triggered by visualHUD.view.CanvasToolbar when used change Client Settings
+     * Event Handler triggered by visualHUD.Views.CanvasToolbar when used change Client Settings
      */
     setCanvasOptions: function(data) {
         var clientSettings = this.getModel('ClientSettings');
@@ -93,7 +93,7 @@ visualHUD.controller.Viewport = Backbone.Controller.extend({
     },
 
     /**
-     * Event handler triggered by visualHUD.view.TopBar action
+     * Event handler triggered by visualHUD.Views.TopBar action
      * @param action
      */
     toolbarAction: function(action) {
@@ -145,7 +145,7 @@ visualHUD.controller.Viewport = Backbone.Controller.extend({
     },
 
     /**
-     * Event Handler triggered by visualHUD.view.Canvas selection model
+     * Event Handler triggered by visualHUD.Views.Canvas selection model
      */
     onSelectionChange: function(view, selection) {
         this.getView('Viewport').hideAllSidebarItems();
@@ -162,3 +162,4 @@ visualHUD.controller.Viewport = Backbone.Controller.extend({
         }
     }
 });
+

@@ -1,4 +1,4 @@
-visualHUD.lib.utility = {
+visualHUD.Libs.utility = {
     fontToBoxSize: function(size){
         return {
             width: Math.round(104 * size),
@@ -299,3 +299,4 @@ visualHUD.Function = {
         }();
     }
 };
+

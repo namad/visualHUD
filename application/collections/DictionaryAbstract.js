@@ -1,7 +1,8 @@
-visualHUD.collection.DictionaryAbstract = Backbone.Collection.extend({
+visualHUD.Collections.DictionaryAbstract = Backbone.Collection.extend({
     autoLoad: true,
 
     getData: function() {
+        return [];
     },
 
     load: function() {
@@ -9,3 +10,4 @@ visualHUD.collection.DictionaryAbstract = Backbone.Collection.extend({
         return this;
     }
 });
+

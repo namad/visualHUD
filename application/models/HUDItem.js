@@ -1,4 +1,4 @@
-visualHUD.model.HUDItem = Backbone.Model.extend({
+visualHUD.Models.HUDItem = Backbone.Model.extend({
     defaults: {
         'itemType': null,
         'iconPosition': null,
@@ -35,6 +35,9 @@ visualHUD.model.HUDItem = Backbone.Model.extend({
         'barDirection': null
     },
 
+    /**
+     * Hash Map that contains item specific defaults by name
+     */
     defaultsByName: {
         'chatArea': {
             padding: 5,
@@ -115,6 +118,9 @@ visualHUD.model.HUDItem = Backbone.Model.extend({
         }
     },
 
+    /**
+     * Hash Map that contains item specific defaults by itemType
+     */
     defaultsByType: {
         'general': {
             colorRanges: [
@@ -219,10 +225,16 @@ visualHUD.model.HUDItem = Backbone.Model.extend({
         }
     },
 
+    /**
+     * Set defaults for newly created item
+     * @param options
+     * @return {visualHUD.Models.HUDItem}
+     */
     setDefaultValues: function(options) {
         var defaultValuesByType = this.getDefaultsByType(options.itemType) || {},
             defaultValuesByName = this.getDefaultsByName(options.name) || {};
 
+        // mix defaults in particular order, from more generic to more specific
         _.extend(this.attributes, options, defaultValuesByType, defaultValuesByName);
 
         return this;
@@ -234,13 +246,6 @@ visualHUD.model.HUDItem = Backbone.Model.extend({
 
     getDefaultsByName: function(type) {
         return this.defaultsByName[type] || null;
-    },
-
-    getDefaultColorRangeByName: function(name) {
-        return this.defaultColorRangesByName[name] || null;
-    },
-
-    getDefaultTextByName: function(name) {
-        return this.defaultTextByName[name] || null;
     }
 });
+

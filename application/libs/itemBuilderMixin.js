@@ -1,4 +1,9 @@
-visualHUD.lib.itemBuilderMixin = {
+/**
+ * Item Builder is used to update HUDItem visuals when model properties are changed
+ * Use by visualHUD.Views.HUDItem instances
+ * @type {Object}
+ */
+visualHUD.Libs.itemBuilderMixin = {
     getByType: function(type) {
         return this[type];
     },
@@ -10,7 +15,7 @@ visualHUD.lib.itemBuilderMixin = {
     'general': {
         updateTextSize: function(value) {
             var size = parseInt(value, 10) * visualHUD.scaleFactor,
-                textboxSize = visualHUD.lib.utility.fontToBoxSize(size/100);
+                textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
 
             this.getDOMRefs().textBlock.width(textboxSize.width).height(textboxSize.height);
 
@@ -135,7 +140,7 @@ visualHUD.lib.itemBuilderMixin = {
 
     'powerupIndicator': {
         updateTextSize: function(value) {
-            visualHUD.lib.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
+            visualHUD.Libs.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
             this.getDOMRefs().textBlock.width('auto');
         },
 
@@ -155,7 +160,7 @@ visualHUD.lib.itemBuilderMixin = {
                 patt = /textstyle-[0-9]/,
                 iconSize = parseInt(this.model.get('iconSize'), 10),
                 iconSpacing = parseInt(this.model.get('iconSpacing'), 10),
-                textboxSize = visualHUD.lib.utility.fontToBoxSize(iconSize/100);
+                textboxSize = visualHUD.Libs.utility.fontToBoxSize(iconSize/100);
 
             if(patt.test(originalClassName)) {
                 originalClassName = originalClassName.replace(patt, '');
@@ -163,14 +168,6 @@ visualHUD.lib.itemBuilderMixin = {
             }
             originalClassName += (' stack-' + value);
             this.$el.attr('class', originalClassName);
-
-//            var verticalLayout =  value.match(/top|bottom/gi);
-//            if(verticalLayout){
-//                this.$el.width(textboxSize.width + (iconSize * visualHUD.scaleFactor) + (iconSpacing * visualHUD.scaleFactor));
-//            }
-//            else {
-//                this.$el.width('auto');
-//            }
 
             this.updateIconSpacing(iconSpacing);
         },
@@ -183,7 +180,7 @@ visualHUD.lib.itemBuilderMixin = {
 
     'accuracyIndicator': {
         updateTextSize: function(value) {
-            visualHUD.lib.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
+            visualHUD.Libs.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
 
             var size = parseInt(value, 10) / 100;
             var width = Math.round(128 * size)  * visualHUD.scaleFactor;
@@ -199,7 +196,7 @@ visualHUD.lib.itemBuilderMixin = {
         updateTextSize: function(value) {
             var size = parseInt(value, 10) * visualHUD.scaleFactor;
 
-            var textboxSize = visualHUD.lib.utility.fontToBoxSize(size/100);
+            var textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
             this.getDOMRefs().textBlock.height(textboxSize.height);
 
             var textCss = {
@@ -323,3 +320,4 @@ visualHUD.lib.itemBuilderMixin = {
         }
     }
 };
+

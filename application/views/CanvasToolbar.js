@@ -1,4 +1,4 @@
-visualHUD.view.CanvasToolbar = Backbone.View.extend({
+visualHUD.Views.CanvasToolbar = Backbone.View.extend({
     tagName: 'ul',
     className: 'app-toolbar',
     baseCls: 'root-item',
@@ -264,7 +264,7 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         var statusRangeInputs = [];
 
         statusRangeInputs.push(
-            visualHUD.lib.formControlsBuilder.createRangeInput({
+            visualHUD.Libs.formControlsBuilder.createRangeInput({
                 'type': 'rangeInput',
                 'name': 'statusHealth',
                 'label': 'Health',
@@ -275,7 +275,7 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         );
 
         statusRangeInputs.push(
-            visualHUD.lib.formControlsBuilder.createRangeInput({
+            visualHUD.Libs.formControlsBuilder.createRangeInput({
                 'type': 'rangeInput',
                 'name': 'statusArmor',
                 'label': 'Armor',
@@ -286,7 +286,7 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         );
 
         statusRangeInputs.push(
-            visualHUD.lib.formControlsBuilder.createRangeInput({
+            visualHUD.Libs.formControlsBuilder.createRangeInput({
                 'type': 'rangeInput',
                 'name': 'statusAmmo',
                 'label': 'Ammo',
@@ -297,7 +297,7 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         );
 
         statusRangeInputs.push(
-            visualHUD.lib.formControlsBuilder.createRangeInput({
+            visualHUD.Libs.formControlsBuilder.createRangeInput({
                 'type': 'rangeInput',
                 'name': 'statusAccuracy',
                 'label': 'Acc',
@@ -308,7 +308,7 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         );
 
         statusRangeInputs.push(
-            visualHUD.lib.formControlsBuilder.createRangeInput({
+            visualHUD.Libs.formControlsBuilder.createRangeInput({
                 'type': 'rangeInput',
                 'name': 'statusSkill',
                 'label': 'Skill',
@@ -408,3 +408,4 @@ visualHUD.view.CanvasToolbar = Backbone.View.extend({
         return false;
     }
 });
+

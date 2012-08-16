@@ -1,4 +1,4 @@
-visualHUD.view.Viewport = Backbone.View.extend({
+visualHUD.Views.Viewport = Backbone.View.extend({
     tagName: 'div',
     className: 'vh-viewport',
     pinned: true,
@@ -98,7 +98,7 @@ visualHUD.view.Viewport = Backbone.View.extend({
         var me = this,
             offset;
 
-        this.drag = new visualHUD.util.DragZoneBase({
+        this.drag = new visualHUD.Utils.DragZoneBase({
             scope: this,
             ticks: 2,
             tolerance: 2,
@@ -128,3 +128,4 @@ visualHUD.view.Viewport = Backbone.View.extend({
         event.stopPropagation();
     }
 });
+

@@ -1,4 +1,4 @@
-visualHUD.lib.layersManager = {
+visualHUD.Libs.layersManager = {
     alignItem: function(itemView, boxes, alignPosition) {
         var element = itemView.$el;
 
@@ -104,3 +104,4 @@ visualHUD.lib.layersManager = {
 
     }
 };
+

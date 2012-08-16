@@ -3,21 +3,21 @@
  * Full CRUD cycle for every supported HUD Item
  * @type {*}
  */
-visualHUD.controller.HUDManager = Backbone.Controller.extend({
+visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     views: [
-        'visualHUD.view.HUDItem',
-        'visualHUD.view.HUDItemForm'
+        'visualHUD.Views.HUDItem',
+        'visualHUD.Views.HUDItemForm'
     ],
 
     models: [
-        'visualHUD.model.HUDItem',
-        'visualHUD.model.ClientSettings'
+        'visualHUD.Models.HUDItem',
+        'visualHUD.Models.ClientSettings'
     ],
 
     collections: [
-        'visualHUD.collection.HUDItemTemplates',
-        'visualHUD.collection.HUDItemIconEnums',
-        'visualHUD.collection.HUDItems'
+        'visualHUD.Collections.HUDItemTemplates',
+        'visualHUD.Collections.HUDItemIconEnums',
+        'visualHUD.Collections.HUDItems'
     ],
 
     initialize: function(options) {
@@ -70,7 +70,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
     },
 
     /**
-     * Event handler triggered by visualHUD.collection.HUDItems
+     * Event handler triggered by visualHUD.Collections.HUDItems
      * Restore previously saved draft
      */
     loadDraft: function() {
@@ -109,7 +109,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
     },
 
     /**
-     * Create new visualHUD.view.HUDItem instance based on visualHUD.model.HUDItem data
+     * Create new visualHUD.Views.HUDItem instance based on visualHUD.Models.HUDItem data
      * @param record
      * @return {*}
      */
@@ -144,7 +144,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
     },
 
     /**
-     * Event handler triggered by visualHUD.collection.HUDItems when new record has been added to the collection
+     * Event handler triggered by visualHUD.Collections.HUDItems when new record has been added to the collection
      * @param record
      */
     addNewHUDItem: function(record) {
@@ -154,7 +154,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
     },
 
     /**
-     * Event handler Triggered by visualHUD.lib.canvasDragInterface
+     * Event handler Triggered by visualHUD.Libs.canvasDragInterface
      * @param HUDElementView
      */
     onItemMove: function(HUDElementView) {
@@ -172,7 +172,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
     },
 
     /**
-     * Event handler Triggered by visualHUD.model.ClientSettings
+     * Event handler Triggered by visualHUD.Models.ClientSettings
      * Used to update status of the particular HUD Item
      * @param model
      * @param options
@@ -220,7 +220,7 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
 
     alignItems: function(value){
         var canvasView = this.application.getController('Viewport').getView('Canvas');
-        visualHUD.lib.layersManager.alignEdges(canvasView, value);
+        visualHUD.Libs.layersManager.alignEdges(canvasView, value);
 
         _.each(canvasView.getSelection(), function(view) {
             view.refreshCoordinates();
@@ -273,3 +273,4 @@ visualHUD.controller.HUDManager = Backbone.Controller.extend({
         canvas.selectAll();
     }
 });
+

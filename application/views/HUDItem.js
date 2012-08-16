@@ -1,4 +1,4 @@
-visualHUD.view.HUDItem = Backbone.View.extend({
+visualHUD.Views.HUDItem = Backbone.View.extend({
     tagName: 'div',
     className: 'hud-item',
 
@@ -10,9 +10,9 @@ visualHUD.view.HUDItem = Backbone.View.extend({
             Since we are dealing with very specific items, we need to be able to mix some specific behaviour into newly created instance
             To make it possible let's use mixin library that will contain specific functionality depending on item type or name
         */
-        var defaultMixin = visualHUD.lib.itemBuilderMixin.getByType('general'),
-            typeMixin = visualHUD.lib.itemBuilderMixin.getByType(this.model.get('itemType')),
-            nameMixin = visualHUD.lib.itemBuilderMixin.getByName(this.model.get('name'));
+        var defaultMixin = visualHUD.Libs.itemBuilderMixin.getByType('general'),
+            typeMixin = visualHUD.Libs.itemBuilderMixin.getByType(this.model.get('itemType')),
+            nameMixin = visualHUD.Libs.itemBuilderMixin.getByName(this.model.get('name'));
 
         if(defaultMixin == typeMixin) {
             typeMixin = {};
@@ -128,7 +128,7 @@ visualHUD.view.HUDItem = Backbone.View.extend({
     callUpdateMethodByField: function(field, refreshStatus) {
         var value = this.model.get(field),
             methodName = 'update' + field.charAt(0).toUpperCase() + field.substring(1),
-            fn = this[methodName]; // these methods are from visualHUD.lib.itemBuilderMixin
+            fn = this[methodName]; // these methods are from visualHUD.Libs.itemBuilderMixin
 
         if(_.isFunction(fn)) {
             fn.call(this, value);
@@ -201,7 +201,7 @@ visualHUD.view.HUDItem = Backbone.View.extend({
         this.fireEvent('click', [this, event]);
     },
     /*
-        Abstract methods, should be defined within visualHUD.lib.itemBuilderMixin
+        Abstract methods, should be defined within visualHUD.Libs.itemBuilderMixin
     */
     updateTextSize: function(value) {
     },
@@ -261,3 +261,4 @@ visualHUD.view.HUDItem = Backbone.View.extend({
     updateScoreboxLayout: function(value) {
     }
 });
+

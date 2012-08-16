@@ -1,7 +1,7 @@
-visualHUD.collection.HUDItems = Backbone.Collection.extend({
+visualHUD.Collections.HUDItems = Backbone.Collection.extend({
     name: 'HUDItems',
 
-    model: visualHUD.model.HUDItem,
+    model: visualHUD.Models.HUDItem,
 
     /**
      * Save collection data to the localStorage object
@@ -25,3 +25,4 @@ visualHUD.collection.HUDItems = Backbone.Collection.extend({
         this.trigger('load');
     }
 });
+

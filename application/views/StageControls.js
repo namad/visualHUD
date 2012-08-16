@@ -3,7 +3,7 @@
  * This view is placed within main Viewport
  * @type {*}
  */
-visualHUD.view.StageControls = Backbone.View.extend({
+visualHUD.Views.StageControls = Backbone.View.extend({
     tagName: 'div',
     className: 'stage-controlls-area',
     collection: null,
@@ -66,7 +66,7 @@ visualHUD.view.StageControls = Backbone.View.extend({
         var dropArea,
             hudCanvas;
 
-        this.dragManager = new visualHUD.util.DragZoneBase({
+        this.dragManager = new visualHUD.Utils.DragZoneBase({
             scope: this,
             ticks: 2,
             tolerance: 3,
@@ -151,3 +151,4 @@ visualHUD.view.StageControls = Backbone.View.extend({
         return canvasPosition;
     }
 });
+

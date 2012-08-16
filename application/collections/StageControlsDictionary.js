@@ -1,4 +1,4 @@
-visualHUD.collection.StageControlsDictionary = visualHUD.collection.DictionaryAbstract.extend({
+visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.DictionaryAbstract.extend({
     getData: function() {
         return [
             {
@@ -110,3 +110,4 @@ visualHUD.collection.StageControlsDictionary = visualHUD.collection.DictionaryAb
         ];
     }
 });
+

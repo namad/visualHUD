@@ -1,4 +1,4 @@
-visualHUD.view.GroupActionsPanel = Backbone.View.extend({
+visualHUD.Views.GroupActionsPanel = Backbone.View.extend({
     tagName: 'div',
     className: 'c-block',
     collection: null,
@@ -63,3 +63,4 @@ visualHUD.view.GroupActionsPanel = Backbone.View.extend({
     }
 
 });
+

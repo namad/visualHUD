@@ -1,4 +1,4 @@
-visualHUD.collection.HUDItemIconEnums = visualHUD.collection.DictionaryAbstract.extend({
+visualHUD.Collections.HUDItemIconEnums = visualHUD.Collections.DictionaryAbstract.extend({
     getData: function() {
         return [
             {
@@ -141,3 +141,4 @@ visualHUD.collection.HUDItemIconEnums = visualHUD.collection.DictionaryAbstract.
         ];
     }
 });
+

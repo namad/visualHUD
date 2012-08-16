@@ -3,7 +3,7 @@
  * Using Application Event Bus to communicate with other controllers
  * @type {*}
  */
-visualHUD.controller.FocusManager = Backbone.Controller.extend({
+visualHUD.Controllers.FocusManager = Backbone.Controller.extend({
     initialize: function(options) {
         this.focusedItem = null;
     },
@@ -31,3 +31,4 @@ visualHUD.controller.FocusManager = Backbone.Controller.extend({
         this.focusedItem && this.focusedItem.blur();
     }
 });
+

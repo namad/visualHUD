@@ -1,4 +1,4 @@
-visualHUD.view.DownloadWindow = visualHUD.view.Window.extend({
+visualHUD.Views.DownloadWindow = visualHUD.Views.Window.extend({
     events: {
         'click button[name=downloadHUD]': 'beginDownload',
         'click button[name=cancel]': 'hide',
@@ -50,3 +50,4 @@ visualHUD.view.DownloadWindow = visualHUD.view.Window.extend({
         submitButton.attr('disabled', isValid == false);
     }
 });
+

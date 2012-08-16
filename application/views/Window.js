@@ -1,4 +1,4 @@
-visualHUD.view.Window = Backbone.View.extend({
+visualHUD.Views.Window = Backbone.View.extend({
     tagName: 'div',
     className: 'xpk-window',
 
@@ -225,90 +225,5 @@ visualHUD.view.Window = Backbone.View.extend({
 //dimScreen()
 //by Brandon Goldman
 (function($){
-    var resizeCheck = function(){
-        $.WMSOverlay.css({
-            height: $(document).height()
-        });
-    };
-
-    //dims the screen
-    $.showModalOverlay = function(speed, opacity, callback) {
-
-        if(typeof speed == 'function') {
-            callback = speed;
-            speed = null;
-        }
-
-        if(typeof opacity == 'function') {
-            callback = opacity;
-            opacity = null;
-        }
-
-        if(speed < 1) {
-            var placeholder = opacity;
-            opacity = speed;
-            speed = placeholder;
-        }
-
-        if(opacity >= 1) {
-            var placeholder = speed;
-            speed = opacity;
-            opacity = placeholder;
-        }
-
-        speed = (speed > 0) ? speed : 500;
-        opacity = (opacity > 0) ? opacity : 0.5;
-
-        var _css = [{
-            display: 'block',
-            height: $(document).height() + 'px',
-            left: '0px',
-            opacity: 0,
-            position: 'absolute',
-            top: '0px',
-            width: '100%'
-        },{
-            display: 'block',
-            opacity: 0,
-            height: $(document).height()
-        }];
-
-        if(!this.WMSOverlay) {
-            this.WMSOverlay = this('<div></div>').attr({
-                id: 'dimScreen'
-            }).css(_css[0]).appendTo(document.body);
-            $.data($.WMSOverlay[0], 'options', { fade_opacity: opacity, speed: speed});
-
-        } else {
-            this.WMSOverlay.css(_css[1]);
-            if(this.WMSOverlayFix){
-                this.WMSOverlayFix.css(_css[1]);
-            }
-        }
-
-        $(window).bind('resize', resizeCheck);
-
-
-        this.WMSOverlay.fadeTo(speed, opacity, callback);
-        this.WMSOverlay.visible = 1;
-        return this.WMSOverlay;
-    };
-
-    //stops current dimming of the screen
-    $.hideModalOverlay = function(callback) {
-        var x = this.WMSOverlay;
-        var opt = $.data($.WMSOverlay[0], 'options');
-        var opacity = opt.fade_opacity;
-        var speed = window.ie6 ? 0 : opt.speed;
-        x.fadeOut(speed, function() {
-            if($.WMSOverlayFix){
-                $.WMSOverlayFix.css({
-                    display: 'none'
-                });
-            };
-            if(typeof callback == 'function') callback();
-        });
-        $(window).unbind('resize', resizeCheck);
-        this.WMSOverlay.visible = 0;
-    }
 })(jQuery);
+

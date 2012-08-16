@@ -1,4 +1,4 @@
-visualHUD.model.ClientSettings = Backbone.Model.extend({
+visualHUD.Models.ClientSettings = Backbone.Model.extend({
     defaults: {
         'lagometr': false,
         'speedometr': false,
@@ -56,3 +56,4 @@ visualHUD.model.ClientSettings = Backbone.Model.extend({
         }
     }
 });
+

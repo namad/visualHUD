@@ -1,4 +1,4 @@
-visualHUD.lib.canvasDragInterface = {
+visualHUD.Libs.canvasDragInterface = {
     offsets: [],
 
     checkPosition: function(element, position){
@@ -388,3 +388,4 @@ visualHUD.lib.canvasDragInterface = {
         this.getView().fireEvent('drop.move', [this.currentElement]);
     }
 };
+

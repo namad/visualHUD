@@ -1,4 +1,4 @@
-visualHUD.collection.HUDItemTemplates = visualHUD.collection.DictionaryAbstract.extend({
+visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstract.extend({
     getData: function() {
 
         var getGeneralitemTemplate = function() {
@@ -172,3 +172,4 @@ visualHUD.collection.HUDItemTemplates = visualHUD.collection.DictionaryAbstract.
         ]
     }
 });
+

@@ -1,4 +1,4 @@
-visualHUD.view.HUDItemForm = Backbone.View.extend({
+visualHUD.Views.HUDItemForm = Backbone.View.extend({
     tagName: 'form',
     className: 'app-form',
     basicTpl: [
@@ -45,9 +45,9 @@ visualHUD.view.HUDItemForm = Backbone.View.extend({
     },
 
     initialize: function() {
-        var defaultMixin = visualHUD.lib.formBuilderMixin.getByType('general'),
-            typeMixin = visualHUD.lib.formBuilderMixin.getByType(this.model.get('itemType')),
-            nameMixin = visualHUD.lib.formBuilderMixin.getByName(this.model.get('name'));
+        var defaultMixin = visualHUD.Libs.formBuilderMixin.getByType('general'),
+            typeMixin = visualHUD.Libs.formBuilderMixin.getByType(this.model.get('itemType')),
+            nameMixin = visualHUD.Libs.formBuilderMixin.getByName(this.model.get('name'));
 
         if(defaultMixin == typeMixin) {
             typeMixin = {};
@@ -56,7 +56,7 @@ visualHUD.view.HUDItemForm = Backbone.View.extend({
         _.extend(this, defaultMixin, typeMixin || {}, nameMixin || {});
 
         //Mixin Form Controls Generator
-        _.extend(this,visualHUD.lib.formControlsBuilder);
+        _.extend(this,visualHUD.Libs.formControlsBuilder);
 
         var tpl = _.template(this.basicTpl.join(''), {
                 className: this.model.get('cssClass'),
@@ -77,7 +77,7 @@ visualHUD.view.HUDItemForm = Backbone.View.extend({
         this.trackResize();
         this.updateStatusBar();
 
-        visualHUD.lib.colorHelper.setupColorPicker(renderTo);
+        visualHUD.Libs.colorHelper.setupColorPicker(renderTo);
 
         this.createControls(this.$el.find('.app-form-controls'));
     },
@@ -178,5 +178,14 @@ visualHUD.view.HUDItemForm = Backbone.View.extend({
 
         this.fireEvent('arrange.action', [action]);
         return false;
+    },
+
+    /**
+     * Abstract function that is called upon from rendering
+     * This method should be implemented in visualHUD.Libs.formBuilderMixin
+     */
+    createControls: function() {
+
     }
 });
+

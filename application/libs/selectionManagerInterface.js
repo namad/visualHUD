@@ -1,4 +1,4 @@
-visualHUD.lib.selectionManagerInterface = {
+visualHUD.Libs.selectionManagerInterface = {
     selection: [],
 
     initializeSelectionManager: function() {
@@ -18,7 +18,7 @@ visualHUD.lib.selectionManagerInterface = {
     select: function(element, multiple) {
         var view;
 
-        if(element instanceof visualHUD.view.HUDItem) {
+        if(element instanceof visualHUD.Views.HUDItem) {
             view = element;
         }
         else {
@@ -67,3 +67,4 @@ visualHUD.lib.selectionManagerInterface = {
         this._selectionDisabled = false;
     }
 };
+

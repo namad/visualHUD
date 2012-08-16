@@ -1,4 +1,4 @@
-visualHUD.view.ToolTip = Backbone.View.extend({
+visualHUD.Views.ToolTip = Backbone.View.extend({
     tagName: 'div',
     className: 'hint-wrap',
 
@@ -170,3 +170,4 @@ visualHUD.view.ToolTip = Backbone.View.extend({
         this.disabled = 0;
     }
 });
+

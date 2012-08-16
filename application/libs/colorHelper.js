@@ -1,4 +1,4 @@
-visualHUD.lib.colorHelper = (function() {
+visualHUD.Libs.colorHelper = (function() {
     var preventMouseleave = false;
     var currentColorCell;
     var colorInput;
@@ -95,3 +95,4 @@ visualHUD.lib.colorHelper = (function() {
         }
     }
 })();
+

@@ -1,4 +1,4 @@
-visualHUD.view.Canvas = Backbone.View.extend({
+visualHUD.Views.Canvas = Backbone.View.extend({
     className: 'hud-canvas',
     tagName: 'div',
     htmlTpl: [
@@ -58,7 +58,7 @@ visualHUD.view.Canvas = Backbone.View.extend({
     },
 
     initialize: function() {
-        _.extend(this, visualHUD.lib.selectionManagerInterface);
+        _.extend(this, visualHUD.Libs.selectionManagerInterface);
         this.initializeSelectionManager();
         this.initializeDragManager();
     },
@@ -130,7 +130,7 @@ visualHUD.view.Canvas = Backbone.View.extend({
     initializeDragManager: function() {
         var me = this;
 
-        this.dragManager = new visualHUD.util.DragZoneBase({
+        this.dragManager = new visualHUD.Utils.DragZoneBase({
             ticks: 0,
             tolerance: 2,
             grid: visualHUD.scaleFactor,
@@ -147,7 +147,7 @@ visualHUD.view.Canvas = Backbone.View.extend({
                 drawBox = $('<div class="hud-item"><div class="hud-item-box"></div>'+ handles.join('') +'</div>').width(1).height(1);
 
                 _.extend(this,
-                    visualHUD.lib.canvasDragInterface,
+                    visualHUD.Libs.canvasDragInterface,
                     {
                         compass: compass,
                         drawBox: drawBox,
@@ -201,3 +201,4 @@ visualHUD.view.Canvas = Backbone.View.extend({
         return canvasPosition;
     }
 });
+

@@ -1,4 +1,8 @@
-visualHUD.lib.formControlsBuilder = {
+/**
+ * The set of methods that is used to build form controls
+ * @type {Object}
+ */
+visualHUD.Libs.formControlsBuilder = {
 	cache: {},
 
 	createFieldset: function(attributes){
@@ -27,6 +31,7 @@ visualHUD.lib.formControlsBuilder = {
 
 		return element;
 	},
+
 	createRangeInput: function(attributes){
 		var template = ([
             '<div class="f-row">',
@@ -122,6 +127,7 @@ visualHUD.lib.formControlsBuilder = {
 
 		return element;
 	},
+
     createButton: function(attributes){
 		var template = '<button name="<%= name %>" value="<%= value %>" class="<%= cssClass %>" title="<%= tooltip %>"><span class="{4}"><%= label %></span></button>';
 
@@ -202,7 +208,6 @@ visualHUD.lib.formControlsBuilder = {
         return element;
     },
 
-
 	createColorPicker: function(attributes){
         var template = ([
             '<div class="f-row">',
@@ -271,81 +276,6 @@ visualHUD.lib.formControlsBuilder = {
 		rangeValueInputs.last().attr('readonly', true);
 		
 		return element;
-	},
-
-	createSimpleColorRange: function(_ranges, _form){
-		var rangeColors = visualHUD.constructor.colorRangeColors;
-		var ranges = visualHUD.constructor.colorRangeValues;
-
-		var colors = visualHUD.constructor.simpleColorPresets
-		var colorNames = ['Red', 'Lime', 'Yellow', 'Blue', 'Cyan', 'Magenta', 'White', 'Black'];
-		
-		var colorSelectOptions = {};
-		
-		$.each(colors, function(i){
-			colorSelectOptions[String(i+1)] = colorNames[i];
-		});
-		
-		var rangeValueInputs = [];
-		
-		var cp = $();
-		
-		$.each(_ranges, function(a){
-
-			var range = this;
-			var colorSelectName = 'colorRange_' + a + '_color';
-			var colorSelectControl = visualHUD.formGenerator.createSelect({
-					'name': colorSelectName,
-					'label': range.name,
-					'value': range.color,
-					'width': '80px',
-					'options': colorSelectOptions
-				}, _form);
-
-			colorSelect = colorSelectControl.find('select[name=' + colorSelectName + ']' );
-			colorSelect.css({'verticalAlign': 'middle'}).addClass('ml-5');
-			
-			var colorPickerDIV = $('<div class="color-picker-box" />')
-				.insertBefore(colorSelect).click(function(event){
-					colorSelect.focus();
-					return false;
-				});
-		
-			colorSelect.bind('change', function(){
-				var color = parseInt(this.value) - 1;
-				color = visualHUD.constructor.simpleColorPresets[color];
-				colorPickerDIV.css('backgroundColor', '#' + color);
-			});
-			
-			colorSelect.trigger('change');
-			
-			cp = cp.add(colorSelectControl);
-			
-			var span = $('<span class="color-range-inputs mr-10" />').insertBefore(colorPickerDIV);
-			var input = $('<input type=text />');
-			
-			rangeValueInputs.push(input.appendTo(span).attr({
-				'class': 'mr-5',
-				'name': 'colorRange_' + a + '_range_0',
-				'size': 3,
-				'maxlength': 3,
-				'value': range.range[0]
-			}));
-
-
-			rangeValueInputs.push(input.clone().appendTo(span).attr({
-				'class': 'mr-5',
-				'name': 'colorRange_' + a + '_range_1',
-				'size': 3,
-				'maxlength': 3,
-				'value': range.range[1]
-			}));
-		
-		});
-		
-		rangeValueInputs[0].attr('readonly', true);
-		rangeValueInputs[rangeValueInputs.length-1].attr('readonly', true);
-		
-		return cp;
-	}	
+	}
 };
+

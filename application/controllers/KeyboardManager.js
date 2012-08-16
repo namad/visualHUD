@@ -3,7 +3,7 @@
  * Using Application Event Bus to communicate with other controllers
  * @type {*}
  */
-visualHUD.controller.KeyboardManager = Backbone.Controller.extend({
+visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
     keyCodeMap : {
         A: 65,
         V: 86,
@@ -110,3 +110,4 @@ visualHUD.controller.KeyboardManager = Backbone.Controller.extend({
         return arrangeKey[actionIndex];
     }
 });
+

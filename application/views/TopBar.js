@@ -1,4 +1,4 @@
-visualHUD.view.TopBar = Backbone.View.extend({
+visualHUD.Views.TopBar = Backbone.View.extend({
     tagName: 'div',
     className: 'app-topbar',
     htmlTpl: [
@@ -40,3 +40,4 @@ visualHUD.view.TopBar = Backbone.View.extend({
         this.fireEvent('toolbar.action', [action]);
     }
 });
+

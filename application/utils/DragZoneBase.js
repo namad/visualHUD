@@ -1,10 +1,15 @@
-visualHUD.util.DragZoneBase = function(options) {
+/**
+ * Drag Zone is a basic event handler and flexible interface to support mouse move interaction
+ * @param options
+ * @constructor
+ */
+visualHUD.Utils.DragZoneBase = function(options) {
     options = _.extend({}, this.defaults, options || {});
     this.setOptions(options);
     this.initialize.apply(this, arguments);
 }
 
-_.extend(visualHUD.util.DragZoneBase.prototype, {
+_.extend(visualHUD.Utils.DragZoneBase.prototype, {
     currentElement: null,
     handler: null,
     defaults: {
@@ -57,6 +62,11 @@ _.extend(visualHUD.util.DragZoneBase.prototype, {
         return this;
     },
 
+    /**
+     * This method should be called manually in order to start drag action
+     * @param {Event} event
+     * @param {jQuery} element
+     */
     start: function(event, element) {
         this.currentElement = element;
         this.handler = $(event.target);
@@ -159,4 +169,5 @@ _.extend(visualHUD.util.DragZoneBase.prototype, {
             y: event.pageY
         };
     }
-})
+});
+
