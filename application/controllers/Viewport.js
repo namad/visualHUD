@@ -1,25 +1,25 @@
 visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     views: [
-        'visualHUD.Views.Viewport',
-        'visualHUD.Views.CanvasToolbar',
-        'visualHUD.Views.Canvas',
-        'visualHUD.Views.TopBar',
-        'visualHUD.Views.StageControls',
-        'visualHUD.Views.GroupActionsPanel',
-        'visualHUD.Views.DownloadWindow',
-        'visualHUD.Views.ToolTip'
+        'Viewport',
+        'CanvasToolbar',
+        'Canvas',
+        'TopBar',
+        'StageControls',
+        'GroupActionsPanel',
+        'DownloadWindow',
+        'ToolTip'
     ],
 
     models: [
-        'visualHUD.Models.ClientSettings',
-        'visualHUD.Models.HUDItem'
+        'ClientSettings',
+        'HUDItem'
     ],
 
     collections: [
-        'visualHUD.Collections.StageControlsDictionary',
-        'visualHUD.Collections.HUDItemTemplates',
-        'visualHUD.Collections.HUDItemIconEnums',
-        'visualHUD.Collections.HUDItems'
+        'StageControlsDictionary',
+        'HUDItemTemplates',
+        'HUDItemIconEnums',
+        'HUDItems'
     ],
 
     initialize: function(options) {
@@ -49,11 +49,11 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
 
     onLaunch: function() {
         var clientSettingsModel = this.getModel('ClientSettings');
-        this.toolTips = this.createView('ToolTip');
+        var toolTips = this.createView('ToolTip');
 
         var viewport = this.createView('Viewport');
         var toobar = this.createView('CanvasToolbar', {
-            appToolTips: this.toolTips,
+            appToolTips: toolTips,
             clientSettingsModel: clientSettingsModel
         });
         var canvas = this.createView('Canvas', {

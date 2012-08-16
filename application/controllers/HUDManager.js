@@ -5,19 +5,19 @@
  */
 visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     views: [
-        'visualHUD.Views.HUDItem',
-        'visualHUD.Views.HUDItemForm'
+        'HUDItem',
+        'HUDItemForm'
     ],
 
     models: [
-        'visualHUD.Models.HUDItem',
-        'visualHUD.Models.ClientSettings'
+        'HUDItem',
+        'ClientSettings'
     ],
 
     collections: [
-        'visualHUD.Collections.HUDItemTemplates',
-        'visualHUD.Collections.HUDItemIconEnums',
-        'visualHUD.Collections.HUDItems'
+        'HUDItemTemplates',
+        'HUDItemIconEnums',
+        'HUDItems'
     ],
 
     initialize: function(options) {

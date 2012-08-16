@@ -1,29 +1,29 @@
-var visualHUD = {
+new Backbone.Application({
+    name: 'app',
+    nameSpace: 'visualHUD',
+
     scaleFactor: 1,
     ver: '2.0',
 
-    Controllers: {},
-    Views: {},
-    Models: {},
-    Collections: {},
-    Libs: {},
-    Utils: {},
+    allocationMap: {
+        model: 'Models',
+        collection: 'Collections',
+        controller: 'Controllers',
+        view: 'Views',
+        lib: 'Libs',
+        utility: 'Utils'
+    },
 
-    Application: Backbone.Application.extend({
-        name: 'app',
-        nameSpace: 'visualHUD',
-
-        controllers: [
-            'visualHUD.Controllers.Viewport',
-            'visualHUD.Controllers.HUDManager',
-            'visualHUD.Controllers.KeyboardManager',
-            'visualHUD.Controllers.FocusManager'
-        ],
-        launch: function() {
-            $('#preloader').fadeOut(400, function() {
-                $(this).remove();
-            });
-        }
-    })
-};
+    controllers: [
+        'Viewport',
+        'HUDManager',
+        'KeyboardManager',
+        'FocusManager'
+    ],
+    launch: function() {
+        $('#preloader').fadeOut(400, function() {
+            $(this).remove();
+        });
+    }
+});
 
