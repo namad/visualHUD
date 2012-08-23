@@ -3,6 +3,9 @@ visualHUD.Libs.colorHelper = (function() {
     var currentColorCell;
     var colorInput;
     var currentColor;
+    var paletteElements;
+    var activeElement;
+    var colorpicker = null;
 
     var colorPresets = [
         "FFFFFF","FF8AD8","FF928A","FFBA8A","fccc30","FDFF8A","DAFF58","a1fb6e","7ff7e0","54cdf5","5ba8f5","5537ff","a053ed",
@@ -15,81 +18,104 @@ visualHUD.Libs.colorHelper = (function() {
 
     return {
         setupColorPicker: function(area){
-            var $body = $(document.body);
-            var paletteTpl = ([
-                '<% _.each(colors, function(color) { %>',
-                '<div class="color-cell" style="background-color:#<%= color %>" data-color="<%= color %>"></div>',
-                '<% }); %>'
-            ]).join('');
+            if(colorpicker == null) {
+                var $body = $(document.body);
+                var paletteTpl = ([
+                    '<% _.each(colors, function(color) { %>',
+                    '<div class="color-cell" style="background-color:#<%= color %>"><input type="hidden" value="<%= color %>" name="color"/></div>',
+                    '<% }); %>'
+                ]).join('');
 
-            var menuEventsHandler = this.menuEventsHandler;
+                var menuEventsHandler = this.menuEventsHandler;
 
-            this.colorpicker = this.colorpicker || new xpk.DHTMLArea(area,{
-                delegate: true,
-                fromSelector: 'div.color-picker-box',
-                className: 'color-picker-wrapper clearfloat',
-                init: function(){
-                    var _this = this;
-                    var html = _.template(paletteTpl, {
+                $(area).on('click', 'div.color-picker-box', visualHUD.Function.bind(this.showColorPicker, this));
+                $(area).on('click', 'input.color-input', visualHUD.Function.bind(this.showColorPicker, this));
+
+                colorpicker = new visualHUD.Widgets.PopOver({
+                    scope: this,
+                    position: 'left-center',
+                    html: _.template(paletteTpl, {
                         colors: colorPresets
-                    });
+                    }),
+                    render: function(popOver) {
+                        paletteElements = popOver.$content.find('div.color-cell');
 
-                    this.menu.append(html);
-                    this.paletteElements = this.menu.find('div.color-cell');
-                    this.menu.on('mouseover mouseout click', 'div.color-cell', $.proxy(menuEventsHandler, this));
-
-                },
-                onshow: function(){
-                    colorInput = this.$activeElement.prev('input.color-input');
-                    currentColor = this.backgroundColor = colorInput.val();
-
-                    this.paletteElements.each(function() {
-                        var $el = $(this);
-                        var dataColor = String($el.data('color'));
-
-                        if(dataColor.toUpperCase() == currentColor.toUpperCase()) {
-                            $el.addClass('active-color');
-                            currentColorCell = $el;
-                        }
-                    })
-
-                    $body.addClass('color-picker-active');
-                },
-                onhide: function(){
-                    currentColorCell && currentColorCell.removeClass('active-color');
-
-                    window.setTimeout(function(){
-                        $body.removeClass('color-picker-active');
-                    }, 10);
-                }
-            })
+                        popOver.$el.addClass('color-picker-popover')
+                        popOver.$content.on('mouseover mouseout click', 'div.color-cell', visualHUD.Function.bind(menuEventsHandler, this));
+                        popOver.$title.hide();
+                    },
+                    hide: function() {
+                        currentColorCell && currentColorCell.removeClass('active-color');
+                    }
+                });
+            }
         },
 
         menuEventsHandler: function(event) {
-            if(this.activeElement) {
+            if(activeElement) {
+
                 var $colorCell = $(event.currentTarget);
-                var color = $colorCell.data('color');
+                var color = $colorCell.find('input[name=color]').val().toUpperCase();
                 var hoverFn = event.type == 'mouseout' || event.type == 'click' ? 'removeClass' : 'addClass';
 
-                if (event.type == 'mouseover') {
-                    this.$activeElement.css('backgroundColor', '#' + color);
-                    colorInput.val(color.toUpperCase());
-                }
-                else if(event.type == 'mouseout' && preventMouseleave == false){
+                if (event.type == 'mouseover' && colorpicker.visible == true) {
+                    colorpicker.setTitle('#' + color);
                     colorInput.val(color);
-                    this.$activeElement.css('backgroundColor', '#' + currentColor);
+                    activeElement.css('backgroundColor', '#' + color);
+                }
+
+                if(event.type == 'mouseout' && colorpicker.visible == true){
+                    colorpicker.setTitle('#' + currentColor);
+                    colorInput.val(currentColor);
+                    activeElement.css('backgroundColor', '#' + currentColor);
                 }
 
                 $colorCell[hoverFn]('color-cell-hover');
 
                 if(event.type == 'click') {
+                    colorpicker.hide();
+
                     preventMouseleave = true;
                     colorInput.trigger('change');
 
-                    this.hide();
-                    event.stopPropagation()
-                };
+                    return false
+                }
+
                 preventMouseleave = false;
+            }
+        },
+
+        showColorPicker: function(event) {
+            paletteElements.filter('.active-color').removeClass('active-color');
+
+            if(colorpicker.visible == true && activeElement && activeElement.get(0) == event.currentTarget) {
+                colorpicker.hide();
+            }
+            else {
+                activeElement = $(event.currentTarget);
+
+                if(activeElement.is('input.color-input')) {
+                    colorInput = activeElement;
+                    activeElement = activeElement.next('div.color-picker-box')
+                }
+                else {
+                    colorInput = activeElement.prev('input.color-input');
+                }
+
+                currentColor = colorInput.val();
+
+                paletteElements.each(function() {
+                    var $el = $(this);
+                    var dataColor = String($el.data('color'));
+
+                    if(dataColor.toUpperCase() == currentColor.toUpperCase()) {
+                        $el.addClass('active-color');
+                        currentColorCell = $el;
+                        return false;
+                    }
+                });
+                colorpicker.setTitle('#' + currentColor);
+                colorpicker.show(colorInput, event);
 
             }
         }

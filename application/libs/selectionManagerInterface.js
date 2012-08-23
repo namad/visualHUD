@@ -7,7 +7,9 @@ visualHUD.Libs.selectionManagerInterface = {
         $('body').bind('click.deselect', function(event) {
             var target = $(event.target);
             var hudItem = target.closest('div.hud-item', me.$el);
-            if(hudItem.length == 0) {
+            var sidebar = target.closest('.vh-region-right', this);
+
+            if(hudItem.length == 0 && sidebar.length == 0) {
                 me.deselect();
             }
         });

@@ -1,0 +1,345 @@
+/* Forms
+------------------------------ */
+
+.app-form .control-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #2c2c2c repeat-x;
+    border-bottom: 1px solid #262626;
+    box-shadow: 0 1px 0 #404040;
+    height: 65px;
+}
+
+.app-form .control-header .header-wrap {
+    padding: 20px;
+    padding-left: 75px;
+    padding-top: 17px;
+    background-position: 25px 50%;
+    background-repeat: no-repeat;
+}
+
+.app-form .control-header .item-type {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: #999999;
+}
+
+.app-form .control-header .item-name {
+    font-size: 1.5em;
+    color: #FFF;
+    line-height: 0.750em;
+}
+
+.app-form .form-bbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 38px;
+    border-top: 1px solid #4d4d4d;
+    box-shadow: 0 -1px 8px #292929;
+}
+
+.form-bbar  .item-status {
+    font-size: 10px;
+    line-height: 38px;
+    padding: 0 0 0 20px;
+    float: left;
+}
+.form-bbar  .item-status span {
+    vertical-align: middle;
+}
+.form-bbar  .item-status .item-value {
+    font-weight: bold;
+    margin: 0 0 0 5px;
+    display: inline-block;
+    width: 20px;
+}
+
+.app-form {
+    padding: 0;
+    margin: 0 0 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-form-container {
+    overflow: hidden;
+    height: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* IE 8+ */
+    padding: 66px 0px 39px;;
+}
+
+.app-form-container .app-form-controls {
+    height: 100%;
+
+    overflow: auto;
+}
+
+.app-form fieldset {
+    border: medium none;
+    padding-right: 10px;
+    padding-top: 0.5em;
+    background: url(../images/fieldset_splitter.png) no-repeat;
+    margin: 1em 0;
+}
+
+.app-form legend {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 1px 5px;
+    padding-left: 20px;
+    margin: 0 0 0 -15px;
+    background: #333 url(../images/legend_arrow.gif) no-repeat 0 -18px;
+    color: #aaa;
+    cursor: pointer;
+    -moz-border-radius: 3px;
+}
+
+.app-form legend:hover {
+    color: #FFF;
+}
+
+fieldset.collapsed {
+    padding-top: 0.5em;
+}
+
+.collapsed legend {
+    background-position: 0 0 !important;
+}
+
+.collapsed .f-row {
+    display: none !important;
+}
+
+.app-form .f-row {
+    padding: 3px 10px 3px 5px;
+    display: block;
+}
+
+.app-form .f-label {
+    display: inline-block;
+    padding: 0 10px 0 0;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.app-form .f-inputs {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%
+}
+
+.app-form .l-vertical .f-label {
+    vertical-align: top;
+    margin-top: 3px;
+}
+
+.app-form .f-checkboxes label {
+    width: auto !important;
+    padding: 0;
+    vertical-align: middle;
+    margin: 0 !important;
+}
+
+.app-form .f-checkboxes .label {
+    padding: 0 0 0 8px;
+    vertical-align: middle;
+}
+
+.app-form .f-checkboxes input {
+    margin: 0;
+    padding: 0;
+}
+
+.app-form  .milti-textboxes label {
+    margin: 0 0 0 15px !important;
+    width: auto !important;
+}
+
+.app-form input.date {
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding-left: 18px;
+}
+
+.app-form .f-hint {
+    padding-top: 3px;
+    font-size: 0.8em;
+    color: #555;
+}
+
+.app-form .not-valid {
+    background: #f5d6d6;
+}
+
+.app-form .not-valid .f-hint {
+    color: #c33;
+}
+
+.app-form .required-field {
+    color: #900;
+}
+
+.f-inputs .input-helper {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 13px;
+    padding: 4px;
+    margin-left: 0px;
+    border: 1px solid #CCC;
+}
+
+.f-inputs .input-helper:hover {
+    border-color: #c33;
+}
+
+.textbox-wrap {
+    display: inline-block;
+}
+
+.textbox-wrap input {
+    padding-left: 18px;
+}
+
+.app-form fieldset {
+    padding-left: 75px;
+    position: relative;
+}
+
+.app-form  .f-label {
+    margin-left: -75px;
+    width: 65px;
+}
+
+.app-form .form-buttons {
+    padding-left: 70px;
+}
+
+.color-picker-box {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #FFF;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.color-picker-hint {
+    display: inline-block;
+    vertical-align: middle;
+    font-style: italic;
+    color: #999999;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.color-picker-popover .popover-content {
+    width: 208px;
+    padding: 5px;
+}
+
+.color-cell {
+    border: 1px solid #111;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+}
+
+.active-color,
+.color-cell-hover {
+    border-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.color-range-inputs input {
+    margin-left: 2px;
+    text-align: center;
+}
+
+.counter-text {
+    position: relative;
+    margin-top: -26px;
+    margin-left: 100px;
+    width: auto;
+}
+
+.counter-text .f-label {
+    margin-left: 0;
+    width: auto;
+}
+
+.counter-text .f-inputs {
+    width: auto;
+}
+
+.dhtml-menu-active {
+    position: relative;
+    z-index: 1001;
+}
+
+/* slider root element */
+.slider {
+    background: #DDD;
+    display: inline-block;
+    height: 5px;
+    position: relative;
+    border: 1px solid #333;
+    border-color: #666 #FFF #FFF #666;
+    width: 160px;
+    margin: 8px 0;
+    vertical-align: middle;
+}
+
+.slider:hover {
+    border-color: #3d7bad #a4c9e3 #a4c9e3 #3d7bad;
+}
+
+/* progress bar (enabled with progress: true) */
+.progress {
+    height: 100%;
+    background-color: #979797;
+    cursor: default;
+}
+
+.slider:hover .progress {
+    background-color: #93c0de;
+}
+
+/* drag handle */
+.handle {
+    background: url(../images/slider_knob.png) no-repeat;
+    height: 23px;
+    width: 12px;
+    top: -8px;
+    position: absolute;
+    display: block;
+    cursor: default;
+    border: 0 none;
+    padding: 0;
+    margin: 0;
+}
+
+.handle:focus,
+.handle:hover {
+    background-position: 0 -23px;
+    outline: 0 none !important;
+}
+
+/* the input field */
+input.range {
+    border: 0 none;
+    background: transparent;
+    color: #FFF;
+    padding: 2px 0;
+    margin: 0 0 0 10px;
+    text-align: center;
+    width: 25px;
+}
+
+input.range:focus {
+    background-color: #000;
+}

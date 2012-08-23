@@ -20,6 +20,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         'HUDItems'
     ],
 
+    AUTOSAVE_TIMEOUT: 300000,
+
     initialize: function(options) {
         this.addListeners([
             {
@@ -63,10 +65,9 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         HUDItemsCollection.on('load', this.loadDraft, this);
 
         // Load saved HUD Items
-        $(window).load($.proxy(HUDItemsCollection.load, HUDItemsCollection));
+        $(window).load(visualHUD.Function.bind(HUDItemsCollection.load, HUDItemsCollection));
         // Save HUD Items
-        $(window).unload($.proxy(HUDItemsCollection.save, HUDItemsCollection));
-
+        $(window).unload(visualHUD.Function.bind(HUDItemsCollection.save, HUDItemsCollection));
     },
 
     /**
@@ -100,6 +101,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             label: record.get('label'),
             coordinates: position
         });
+
+        HUDItemModel.wasDropped = true;
 
         if(statusText) {
             HUDItemModel.set('text', statusText);
@@ -136,6 +139,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             HUDItemIconEnums: HUDItemIconEnums,
             renderTo: canvasView.$canvas,
             model: record,
+            wasDropped: record.wasDropped,
             formView: formView,
             htmlTplRecord: HUDItemTemplates.get(record.get('name'))
         });
@@ -211,7 +215,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             HUDItemsCollection.each(function(record){
                 var name = record.get('name');
 
-                if(namePattern.test(name)) {
+                if(namePattern && namePattern.test(name)) {
                     record.set('text', value);
                 }
             });

@@ -6,8 +6,7 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'TopBar',
         'StageControls',
         'GroupActionsPanel',
-        'DownloadWindow',
-        'ToolTip'
+        'DownloadWindow'
     ],
 
     models: [
@@ -31,17 +30,24 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             },
             {
                 'CanvasToolbar': {
-                    'setCanvasOptions': this.setCanvasOptions
+                    'toolbar.menu:show': this.onCanvasMenuShow,
+                    'toolbar.menu:hide': this.onCanvasMenuHide,
+                    'toolbar.menu:action': this.setCanvasOptions
                 }
             },
             {
                 'TopBar': {
-                    'toolbar.action': this.toolbarAction
+                    'toolbar:action': this.toolbarAction
                 }
             },
             {
                 'Canvas': {
                     'selectionchange': this.onSelectionChange
+                }
+            },
+            {
+                'keyboard': {
+                    'tab': this.toggleToolbars
                 }
             }
         ]);
@@ -49,11 +55,9 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
 
     onLaunch: function() {
         var clientSettingsModel = this.getModel('ClientSettings');
-        var toolTips = this.createView('ToolTip');
 
         var viewport = this.createView('Viewport');
         var toobar = this.createView('CanvasToolbar', {
-            appToolTips: toolTips,
             clientSettingsModel: clientSettingsModel
         });
         var canvas = this.createView('Canvas', {
@@ -65,8 +69,6 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         var stageControls = this.createView('StageControls', {
             collection: this.getCollection('StageControlsDictionary')
         });
-
-
 
         toobar.render(viewport);
         canvas.render(viewport);
@@ -88,7 +90,7 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
      */
     setCanvasOptions: function(data) {
         var clientSettings = this.getModel('ClientSettings');
-        var value = data.enabled == true ? data.value : false;
+        var value = data.value;
         clientSettings.set(data.name,  value);
     },
 
@@ -107,8 +109,6 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
      * Event Handler triggered by [Download] button
      */
     downalodHUD: function() {
-        console.log('Downloading new HUD > ', this.getCollection('HUDItems').toJSON());
-
         var HUDItemsCollection = this.getCollection('HUDItems');
 
         if(!this.downloadWindow) {
@@ -126,8 +126,19 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     /**
      * Event Handler triggered by [Load Preset] button
      */
-    loadPreset: function() {
+    loadHUD: function() {
+        var HUDPresetsCollection = this.getCollection('HUDPresets');
 
+        if(!this.presetWindow) {
+            var winConstructor = this.getViewConstructor('LoadWindow');
+            this.downloadWindow = new  winConstructor({
+                width: 600,
+                title: 'Load Preset',
+                jsonData: JSON.stringify(HUDItemsCollection.toJSON())
+            });
+        }
+
+        this.downloadWindow.show();
     },
 
     /**
@@ -160,6 +171,18 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             this.getView('StageControls').show();
             this.application.getController('FocusManager').blur();
         }
+    },
+
+    onCanvasMenuShow: function() {
+        this.getApplication().toolTips.disable();
+    },
+
+    onCanvasMenuHide: function() {
+        this.getApplication().toolTips.enable();
+    },
+
+    toggleToolbars: function(event) {
+        this.getView('Viewport').toggleToolbars();
     }
 });
 

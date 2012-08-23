@@ -1,0 +1,361 @@
+.hud-item-box {
+    overflow: hidden;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.25);
+    width: 100%;
+    height: 100%;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* IE 8+ */
+}
+
+.resize-handle {
+    width: 5px;
+    height: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid #AAA;
+    position: absolute;
+    cursor: nw-resize;
+    display: none;
+}
+
+.hud-item-box .h-bar {
+    width: 100%;
+    height: 100%;
+}
+
+.ltr-bar .h-bar {
+}
+
+.rtl-bar .h-bar {
+    float: right;
+}
+
+body.resize .selected .hud-item-box {
+    visibility: hidden;
+}
+
+.resize-handle.nw {
+    cursor: nw-resize;
+    top: -4px;
+    left: -4px;
+}
+
+.resize-handle.n {
+    cursor: n-resize;
+    top: -4px;
+    left: 50%;
+    margin-right: -4px;
+}
+
+.resize-handle.ne {
+    cursor: ne-resize;
+    top: -4px;
+    right: -4px;
+}
+
+.resize-handle.e {
+    cursor: e-resize;
+    right: -4px;
+    top: 50%;
+    margin-top: -4px;
+}
+
+.resize-handle.se {
+    cursor: se-resize;
+    bottom: -4px;
+    right: -4px;
+}
+
+.resize-handle.s {
+    cursor: s-resize;
+    bottom: -4px;
+    left: 50%;
+    margin-top: -4px;
+}
+
+.resize-handle.sw {
+    cursor: sw-resize;
+    bottom: -4px;
+    left: -4px;
+}
+
+.resize-handle.w {
+    cursor: w-resize;
+    top: 50%;
+    left: -4px;
+    margin-top: -4px;
+}
+
+body.resize .resize-handle,
+.hud-item:hover .resize-handle {
+    display: block;
+    border-color: #FFF;
+}
+
+body.draw .resize-handle,
+body.drag-select .resize-handle {
+    display: none !important;
+}
+
+.selected .hud-item-box {
+    top: 0;
+    left: 0;
+}
+
+.hud-items-hidden .hud-item {
+    display: none;
+}
+
+.hud-item {
+    position: absolute;
+    vertical-align: baseline;
+    cursor: move;
+}
+
+body.drag .hud-item,
+.selected,
+body.draw .hud-item,
+.hud-item:hover {
+    border: 1px dotted #AAA;
+    padding: 4px;
+    margin: -5px;
+}
+
+.rubber-box {
+    position: absolute;
+    outline: 1px solid #3399ff !important;
+    background: rgba(51, 153, 255, 0.3);
+}
+
+.hud-item.drag-start {
+    border-color: #FFF;
+}
+
+.item-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto;
+}
+
+.item-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.item-counter {
+    display: inline-block;
+    font-family: Aero;
+    letter-spacing: -0.05;
+    font-size: 3.9em;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.item-counter span.textstyle-2 {
+    text-shadow: 1px 1px 0px #000;
+}
+
+.item-counter span.textstyle-3 {
+    text-shadow: 2px 2px 0px #000;
+}
+
+.accuracy .item-counter {
+    text-align: left;
+}
+
+.icon-top .item-counter {
+    display: block;
+    margin: auto;
+}
+
+.icon-top .item-icon {
+    display: block;
+}
+
+.obit-item {
+    height: 15px;
+}
+
+.obit-item .item-icon {
+    margin: 0 2px;
+    width: 15px;
+    height: 15px;
+    display: block;
+    float: left;
+}
+
+.obit-item .item-counter {
+    line-height: 15px;
+    display: block;
+    float: left;
+}
+
+.obit-item .item-counter span.counter {
+    font-size: 22%;
+    line-height: 15px;
+}
+
+.scorebox-item.style-0 .team-red {
+    width: 180px;
+    height: 35px;
+    background: url(../images/scorebox_classic.png) no-repeat;
+    margin: 0 !important;
+}
+
+.scorebox-item.style-0 .team-blue {
+    display: none !important;
+}
+
+.team-score.style-0 .team-red {
+    background-image: url(../images/scorebox_classic_tdm.png);
+}
+
+.scorebox-item.style-1 .team-red {
+    width: 150px;
+    height: 35px;
+    background: url(../images/scorebox_classic_2.png) no-repeat;
+    margin: 0 !important;
+}
+
+.scorebox-item.style-1 .team-blue {
+    display: none !important;
+}
+
+.team-score.style-1 .team-red {
+    background-image: url(../images/scorebox_classic_2_tdm.png);
+}
+
+.scorebox-item .item-icon {
+    width: 50px;
+    height: 16px;
+    background-repeat: no-repeat;
+}
+
+.ffa-score .team-red {
+    background-image: url(../images/scorebox_red_ffa.png);
+}
+
+.ffa-score .team-blue {
+    background-image: url(../images/scorebox_blue_ffa.png);
+}
+
+.team-score .team-red {
+    background-image: url(../images/scorebox_red_tdm.png);
+}
+
+.team-score .team-blue {
+    background-image: url(../images/scorebox_blue_tdm.png);
+}
+
+.scorebox-vertical .item-icon {
+    display: block;
+}
+
+.powerups-wrapper {
+    position: relative;
+}
+
+.powerup-item {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.powerup-item .item-icon,
+.powerup-item .item-counter {
+    vertical-align: baseline;
+}
+
+.powerup-item .item-counter span.counter {
+    text-shadow: none;
+}
+
+.powerup-item:last-child {
+    position: absolute;
+    top: 0;
+    left: 100%;
+}
+
+.stack-right .powerup-item:last-child {
+    right: 100%;
+    left: auto;
+}
+
+.stack-top .powerup-item:last-child {
+    top: 100%;
+    left: 0;
+}
+
+.stack-bottom .powerup-item:last-child {
+    bottom: 100%;
+    top: auto;
+    left: 0;
+}
+
+.single-powerup .powerup-item {
+    margin: 0 !important;
+}
+
+.single-powerup .powerup-item:last-child {
+    display: none;
+}
+
+.skill-item .item-counter {
+    letter-spacing: 0.025em;
+    word-spacing: -0.06em;
+}
+
+.chat-area {
+}
+
+.chat-messages {
+    position: absolute;
+    bottom: 1px;
+    list-style: none;
+    line-height: 10px;
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+.chat-messages li {
+    margin-top: 3px;
+    display: none;
+    font-family: Aero;
+    text-shadow: 1px 1px 0px #000;
+    padding-left: 3px;
+    letter-spacing: 0.1em;
+}
+
+.chat-messages .name {
+    margin-right: 5px;
+}
+
+.chat-messages .message {
+    color: #00d800;
+}
+
+.chat-messages li:last-child,
+.chat-visible .chat-messages li {
+    display: block;
+}
+
+.chat-area .hud-item-box {
+    overflow: visible;
+}
+
+.chat-invisible  .hud-item-box {
+    background: transparent !important;
+}
+
+.chat-messages li.message-2,
+.chat-messages li.message-4,
+.chat-messages li.message-5 {
+    padding-left: 0;
+}
+
+.chat-messages li.message-4 .name,
+.chat-messages li.message-5 .name {
+    display: none;
+}

@@ -11,7 +11,8 @@ new Backbone.Application({
         controller: 'Controllers',
         view: 'Views',
         lib: 'Libs',
-        utility: 'Utils'
+        utility: 'Utils',
+        widgets: 'Widgets'
     },
 
     controllers: [
@@ -21,9 +22,13 @@ new Backbone.Application({
         'FocusManager'
     ],
     launch: function() {
+
+        $('body').addClass('scale-factor-' + this.scaleFactor);
         $('#preloader').fadeOut(400, function() {
             $(this).remove();
         });
+
+        this.toolTips = new visualHUD.Widgets.ToolTip();
     }
 });
 

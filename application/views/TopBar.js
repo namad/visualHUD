@@ -4,8 +4,8 @@ visualHUD.Views.TopBar = Backbone.View.extend({
     htmlTpl: [
         '<div class="app-logo"><span>VisualHUD</span></div>',
         '<div class="toolbar-main">',
-        '<button value="downalodHUD" class="button-main" id="downloadButton"><span class="w-icon download">Download HUD</span></button>',
-        '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load">Load Preset</span></button>',
+        '<button value="downalodHUD" class="button" id="downloadButton"><span class="w-icon download">Download HUD</span></button>',
+        '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load">Load Saved</span></button>',
         '<button value="restartApplication" class="button-aux" id="restartAppButton"><span class="w-icon restart">Restart</span></button>',
         '</div>',
         '<div class="app-stats">',
@@ -37,7 +37,7 @@ visualHUD.Views.TopBar = Backbone.View.extend({
 
     onButtonClick: function(event) {
         var action = event.currentTarget.value;
-        this.fireEvent('toolbar.action', [action]);
+        this.fireEvent('toolbar:action', [action]);
     }
 });
 

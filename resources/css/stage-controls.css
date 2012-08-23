@@ -1,0 +1,164 @@
+.library-items {
+    list-style: none;
+}
+
+.library-items li {
+    cursor: move;
+    display: block;
+    float: left;
+    margin: 0 8px 8px 0;
+    border: 1px solid;
+    border-color: #292929 #292929 #131313;
+    width: 47px;
+    height: 47px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.library-items li:hover {
+    background-color: #292929;
+    border-color: #131313 #1e1e1e #1e1e1e;
+}
+
+.library-items li.active {
+    background-color: #292929;
+    border-color: #131313 #1e1e1e #1e1e1e;
+}
+
+.library-items li.disabled,
+.library-items li.drag-start {
+    opacity: 0.25;
+}
+
+.lib-element-health {
+    background-image: url(../images/icons/create_health.png);
+}
+
+.lib-element-armor {
+    background-image: url(../images/icons/create_armor.png);
+}
+
+.lib-element-ammo {
+    background-image: url(../images/icons/create_ammo.png);
+}
+
+.lib-element-ctf-powerup {
+    background-image: url(../images/icons/create_ctf_powerup.png);
+}
+
+.lib-element-obit {
+    background-image: url(../images/icons/create_obit.png);
+}
+
+.lib-element-player-item {
+    background-image: url(../images/icons/create_player_item.png);
+}
+
+.lib-element-powerup {
+    background-image: url(../images/icons/create_powerup.png);
+}
+
+.lib-element-scorebox {
+    background-image: url(../images/icons/create_scorebox.png);
+}
+
+.lib-element-timer {
+    background-image: url(../images/icons/create_timer.png);
+}
+
+.lib-element-flag {
+    background-image: url(../images/icons/create_flag.png);
+}
+
+.lib-element-rect {
+    background-image: url(../images/icons/create_rect.png);
+}
+
+.lib-element-hbar {
+    background-image: url(../images/icons/create_healthbar.png);
+}
+
+.lib-element-abar {
+    background-image: url(../images/icons/create_armorbar.png);
+}
+
+.lib-element-acc {
+    background-image: url(../images/icons/create_accuracy.png);
+}
+
+.lib-element-skill {
+    background-image: url(../images/icons/create_skill.png);
+}
+
+.lib-element-chat {
+    background-image: url(../images/icons/create_chat.png);
+}
+
+.library-items li .item-name {
+    display: none;
+}
+
+.icons-24px li {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    margin: 0 2px 0 0;
+}
+
+.icons-32px li {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin: 0 2px 0 0;
+}
+
+.align-controls li {
+    background-image: url(../images/icons/align_icons_sprite.png);
+}
+
+.align-controls li.align-top {
+    background-position: 0 0;
+}
+
+.align-controls li.align-vertical {
+    background-position: -24px 0;
+}
+
+.align-controls li.align-bottom {
+    background-position: -48px 0;
+}
+
+.align-controls li.align-left {
+    background-position: -72px 0;
+}
+
+.align-controls li.align-horizontal {
+    background-position: -96px 0;
+}
+
+.align-controls li.align-right {
+    background-position: -120px 0;
+}
+
+.arrange-controls li {
+    background-image: url(../images/icons/arrange_icons_sprite.png);
+}
+
+.arrange-controls li.bring-front {
+    background-position: -1px -1px;
+}
+
+.arrange-controls li.send-back {
+    background-position: -25px -1px;
+}
+
+.arrange-controls li.send-backward {
+    background-position: -49px -1px;
+}
+
+.arrange-controls li.bring-forward {
+    background-position: -73px -1px;
+}

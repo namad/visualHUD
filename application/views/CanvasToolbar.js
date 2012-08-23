@@ -335,7 +335,7 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         listItem.toggleClass('active');
         activeItem = listItem.hasClass('active');
 
-        this.options.appToolTips.hide();
+        this.fireEvent('toolbar.menu:show', [this]);
 
         var hideFn = visualHUD.Function.bind(this.hideMenu, this);
 
@@ -356,6 +356,8 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         var listItems = this.$el.children();
         listItems.filter('.active').removeClass('active');
         $('body').unbind('click.hideMenu');
+
+        this.fireEvent('toolbar.menu:hide', [this]);
     },
 
 
@@ -372,13 +374,17 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         var formControl = event.currentTarget;
         var $formControl = $(formControl);
 
+        var isCheckbox = $formControl.is('[type=checkbox]');
+        var isRadiobutton = $formControl.is('[type=radio]');
+
         var textElement = $formControl.closest('li.root-item').find('strong.item-value').text(formControl.value);
 
-        this.fireEvent('setCanvasOptions', [{
-            name: formControl.name,
-            value: formControl.value,
-            enabled: formControl.checked
-        }]);
+        if(formControl.name != '') {
+            this.fireEvent('toolbar.menu:action', [{
+                name: formControl.name,
+                value: isCheckbox ? formControl.checked : formControl.value
+            }]);
+        }
     },
 
     setClientSettings: function(data) {
@@ -387,14 +393,14 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         for(var key in data){
             set = data[key];
 
-            name = ('input[name={0}]').format(key);
+            name = _.template('input[name=<%= name %>]', {name: key});
             input = this.$el.find(name);
 
             if(set === true){
                 input.attr('checked', set);
             }
             else {
-                val = ('input[value={0}]').format(set);
+                val = _.template('input[value=<%= name %>]', {name: set});
                 input = input.filter(val)
                 input.attr('checked', true);
 

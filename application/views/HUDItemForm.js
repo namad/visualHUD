@@ -45,13 +45,10 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
     },
 
     initialize: function() {
-        var defaultMixin = visualHUD.Libs.formBuilderMixin.getByType('general'),
+        var defaultMixin = visualHUD.Libs.formBuilderMixin.getByType('base'),
             typeMixin = visualHUD.Libs.formBuilderMixin.getByType(this.model.get('itemType')),
             nameMixin = visualHUD.Libs.formBuilderMixin.getByName(this.model.get('name'));
 
-        if(defaultMixin == typeMixin) {
-            typeMixin = {};
-        }
         // Mixin functionality goes from more generic (by type) to more specific (by name)
         _.extend(this, defaultMixin, typeMixin || {}, nameMixin || {});
 
@@ -67,7 +64,6 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
         this.hide();
 
         this.model.on('change:coordinates', this.updateStatusBar, this);
-
         $(window).bind('resize.form', $.proxy(this, 'trackResize'));
     },
 
@@ -103,7 +99,7 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
     onChange: function(event) {
         var name = event.target.name
 
-        if(name) {
+        if(name && event.silent !== true) {
             var inputElement = $(event.target);
             var value = inputElement.is('[type=checkbox]') ? inputElement.get(0).checked : inputElement.val();
             var isColorRange = name.match(/^colorRange/);
@@ -112,24 +108,32 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
                 value = this.getColorRangeChanges(name, value);
                 name = 'colorRanges';
             }
-
             this.model.set(name, value);
         }
 
         return false;
     },
 
+    /**
+     * Complex method that deeply clone color range structure and update it's value
+     * We need this deep cloning in order to trigger model onchnage event
+     * @param name
+     * @param value
+     * @return {Object}
+     */
     getColorRangeChanges: function(name, value) {
         var rangeData = name.split('_');
         var colorRangeIndex = parseInt(rangeData[1], 10);
         var colorRangeValueIndex = parseInt(rangeData[3], 10);
         var currentRanges = Array.prototype.slice.call(this.model.get('colorRanges')); //clone array to trigger on change event
         var currentRange = _.clone(currentRanges[colorRangeIndex]);
+        var currentRangeValues = Array.prototype.slice.call(currentRange.range);
 
         currentRanges[colorRangeIndex] = currentRange;
+        currentRange.range = currentRangeValues;
 
-        if(rangeData[2] == 'range' && colorRangeValueIndex) {
-            currentRange.range[colorRangeValueIndex] = parseInt(value, 10);
+        if(rangeData[2] == 'range' && colorRangeValueIndex !== undefined) {
+            currentRangeValues[colorRangeValueIndex] = parseInt(value, 10);
         }
         else if(rangeData[2] == 'color'){
             currentRange.color = value;
@@ -156,6 +160,19 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
                 valueObject[elem.name] = jQuery(this).val();
                 return valueObject
             }).get();
+    },
+
+    setValues: function(data, options) {
+        var options = options || {};
+
+        _.each(data, function(value, name) {
+            var inputElement = this.$el.find('[name='+ name +']');
+            if(inputElement.length) {
+                var event = jQuery.Event('change');
+                event.silent = options.silent || false;
+                inputElement.val(value).trigger(event);
+            }
+        }, this);
     },
 
     toggleFieldsetCollapse: function(event) {

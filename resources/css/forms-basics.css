@@ -1,0 +1,194 @@
+/* Inputs
+------------------------------ */
+input {
+    vertical-align: middle
+}
+
+input, textarea, select {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 1em;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* IE 8+ */
+}
+
+button {
+    padding: 0 20px;
+
+    color: #FFF;
+    color: rgba(255, 255, 255, 0.8);
+
+    border: 0 none;
+    border-color: #2884c0 transparent transparent transparent;
+    border-width: 1px 0 0 0;
+
+    vertical-align: middle;
+
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 2px;
+
+    background: #106396 url(../images/button_normal.png) repeat-x;
+    cursor: pointer;
+}
+
+button span {
+    display: block;
+    line-height: 16px;
+    padding: 7px 0;
+}
+
+button:hover, button:focus {
+    color: #FFF;
+    background-position: 0 -50px;
+
+}
+
+button:active {
+    background-position: 0 -100px;
+}
+
+button.button-main {
+    background-color: #d43434;
+    background-image: url(../images/button_main.png);
+}
+
+
+button.button-aux {
+    background-position: 0 50px;
+    background-color: transparent;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+button.button-aux:hover {
+    background-position: 0 -50px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 2px;
+}
+
+button.button-aux:active {
+    background-position: 0 -100px;
+}
+
+button.button-small {
+    font-size: 0.8em;
+    padding: 0 15px;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+}
+
+button.button-small span {
+    padding: 3px 0;
+}
+
+button.button-big {
+    font-size: 1.5em;
+    padding: 8px 20px 9px;
+    -moz-border-radius: 21px;
+    -webkit-border-radius: 21px;
+    border-radius: 21px;
+}
+
+button.button-big span {
+    line-height: 23px;
+}
+
+button.button-big span.w-icon {
+    margin-left: -5px;
+    background-position: 0 50%;
+}
+
+button span.w-icon {
+    padding-left: 24px;
+    margin-left: -5px;
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+}
+
+button span.plus {
+    background-image: url(../images/btn_ico_plus.png);
+}
+
+button span.download {
+    background-image: url(../images/btn_ico_download.png);
+}
+
+button span.trash {
+    background-image: url(../images/btn_ico_trash.png);
+}
+
+button span.load {
+    background-image: url(../images/btn_ico_load.png);
+}
+
+button span.report-bug {
+    background-image: url(../images/btn_ico_bug.png);
+}
+
+button span.restart {
+    background-image: url(../images/btn_icon_reload.png);
+}
+
+button.button-icon {
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+button.button-icon span.w-icon {
+    padding: 0px;
+    width: 16px;
+    overflow: hidden;
+    margin: 0;
+    text-indent: -10000px;
+}
+
+button:disabled {
+    background: #CCC !important;
+    color: #666 !important;
+    border-color: transparent !important;
+}
+
+input[type="text"], select {
+    border: 1px solid;
+    border-color: #CCCCCC #FFF #FFF #CCC;
+    padding: 2px;
+    line-height: 1;
+    margin: 0;
+}
+
+select {
+    padding: 2px;
+}
+
+option {
+    padding-left: 3px;
+}
+
+optgroup {
+    font: inherit;
+    font-style: normal;
+    font-weight: bold;
+    padding-left: 3px;
+}
+
+optgroup > option {
+    padding-left: 10px;
+}
+
+input[type="text"]:focus {
+}
+
+input[type="checkbox"] {
+    border: 0 none;
+    width: 16px;
+    height: 16px;
+}

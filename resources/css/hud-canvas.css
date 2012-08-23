@@ -1,0 +1,141 @@
+.hud-canvas {
+    width: 640px;
+    height: 480px;
+    background: #222 no-repeat;
+    position: relative;
+    overflow: hidden;
+}
+
+.canvas-1 .hud-canvas {
+    background-image: url(../images/canvas_1.jpg);
+}
+
+.canvas-2 .hud-canvas {
+    background-image: url(../images/canvas_2.jpg)
+}
+
+.hud-elements,
+.canvas-extras,
+.canvas-extras * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hud-elements {
+    position: relative;
+    color: #FFF;
+}
+
+.hud-weapon {
+}
+
+.gun-1 .hud-weapon {
+    background: url(../images/canvas_weapon.gif) no-repeat;
+}
+
+.gun-2 .hud-weapon {
+    background: url(../images/canvas_weapon_2.gif) no-repeat;
+}
+
+.hud-crosshair {
+    background: url(../images/corsshair.png) no-repeat;
+}
+
+.weapon-bar {
+    background-repeat: no-repeat;
+}
+
+.wbar-0 .weapon-bar {
+    display: none;
+}
+
+.wbar-1 .weapon-bar {
+    background-image: url(../images/wbar_1.png);
+}
+
+.wbar-2 .weapon-bar {
+    background-image: url(../images/wbar_2.png);
+}
+
+.wbar-3 .weapon-bar {
+    background-image: url(../images/wbar_3.png);
+}
+
+.wbar-4 .weapon-bar {
+    background-image: url(../images/wbar_4.png);
+}
+
+.team-overlay {
+    background: url(../images/team_overlay_red.png) no-repeat right top;
+    display: none;
+}
+
+.teamoverlay-1 .team-overlay {
+    display: block;
+}
+
+.teamoverlay-2 .team-overlay {
+    display: block;
+    background-position: 100% 392px;
+}
+
+.hud-canvas .visual-extras {
+    display: none;
+}
+
+.hud-canvas:hover .-visual-extras {
+    display: block;
+}
+
+.visual-extras {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    -moz-box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.95);
+    opacity: 0.9;
+    background: #000;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.grid-5  .hud-elements {
+    background-image: url(../images/grid_5px.png);
+}
+
+.grid-10 .hud-elements {
+    background-image: url(../images/grid_10px.png);
+}
+
+.lag-o-metr {
+    background: url(../images/lagometr.gif) no-repeat;
+    display: none;
+}
+
+.speed-o-metr {
+    background: url(../images/speedometr.gif) no-repeat;
+    display: none;
+}
+
+.pickup-message {
+    background: url(../images/pickup_message.png) no-repeat;
+    display: none;
+}
+
+.demo-rec-message {
+    background: url(../images/demo_recording_message.png) no-repeat;
+    display: none;
+}
+
+.draw-lag .lag-o-metr,
+.draw-speed .speed-o-metr,
+.draw-pickup .pickup-message,
+.draw-demo-rec .demo-rec-message {
+    display: block;
+}

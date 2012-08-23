@@ -7,7 +7,7 @@ visualHUD.Libs.formBuilderMixin = {
         return this[name];
     },
 
-    'general': {
+    'base': {
         buildForm: function(markups) {
             var fragment = document.createDocumentFragment();
 
@@ -36,7 +36,7 @@ visualHUD.Libs.formBuilderMixin = {
                 return fn.apply(this, arguments);
             }
             else {
-                throw('Builder function is not defined for type ', options.type);
+                return this.createFormControl(options);
             }
         },
 
@@ -50,7 +50,6 @@ visualHUD.Libs.formBuilderMixin = {
                 'options': []
             }, options || {});
         },
-
 
         getRangeInputBasic: function(options) {
             return _.extend({
@@ -97,6 +96,15 @@ visualHUD.Libs.formBuilderMixin = {
             return {
                 '0': 'Normal',
                 '3': 'Drop shadow'
+            }
+        },
+
+        getBorderRadiusOptions: function() {
+            return {
+                '0': 'None',
+                '3': '3px',
+                '5': '5px',
+                '8': '8px'
             }
         },
 
@@ -177,6 +185,56 @@ visualHUD.Libs.formBuilderMixin = {
             });
         },
 
+        getWidthInput: function() {
+            return this.getRangeInputBasic({
+                'name': 'width',
+                'label': 'Width',
+                'min': this.model.get('minWidth'),
+                'max': this.model.get('maxWidth'),
+                'value': this.model.get('width')
+            });
+        },
+
+        getHeightInput: function() {
+            return this.getRangeInputBasic({
+                'name': 'height',
+                'label': 'Height',
+                'min': this.model.get('minHeight'),
+                'max': this.model.get('maxHeight'),
+                'value': this.model.get('height')
+            });
+        },
+
+        getPaddingInput: function() {
+            return this.getRangeInputBasic({
+                'name': 'padding',
+                'label': 'Padding',
+                'min': 0,
+                'max': 10,
+                'value': this.model.get('padding')
+            });
+        },
+
+        getOpacityInput: function() {
+            return this.getRangeInputBasic({
+                'name': 'opacity',
+                'label': 'Opacity',
+                'min': 0,
+                'max': 100,
+                'value': this.model.get('opacity')
+            });
+        },
+
+        getPowerupLayoutOptions: function() {
+            return {
+                'left': 'Left to right',
+                'right': 'Right to left',
+                'top': 'Top to bottom',
+                'bottom': 'Bottom to top'
+            }
+        }
+    },
+    'general': {
         createControls: function(form) {
             var markup = [
                 {
@@ -191,7 +249,7 @@ visualHUD.Libs.formBuilderMixin = {
                         {
                             'type': 'checkbox',
                             'name': 'teamColors',
-                            'label': 'Use team colors',
+                            'boxLabel': 'Use team colors',
                             'value': this.model.get('teamColors')
                         }
                     ]
@@ -230,7 +288,7 @@ visualHUD.Libs.formBuilderMixin = {
                         }
                     ]
                 }
-            ]
+            ];
             var fragment = this.buildForm(markup);
 
             // call this in the end
@@ -291,15 +349,6 @@ visualHUD.Libs.formBuilderMixin = {
     },
 
     'powerupIndicator': {
-        getLayoutOptions: function() {
-            return {
-                'left': 'Left to right',
-                'right': 'Right to left',
-                'top': 'Top to bottom',
-                'bottom': 'Bottom to top'
-            }
-        },
-
         createControls: function(form) {
             var markup = [
                 {
@@ -310,14 +359,14 @@ visualHUD.Libs.formBuilderMixin = {
                             'name': 'iconPosition',
                             'label': 'Stack',
                             'value': this.model.get('iconPosition'),
-                            'options': this.getLayoutOptions()
+                            'options': this.getPowerupLayoutOptions()
                         }),
                         this.getIconSpacingInput(),
                         this.getIconSizeInput(),
                         {
                             'type': 'checkbox',
                             'name': 'singlePowerup',
-                            'label': 'Show single icon',
+                            'boxLabel': 'Show single icon',
                             'value': this.model.get('singlePowerup')
                         }
                     ]
@@ -363,13 +412,7 @@ visualHUD.Libs.formBuilderMixin = {
                         this.getIconPositionSelect(),
                         this.getIconSpacingInput(),
                         this.getIconSizeInput(),
-                        this.getIconOpacityInput(),
-                        {
-                            'type': 'checkbox',
-                            'name': 'teamColors',
-                            'label': 'Use team colors',
-                            'value': this.model.get('teamColors')
-                        }
+                        this.getIconOpacityInput()
                     ]
                 },
                 {
@@ -606,7 +649,7 @@ visualHUD.Libs.formBuilderMixin = {
                             'label': 'Mode',
                             'value': this.model.get('scoreboxMode'),
                             'options': this.getModeOptions()
-                        }),
+                        })
                     ]
                 },
                 {
@@ -629,6 +672,203 @@ visualHUD.Libs.formBuilderMixin = {
             // call this in the end
             form.get(0).appendChild(fragment);
         }
+    },
+
+    'bar': {
+        createControls: function(form) {
+            var markup = [
+                {
+                    type: 'fieldset',
+                    label: this.model.get('label') + ' Properties',
+                    items: [
+                        this.getWidthInput(),
+                        this.getHeightInput(),
+                        this.getPaddingInput(),
+                        {
+                            'type': 'colorPicker',
+                            'name': 'color',
+                            'label': 'Color',
+                            'value': this.model.get('color')
+                        },
+                        this.getOpacityInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Color Range',
+                    items: [
+                        {
+                            'type': 'colorRange',
+                            'name': 'colorRanges',
+                            'ranges': this.model.get('colorRanges')
+                        },
+                        this.getRangeInputBasic({
+                            'name': 'barsOpacity',
+                            'label': 'Opacity',
+                            'min': 0,
+                            'max': 100,
+                            'value': this.model.get('barsOpacity')
+                        })
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Actions',
+                    items: [
+                        {
+                            'type': 'arrangeControl',
+                            'label': 'Arrange'
+                        },
+                        {
+                            'type': 'alignControl',
+                            'label': 'Allign'
+                        }
+                    ]
+                }
+            ]
+            var fragment = this.buildForm(markup);
+
+            // call this in the end
+            form.get(0).appendChild(fragment);
+        }
+    },
+
+    'rect': {
+        getGradientOptions: function() {
+            return {
+                '0': 'Solid',
+                'Gradient': {
+                    '1': 'Top to bottom',
+                    '2': 'Bottom to top',
+                    '3': 'Left to right',
+                    '4': 'Right to left'
+                }
+            }
+        },
+
+        createControls: function(form) {
+            var markup = [
+                {
+                    type: 'fieldset',
+                    label: this.model.get('label') + ' Properties',
+                    items: [
+                        this.getWidthInput(),
+                        this.getHeightInput(),
+                        this.getSelectBasic({
+                            'name': 'borderRadius',
+                            'label': 'Rounded',
+                            'value': this.model.get('borderRadius'),
+                            'options': this.getBorderRadiusOptions()
+                        }),
+                        this.getSelectBasic({
+                            'name': 'boxStyle',
+                            'label': 'Style',
+                            'width': '182px',
+                            'value': this.model.get('boxStyle'),
+                            'options': this.getGradientOptions()
+                        }),
+                        {
+                            'type': 'colorPicker',
+                            'name': 'color',
+                            'label': 'Color',
+                            'value': this.model.get('color')
+                        },
+                        this.getOpacityInput(),
+                        {
+                            'type': 'checkbox',
+                            'name': 'teamColors',
+                            'boxLabel': 'Use team colors',
+                            'value': this.model.get('teamColors')
+                        },
+                        {
+                            'type': 'checkbox',
+                            'name': 'teamColors',
+                            'boxLabel': 'Use team colors',
+                            'value': this.model.get('teamColors')
+                        }
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Actions',
+                    items: [
+                        {
+                            'type': 'arrangeControl',
+                            'label': 'Arrange'
+                        },
+                        {
+                            'type': 'alignControl',
+                            'label': 'Allign'
+                        }
+                    ]
+                }
+            ]
+            var fragment = this.buildForm(markup);
+
+            // call this in the end
+            form.get(0).appendChild(fragment);
+        }
+
+    },
+
+    'chatArea': {
+        createControls: function(form) {
+            var markup = [
+                {
+                    type: 'fieldset',
+                    label: this.model.get('label') + ' Properties',
+                    items: [
+                        this.getWidthInput(),
+                        this.getHeightInput(),
+                        this.getSelectBasic({
+                            'name': 'borderRadius',
+                            'label': 'Rounded',
+                            'value': this.model.get('borderRadius'),
+                            'options': this.getBorderRadiusOptions()
+                        }),
+                        this.getSelectBasic({
+                            'name': 'boxStyle',
+                            'label': 'Style',
+                            'width': '182px',
+                            'value': this.model.get('boxStyle'),
+                            'options': this.getGradientOptions()
+                        }),
+                        {
+                            'type': 'colorPicker',
+                            'name': 'color',
+                            'label': 'Color',
+                            'value': this.model.get('color')
+                        },
+                        this.getOpacityInput(),
+                        {
+                            'type': 'checkbox',
+                            'name': 'showChat',
+                            'boxLabel': 'Show chat',
+                            'value': this.model.get('showChat')
+                        }
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Actions',
+                    items: [
+                        {
+                            'type': 'arrangeControl',
+                            'label': 'Arrange'
+                        },
+                        {
+                            'type': 'alignControl',
+                            'label': 'Allign'
+                        }
+                    ]
+                }
+            ]
+            var fragment = this.buildForm(markup);
+
+            // call this in the end
+            form.get(0).appendChild(fragment);
+        }
+
     }
 };
 

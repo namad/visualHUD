@@ -1,0 +1,58 @@
+@charset "utf-8";
+/* CSS Document */
+
+.scale-factor-2 .vh-region-center { width: 1280px; height:960px; margin: -480px 0 0 -805px; }
+
+.scale-factor-2 .tools-off .vh-region-center { margin-left: -640px; }
+
+.scale-factor-2 .hud-canvas { width: 1280px; height:960px; }
+.scale-factor-2 .canvas-1 .hud-canvas { background-image:url(../images/canvas_1_1.jpg); }
+.scale-factor-2 .canvas-2 .hud-canvas { background-image:url(../images/canvas_2_1.jpg); }
+
+.scale-factor-2 .gun-1 .hud-weapon { background-image:url(../images/canvas_weapon_large.gif) ; }
+.scale-factor-2 .gun-2 .hud-weapon { background-image:url(../images/canvas_weapon_2_large.gif) ; }
+
+.scale-factor-2  .wbar-1 .weapon-bar { background-image:url(../images/wbar_1_large.png); }
+.scale-factor-2  .wbar-2 .weapon-bar { background-image:url(../images/wbar_2_large.png); }
+.scale-factor-2  .wbar-3 .weapon-bar { background-image:url(../images/wbar_3_large.png); }
+.scale-factor-2  .wbar-4 .weapon-bar { background-image:url(../images/wbar_4_large.png); }
+
+.scale-factor-2 .team-overlay { background-image:url(../images/team_overlay_red_large.png); }
+.scale-factor-2 .teamoverlay-2 .team-overlay { background-position: 100% 784px; }
+
+.scale-factor-2 .lag-o-metr { background:url(../images/lagometr_large.png) no-repeat; }
+.scale-factor-2 .speed-o-metr { background:url(../images/speedometr_large.png) no-repeat; }
+.scale-factor-2 .pickup-message { background:url(../images/pickup_message_large.png) no-repeat; }
+.scale-factor-2 .demo-rec-message { background:url(../images/demo_recording_message_large.png) no-repeat; }
+
+.scale-factor-2 .hud-crosshair { background:url(../images/corsshair_large.png) no-repeat; }
+
+.scale-factor-2 .ffa-score .team-red { background-image:url(../images/scorebox_red_ffa_large.png); }
+.scale-factor-2 .ffa-score .team-blue { background-image:url(../images/scorebox_blue_ffa_large.png); }
+
+.scale-factor-2 .team-score .team-red { background-image:url(../images/scorebox_red_tdm_large.png); }
+.scale-factor-2 .team-score .team-blue { background-image:url(../images/scorebox_blue_tdm_large.png); }
+
+.scale-factor-2 .scorebox-item .item-icon { width:100px; height:32px; background-repeat:no-repeat; }
+
+.scale-factor-2 .scorebox-item.style-0 .team-red { width:360px; height:70px; background-image:url(../images/scorebox_classic_large.png); }
+.scale-factor-2 .team-score.style-0 .team-red { background-image:url(../images/scorebox_classic_tdm_large.png); }
+
+.scale-factor-2 .scorebox-item.style-1 .team-red { width:300px; height:70px; background-image:url(../images/scorebox_classic_2_large.png); }
+.scale-factor-2 .team-score.style-1 .team-red { background-image:url(../images/scorebox_classic_2_tdm_large.png); }
+
+
+.scale-factor-2 .rbox-3 { -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; }
+.scale-factor-2 .rbox-5 { -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+.scale-factor-2 .rbox-8 { -moz-border-radius: 16px; -webkit-border-radius: 16px; border-radius: 16px; }
+
+.scale-factor-2 .item-counter span.textstyle-2 { text-shadow:2px 2px 0px #000;}
+.scale-factor-2 .item-counter span.textstyle-3 { text-shadow:3px 3px 0px #000;}
+
+.scale-factor-2 .obit-item { height:30px; }
+.scale-factor-2 .obit-item .item-icon { width: 30px; height: 30px; }
+.scale-factor-2 .obit-item .item-counter span.counter { font-size: 44%; line-height: 30px; }
+
+.scale-factor-2 .chat-messages { line-height:20px; font-size:20px;}
+.scale-factor-2 .chat-messages li { margin-top:6px; padding-left:6px; }
+.scale-factor-2 .chat-messages .name { margin-right: 10px; }

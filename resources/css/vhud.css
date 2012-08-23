@@ -1,0 +1,185 @@
+@import "basic.css";
+@import "forms-basics.css";
+@import "app-topbar.css";
+@import "app-toolbar.css";
+@import "app-form.css";
+@import "stage-controls.css";
+@import "hud-canvas.css";
+@import "hud-items.css";
+@import "tooltip.css";
+@import "popover.css";
+@import "modal-win.css";
+@import "growl.css";
+
+
+/* Genral stuff
+------------------------------ */
+#preloader,
+#outdatedIE {
+    background: #222222 url(../images/app_bg.png);
+    display: block;
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+#preloader .preloader-message {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    margin-top: -12px;
+    text-align: center;
+}
+
+#preloader .indicator {
+    height: 24px;
+    line-height: 24px;
+
+    display: inline-block;
+    background: url(../images/ajax_loader_24px_333.gif) no-repeat;
+    padding-left: 34px;
+    color: #FFFFFF;
+}
+
+#outdatedIE .content {
+    position: relative;
+    top: 48%;
+    margin-top: -12px;
+    font-size: 1.5em;
+}
+
+#drawControls {
+}
+
+#drawControls li.draw-line {
+    background-image: url(../images/draw_line_icon.png);
+}
+
+#drawControls li.draw-rect {
+    background-image: url(../images/draw_rect_icon.png);
+}
+
+#presetManager {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0px;
+    width: 100%;
+}
+
+#presetManager li.load ul {
+    width: auto;
+    right: 0;
+    left: auto;
+}
+
+#presetManager li ul li {
+    border-color: #222;
+}
+
+#presetManager li ul li a {
+    line-height: 26px;
+    padding: 0 15px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+}
+
+.drag-helper {
+    z-index: 1000;
+    width: 47px;
+    height: 47px;
+    border: 1px dotted #CCC;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.new-item-drag .hud-canvas {
+    outline: 2px solid #FFF;
+}
+
+.new-item-drop-over .hud-canvas {
+    outline-color: #0099cc !important;
+}
+
+.vh-viewport {
+    overflow: hidden;
+}
+
+.vh-region {
+    border: 1px solid;
+    border-color: #404040 #363636 #262626;
+    background: #333;
+    position: absolute;
+    -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.vh-region-top {
+    left: 10px;
+    top: 10px;
+    right: 10px;
+    line-height: 58px;
+    height: 58px;
+    z-index: 1;
+}
+
+.vh-region-right {
+    top: 80px;
+    right: 10px;
+    bottom: 10px;
+    width: 325px;
+    z-index: 1;
+    overflow: auto;
+    border-width: 1px 0;
+}
+
+.vh-region-bottom {
+    left: 10px;
+    bottom: 10px;
+    right: 345px;
+    height: 38px;
+    z-index: 1;
+}
+
+.vh-region-center {
+    width: 640px;
+    height: 480px;
+    left: 50%;
+    top: 50%;
+    margin: -240px 0 0 -480px;
+
+    -moz-box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 15px;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.75);
+
+    background-color: #111;
+    border: 0 none;
+    z-index: 0;
+}
+
+.c-block {
+    margin-top: -1px;
+    padding: 20px;
+    border-bottom: 1px solid #262626;
+    border-top: 1px solid #404040;
+    box-shadow: 0px 1px 0px #404040;
+}
+
+
+.stage-controls h4 {
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.tools-off .vh-region-top,
+.tools-off .vh-region-bottom,
+.tools-off .vh-region-right {
+    display: none;
+}
+
+.tools-off .vh-region-center { margin-left: -320px; }

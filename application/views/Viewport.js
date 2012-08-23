@@ -11,8 +11,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
     ],
 
     events: {
-        'mousedown': 'checkDragDrop',
-        'click .vh-region-right': 'cancelEventBubbling'
+        'mousedown': 'checkDragDrop'
     },
 
     initialize: function() {
@@ -68,10 +67,10 @@ visualHUD.Views.Viewport = Backbone.View.extend({
 
         if(this.pinned == false) {
             this.$centerArea.css({
-                left: '50%',
-                top: '50%'
+                marginLeft: '',
+                left: '',
+                top: ''
             });
-
             this.pinned = true;
         }
     },
@@ -124,8 +123,22 @@ visualHUD.Views.Viewport = Backbone.View.extend({
         this.$rightArea.children().hide();
     },
 
-    cancelEventBubbling: function(event) {
-        event.stopPropagation();
+    toggleToolbars: function() {
+
+        if(this.pinned) {
+            this.$centerArea.css({
+                marginLeft: '',
+                left: '',
+                top: ''
+            });
+        }
+        else {
+            this.$centerArea.css({
+                marginLeft: this.$centerArea.css('margin-left')
+            });
+        }
+
+        this.$el.toggleClass('tools-off');
     }
 });
 

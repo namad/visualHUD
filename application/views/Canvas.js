@@ -134,48 +134,45 @@ visualHUD.Views.Canvas = Backbone.View.extend({
             ticks: 0,
             tolerance: 2,
             grid: visualHUD.scaleFactor,
-            view: this,
-            init: function(){
-                var handles = [],
-                    compass = ['nw', 'n', 'ne','e','se','s', 'sw', 'w'],
-                    drawBox;
-
-                for(var a = 0, b = compass.length; a < b; a++){
-                    handles.push('<div class="resize-handle '+ compass[a] +'"></div>');
-                };
-
-                drawBox = $('<div class="hud-item"><div class="hud-item-box"></div>'+ handles.join('') +'</div>').width(1).height(1);
-
-                _.extend(this,
-                    visualHUD.Libs.canvasDragInterface,
-                    {
-                        compass: compass,
-                        drawBox: drawBox,
-                        getView: function() {
-                            return me;
-                        }
-                    }
-                );
-            }
+            view: this
         });
+
+        // extend drag manage with canvas specific functionality
+        _.extend(this.dragManager,
+            visualHUD.Libs.canvasDragInterface,
+            {
+                getView: function() {
+                    return me;
+                }
+            }
+        );
     },
 
     checkDragAction: function(event) {
         var $target = $(event.target);
         var hudItem = $target.closest('.hud-item', this.$el);
+        var resizeHandle = $target.closest('div.resize-handle', this.$el);
 
         if(this.viewport.canvasDragMoveAllowed == true) {
             return;
         }
         else {
+
+            if(resizeHandle.length){
+                this.dragManager.setMode('resize').start(event, resizeHandle);
+                return false;
+            };
+
             if(hudItem.length) {
                 this.dragManager.setMode('move').start(event, hudItem);
+                return false;
             }
             else {
                 this.dragManager.setMode('select').start(event);
+                return false;
             }
         }
-        return false;
+
     },
 
     deselectItem: function(event) {

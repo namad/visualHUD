@@ -77,13 +77,7 @@ visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.Dictionary
                 'label': 'Flag indicator'
             },
 
-            {
-                'id': 'rectangleBox',
-                'name': 'rectangleBox',
-                'itemType': 'rect',
-                'label': 'Rectangle box',
-                'cssClass': 'lib-element-rect hidden'
-            },
+
 
             {
                 'id': 'accuracyIndicator',
@@ -102,10 +96,17 @@ visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.Dictionary
             {
                 'id': 'chatArea',
                 'name': 'chatArea',
-                'itemType': 'chatArea',
+                'itemType': 'rect',
                 'label': 'Chat area',
                 'isSingle': true,
                 'cssClass': 'lib-element-chat'
+            },
+            {
+                'id': 'rectangleBox',
+                'name': 'rectangleBox',
+                'itemType': 'rect',
+                'label': 'Rectangle box',
+                'cssClass': 'lib-element-rect'
             }
         ];
     }

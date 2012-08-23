@@ -1,0 +1,265 @@
+/* Forms
+------------------------------ */
+
+.app-form {
+
+    padding: 0;
+    margin: 0 0 0 0;
+    position: relative;
+    overflow: hidden;
+
+    .control-header {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background: darken($main-bg-color, 3%);
+
+        border-bottom: 1px solid darken($main-bg-color, 5%);    
+        @include box-shadow(lighten($main-bg-color, 10%) 0px 1px 0px); 
+
+        height: 65px;
+
+        .header-wrap {
+            padding: 20px;
+            padding-left: 75px;
+            padding-top: 17px;
+            background-position: 25px 50%;
+            background-repeat: no-repeat;
+        }
+
+        .item-type {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: darken($main-text-color, 20%);
+        }
+
+        .item-name {
+            font-size: 1.5em;
+            color: lighten($main-text-color, 20%);
+            line-height: 0.75em;
+        }
+    }
+
+    .form-bbar {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 38px;
+        border-top: 1px solid lighten($main-bg-color, 10%);
+        box-shadow: 0 -1px 8px darken($main-bg-color, 5%);
+
+        .item-status {
+            font-size: 10px;
+            line-height: 38px;
+            padding: 0 0 0 20px;
+            float: left;
+        }
+        .item-status span {
+            vertical-align: middle;
+        }
+        .item-status .item-value {
+            font-weight: bold;
+            margin: 0 0 0 5px;
+            display: inline-block;
+            width: 20px;
+        }
+    }
+
+    .app-form-container {
+        overflow: hidden;
+        height: 100%;
+        @include box-sizing(border-box);
+        padding: 66px 0px 39px;
+
+        .app-form-controls {
+            height: 100%;
+            overflow: auto;
+        }
+    }
+
+    fieldset {
+        border: medium none;
+        padding-right: 10px;
+        padding-top: 0.5em;
+        background: url(../images/fieldset_splitter.png) no-repeat;
+        margin: 1em 0;
+    }
+
+    fieldset.collapsed {
+        padding-top: 0.5em;
+
+        legend {
+            background-position: 0 0 !important;
+        }
+
+        .f-row {
+          display: none !important;
+        }
+    }
+
+    legend {
+        font-size: 0.9em;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 1px 5px;
+        padding-left: 20px;
+        margin: 0 0 0 -15px;
+        background: $main-bg-color url(../images/legend_arrow.gif) no-repeat 0 -18px;
+        color: darken($main-text-color, 5%);
+        cursor: pointer;
+        -moz-border-radius: 3px;
+    }
+
+    legend:hover {
+        color: lighten($main-text-color, 10%);
+    }
+}
+
+
+.app-form .f-row {
+    padding: 3px 10px 3px 5px;
+    display: block;
+}
+
+.app-form .f-label {
+    display: inline-block;
+    padding: 0 10px 0 0;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.app-form .f-inputs {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%
+}
+
+.app-form .l-vertical .f-label {
+    vertical-align: top;
+    margin-top: 3px;
+}
+
+.app-form .f-checkboxes label {
+    width: auto !important;
+    padding: 0;
+    vertical-align: middle;
+    margin: 0 !important;
+}
+
+.app-form .f-checkboxes .label {
+    padding: 0 0 0 8px;
+    vertical-align: middle;
+}
+
+.app-form .f-checkboxes input {
+    margin: 0;
+    padding: 0;
+}
+
+.app-form  .milti-textboxes label {
+    margin: 0 0 0 15px !important;
+    width: auto !important;
+}
+
+.app-form input.date {
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding-left: 18px;
+}
+
+.app-form .f-hint {
+    padding-top: 3px;
+    font-size: 0.8em;
+    color: #555;
+}
+
+
+.f-inputs .input-helper {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 13px;
+    padding: 4px;
+    margin-left: 0px;
+    border: 1px solid #CCC;
+}
+
+.f-inputs .input-helper:hover {
+    border-color: #c33;
+}
+
+.textbox-wrap {
+    display: inline-block;
+}
+
+.textbox-wrap input {
+    padding-left: 18px;
+}
+
+.app-form fieldset {
+    padding-left: 75px;
+    position: relative;
+}
+
+.app-form  .f-label {
+    margin-left: -75px;
+    width: 65px;
+}
+
+.app-form .form-buttons {
+    padding-left: 70px;
+}
+
+.color-picker-box {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #FFF;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.color-picker-hint {
+    display: inline-block;
+    vertical-align: middle;
+    font-style: italic;
+    color: #999999;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.color-picker-wrapper {
+    width: 208px;
+    background: #333;
+    margin: -5px;
+    padding: 5px;
+    border-bottom: 1px solid #1a1a1a;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.9);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 1px 8px;
+}
+
+.color-cell {
+    border: 1px solid #111;
+    display: block;
+    float: left;
+    width: 14px;
+    height: 14px;
+}
+
+.active-color,
+.color-cell-hover {
+    border-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.color-range-inputs input {
+    margin-left: 2px;
+    text-align: center;
+}
+
+
+.dhtml-menu-active {
+    position: relative;
+    z-index: 1001;
+}

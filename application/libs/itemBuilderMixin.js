@@ -13,6 +13,8 @@ visualHUD.Libs.itemBuilderMixin = {
     },
 
     'general': {
+        getRgba: _.template('rgba(<%= color %>,<%= opacity%>)'),
+
         updateTextSize: function(value) {
             var size = parseInt(value, 10) * visualHUD.scaleFactor,
                 textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
@@ -317,7 +319,212 @@ visualHUD.Libs.itemBuilderMixin = {
                 var fn = idx == direction ? 'addClass' : 'removeClass';
                 this.$el[fn](directionMap[idx]);
             }, this);
+        },
+
+        updateWidth: function(value) {
+            var width = parseInt(value, 10),
+                height = this.model.get('height'),
+                padding = this.model.get('padding');
+
+            this.updateBarDimensions(width, height, padding);
+
+        },
+
+        updateHeight: function(value) {
+            var height = parseInt(value, 10),
+                width = this.model.get('width'),
+                padding = this.model.get('padding');
+
+            this.updateBarDimensions(width, height, padding);
+        },
+
+        updatePadding: function(value) {
+            var padding = parseInt(value, 10),
+                width = this.model.get('width'),
+                height = this.model.get('height');
+            this.updateBarDimensions(width, height, padding);
+        },
+
+        updateBarDimensions: function(width, height, padding) {
+            width *=  visualHUD.scaleFactor;
+            height *=  visualHUD.scaleFactor;
+            padding *= visualHUD.scaleFactor;
+
+            var minHeight = 2 * padding + this.model.get('minHeight') * visualHUD.scaleFactor;
+            var minWidth = 2 * padding + this.model.get('minWidth') * visualHUD.scaleFactor;
+
+            var w = Math.max(minWidth, width);
+            var h = Math.max(minHeight, height);
+
+
+            w = this.model.get('maxWidth') ? Math.min(this.model.get('maxWidth') * visualHUD.scaleFactor, w) : w;
+            this.$el.width(w);
+
+            h = this.model.get('maxHeight') ? Math.min(this.model.get('maxHeight') * visualHUD.scaleFactor, h) : h;
+            this.$el.height(h);
+
+            this.getDOMRefs().box.css('padding', padding);
+        },
+
+        updateText: function(value) {
+            var barValue = parseInt(value, 10);
+
+            var barsSize = {
+                h100: barValue > 100 ? 100 : barValue,
+                h200: barValue > 100 ? barValue - 100 : 0
+            };
+
+            for(var k in barsSize){
+                this.getDOMRefs()[k].css('width', barsSize[k] + '%');
+            }
+
+            var ranges = this.model.get('colorRanges');
+            if(ranges != null) {
+                this.updateTextColorByStatus(barValue, ranges)
+            }
+        },
+
+        updateColorRanges: function(value) {
+            var text = parseInt(this.model.get('text'), 10);
+            this.updateTextColorByStatus(text, value)
+        },
+
+        updateTextColorByStatus: visualHUD.Function.createBuffered(function(barValue, ranges) {
+            var opacity = parseInt(this.model.get('barsOpacity'), 10),
+                color = null;
+
+            if(barValue <= 100){
+                _.each(ranges, function(range) {
+                    if(barValue >= range.range[0] && barValue <= range.range[1]){
+                        color = $.color('#' + range.color);
+                        return {};
+                    }
+                }, this);
+
+                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+
+            }
+            else if(barValue > 100){
+                color = $.color('#' + ranges[1].color);
+                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+
+                color = $.color('#' + ranges[2].color);
+                this.paintBarElement(this.getDOMRefs().h200, color, opacity);
+
+            }
+        }, 50),
+
+        updateBarsOpacity: function(value) {
+            var ranges = this.model.get('colorRanges');
+            var barValue = parseInt(this.model.get('text'), 10);
+            if(ranges != null) {
+                this.updateTextColorByStatus(barValue, ranges)
+            }
+        },
+
+        paintBarElement: function($bar, color, opacity){
+            $bar.css('background', this.getRgba({ color: color.rgb.join(','), opacity: opacity/100 }));
+        },
+
+        updateColor: function(value) {
+            var color = $.color('#' + value);
+            var opacity = parseInt(this.model.get('opacity'), 10);
+
+            this.paintBarElement(this.getDOMRefs().box, color, opacity);
+        },
+
+        updateOpacity: function(value) {
+            var opacity = parseInt(value, 10)
+            var color = $.color('#' + this.model.get('color'));
+
+            this.paintBarElement(this.getDOMRefs().box, color, opacity);
         }
+
+    },
+
+    'rect': {
+
+        updateWidth: function(value) {
+            var width = parseInt(value, 10),
+                height = this.model.get('height');
+            this.updateDimensions(width, height);
+        },
+
+        updateHeight: function(value) {
+            var height = parseInt(value, 10),
+                width = this.model.get('width');
+            this.updateDimensions(width, height);
+        },
+
+        updateDimensions: function(width, height) {
+            width *=  visualHUD.scaleFactor;
+            height *=  visualHUD.scaleFactor;
+
+            var minHeight = this.model.get('minHeight') * visualHUD.scaleFactor;
+            var minWidth = this.model.get('minWidth') * visualHUD.scaleFactor;
+
+            var w = Math.max(minWidth, width);
+            var h = Math.max(minHeight, height);
+
+            w = this.model.get('maxWidth') ? Math.min(this.model.get('maxWidth') * visualHUD.scaleFactor, w) : w;
+            this.$el.width(w);
+
+            h = this.model.get('maxHeight') ? Math.min(this.model.get('maxHeight') * visualHUD.scaleFactor, h) : h;
+            this.$el.height(h);
+        },
+
+        updateColor: function(value) {
+            this.updateBoxStyle();
+        },
+
+        updateOpacity: function(value) {
+            this.updateBoxStyle();
+        },
+
+        updateBorderRadius: function(value) {
+            var radius = parseInt(value, 10);
+
+            var originalClassName = this.getDOMRefs().box.attr('class'),
+                patt = /rbox-[0-9]/;
+
+            if(patt.test(originalClassName)) {
+                originalClassName = originalClassName.replace(patt, '');
+                originalClassName = $.trim(originalClassName);
+            }
+            originalClassName += (' rbox-' + radius);
+            this.getDOMRefs().box.attr('class', originalClassName);
+
+            if(radius > 0) {
+                this.model.set('boxStyle', 0, {silent: true});
+                this.getForm().setValues({'boxStyle': 0}, {silent: true});
+                this.updateBoxStyle(0);
+            }
+        },
+
+        updateBoxStyle: function() {
+            var style = parseInt(this.model.get('boxStyle'), 10);
+            var color = $.color('#' + this.model.get('color'));
+            var opacity = this.model.get('opacity')/100 ;
+
+            var renderGradient = style > 0 || parseInt(this.model.get('borderRadius'), 10) == 0;
+
+            if(renderGradient) {
+                this.getDOMRefs().box.css('background', color.hex);
+                _.each(visualHUD.Libs.utility.getBoxGradients(style, color, opacity), function(gradStyle) {
+                    this.getDOMRefs().box.css('background', gradStyle);
+                }, this)
+            }
+            else {
+                this.getDOMRefs().box.css('background', this.getRgba({ color: color.rgb.join(','), opacity: opacity }));
+            }
+
+            if(style > 0) {
+                this.model.set('borderRadius', 0, {silent: true});
+                this.getForm().setValues({'borderRadius': 0}, {silent: true});
+                this.updateBorderRadius(0);
+            }
+        }
+
     }
 };
 

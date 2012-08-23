@@ -1,0 +1,162 @@
+/* Modal Windows
+---------------------------------*/
+.xpk-window {
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.xpk-mwindow-wrap {
+    margin: auto;
+    background: #333;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.9);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 2px 12px;
+    border-top: 1px solid #515151;
+
+}
+
+.xpk-mwindow-content {
+    padding: 0;
+}
+
+.xpk-win-wrapper {
+    margin: auto;
+    position: relative;
+}
+
+.xpk-win-show {
+    overflow: hidden !important;
+}
+
+.xpk-win-show .xpk-win-content {
+    display: none !important;
+}
+
+.xpk-win-head {
+    display: block;
+    padding: 0;
+    width: 100%;
+    zoom: 1;
+    position: relative;
+
+}
+
+.xpk-win-head .xpk-win-title {
+    font-size: 2em;
+    margin: 0;
+    padding: 18px 25px 0;
+    color: #FFF;
+    zoom: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 35px;
+    font-weight: normal;
+}
+
+.xpk-win-head .xpk-close-button {
+    border: 0 none;
+    background: transparent;
+    font: 10px/10px Tahoma;
+    width: 32px;
+    height: 32px;
+    background: url(../images/modal_window/close_win_icon.png) no-repeat 0px -32px;
+    text-indent: -10000px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.xpk-win-head .xpk-close-button:hover {
+    background-position: 0px 0px;
+}
+
+.xpk-win-content {
+    padding: 25px;
+}
+
+.xpk-win-content a {
+    color: #069;
+}
+
+.xpk-win-content p {
+    margin-bottom: 0.5em;
+}
+
+.xpk-win-loading {
+    height: 50px;
+    background: url(../images/ajax_loader_16px.gif) no-repeat center;
+}
+
+.xpk-window-preloader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #FFF url(../images/ajax_loader_16px_fff.gif) no-repeat center center;
+}
+
+.build-meta {
+    font-size: 0.8;
+    color: #FFFFFF;
+}
+
+#dimScreen,
+#_exposeOverlay {
+    background: #000;
+    z-index: 99;
+}
+
+
+.xpk-win-content .f-label {
+    display: block;
+    margin: 0 0 5px 0;
+}
+
+.xpk-win-content .f-row {
+    display: block;
+    margin: 0 0 10px 0;
+}
+
+.xpk-win-content input,
+.xpk-win-content select,
+.xpk-win-content textarea {
+    padding: 5px;
+    border: 1px inset #CCC;
+    width: 100%;
+}
+
+.xpk-win-content input,
+.xpk-win-content select {
+    height: 30px;
+}
+
+.xpk-win-content .f-hint {
+    font-size: 10px;
+    color: #CCC;
+    margin: 5px 0 0 0;
+}
+
+.warn-block,
+.info-block {
+    padding: 15px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.warn-block {
+    background-color: #f5d6d6;
+}
+
+.info-block {
+    background-color: #e0ebd6;
+}
+
+.xpk-win-content .app-form {
+    height: auto !important;
+}

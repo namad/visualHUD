@@ -24,34 +24,61 @@ visualHUD.Libs.utility = {
         var color = $.color(rgbColor);
         return color;
     },
-    getBoxGradient: function(_style, _color, _opacity) {
-        if (!_style) return '';
+    getBoxGradients: function(style, $color, opacity) {
+        var style = parseInt(style, 10);
 
-        var style, direction, rgba = 'rgba({0},{1})';
-        var _rgb = _color.rgb.join(',');
-        var gradientColors = [rgba.format(_rgb, _opacity), rgba.format(_rgb, 0)];
+        if (style == 0){
+            return ['none !important'];
+        }
 
-        _style = _style.toString();
+        var rgba = 'rgba(<%= color %>,<%= opacity %>)',
+            rgb = $color.rgb.join(',')
 
-        if (!$.browser.mozilla) {
-            if ($.browser.webkit) {
-                switch (_style) {
-                    case '1': // Top to bottom
-                        direction = 'left top, left bottom';
-                        break;
-                    case '2': // Bottom to top
-                        direction = 'left bottom, left top';
-                        break;
-                    case '3': // Left to right
-                        direction = 'left top, right top';
-                        break;
-                    case '4': // Right to left
-                        direction = 'right top, left top';
-                        break;
-                }
-                style = '-webkit-gradient(linear, ' + direction + ', color-stop(0, ' + gradientColors[0] + '), color-stop(1, ' + gradientColors[1] + ') )';
-            }
-            else if ($.browser.msie) {
+        var gradientColors = [
+                _.template(rgba, {color: rgb, opacity: opacity}),
+                _.template(rgba, {color: rgb, opacity: 0})
+            ],
+
+            prefixes = [
+                '-moz-linear-gradient',
+                '-webkit-linear-gradient',
+                'linear-gradient',
+                '-ms-linear-gradient'
+            ],
+
+            directions = [],
+            styles = [],
+
+            styleTemplate = '<%= prefix %>(<%= direction %>,  <%= colorStart %> 0%, <%= colorEnd %> 100%)';
+
+        switch (style) {
+            case 1: // Top to bottom
+                directions = ('top,top,to bottom,top').split(',');
+                break;
+            case 2: // Bottom to top
+                directions = ('bottom,bottom,to top,bottom').split(',');
+                break;
+            case 3: // Left to right
+                directions = ('left,left,to right,left').split(',');
+                break;
+            case 4: // Right to left
+                directions = ('right,right,to left,right').split(',');
+                break;
+        }
+
+
+        for(var a = 0, b = prefixes.length; a < b; a++) {
+            styles.push(
+                _.template(styleTemplate, {
+                    prefix: prefixes[a],
+                    direction: directions[a],
+                    colorStart: gradientColors[0],
+                    colorEnd: gradientColors[1]
+                })
+            )
+        }
+
+        if ($.browser.msie) {
                 /*
                  MSIE
                  ----------------
@@ -59,11 +86,11 @@ visualHUD.Libs.utility = {
                  GradientType=1 - horisontal gradient / left to right
                  */
 
-                var msieOpacity = Math.floor(_opacity * 255).toString(16);
-                var solidColor = _color.hex.replace('#', '#' + msieOpacity);
-                var transparentColor = _color.hex.replace('#', '#00');
+                var msieOpacity = Math.floor(opacity * 255).toString(16);
+                var solidColor = $color.hex.replace('#', '#' + msieOpacity);
+                var transparentColor = $color.hex.replace('#', '#00');
 
-                switch (_style) {
+                switch (style) {
                     case '0': // Top to bottom
                         direction = 0;
                         gradientColors = [solidColor, solidColor];
@@ -88,25 +115,8 @@ visualHUD.Libs.utility = {
 
                 style = 'progid:DXImageTransform.Microsoft.Gradient(GradientType=' + direction + ', StartColorStr="' + gradientColors[0] + '", EndColorStr="' + gradientColors[1] + '")';
             }
-        } else {
-            switch (_style) {
-                case '1': // Top to bottom
-                    direction = 'center top';
-                    break;
-                case '2': // Bottom to top
-                    direction = 'center bottom';
-                    break;
-                case '3': // Left to right
-                    direction = 'left center';
-                    break;
-                case '4': // Right to left
-                    direction = 'right center';
-                    break;
-            }
-            style = '-moz-linear-gradient(' + direction + ', ' + gradientColors[0] + ' 0%, ' + gradientColors[1] + ' 100%)';
-        }
 
-        return style;
+        return styles;
     },
     getRCornersMarkup: function(box){
         var rectMatrix = {
@@ -263,10 +273,6 @@ visualHUD.Function = {
                 callArgs = slice.call(arguments, 0);
                 callArgs = callArgs.concat(args);
             }
-            else if (typeof appendArgs == 'number') {
-                callArgs = slice.call(arguments, 0); // copy arguments first
-                Ext.Array.insert(callArgs, appendArgs, args);
-            }
 
             return method.apply(scope || window, callArgs);
         };
@@ -287,16 +293,39 @@ visualHUD.Function = {
         return function(){
             var timerId;
             return function() {
-                var me = this;
+                var me = this,
+                    a = args || arguments,
+                    s = scope || this;
+
                 if (timerId) {
                     clearTimeout(timerId);
                     timerId = null;
                 }
                 timerId = setTimeout(function(){
-                    fn.apply(scope || me, args || arguments);
+                    fn.apply(s, a);
                 }, buffer);
             };
         }();
+    },
+
+    createThrottled: function(fn, interval, scope) {
+        var lastCallTime, elapsed, lastArgs, timer,
+            execute = function() {
+                fn.apply(scope || this, lastArgs);
+                lastCallTime = new Date().getTime();
+            };
+
+        return function() {
+            elapsed = new Date().getTime() - lastCallTime;
+            lastArgs = arguments;
+
+            clearTimeout(timer);
+            if (!lastCallTime || (elapsed >= interval)) {
+                execute();
+            } else {
+                timer = setTimeout(execute, interval - elapsed);
+            }
+        };
     }
 };
 

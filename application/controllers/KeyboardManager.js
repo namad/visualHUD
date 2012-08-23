@@ -28,7 +28,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
     },
 
     initialize: function(options) {
-        $(document).bind('keyup', $.proxy(this, 'keyboardListiner'));
+        $('body').bind('keyup', $.proxy(this, 'keyboardListiner'));
     },
 
     keyboardListiner: function(event) {
@@ -41,10 +41,12 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
 
         if(event.keyCode == this.keyCodeMap.DEL) {
             this.fireEvent('keyboard', 'delete');
+            return false;
         }
 
-        if(event.keyCode == this.keyCodeMap.TAB){
-            this.fireEvent('keyboard', 'tab');
+        if(event.keyCode == this.keyCodeMap.F){
+            this.fireEvent('keyboard', 'tab', [event]);
+            return false;
         }
 
         if(this.isMoveKeyPressed(event.keyCode)) {
@@ -52,15 +54,18 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             var direction = this.getMoveDirection(event.keyCode);
 
             this.fireEvent('keyboard', 'move', [direction, delta]);
+            return false;
         }
 
         if(this.isArrangeKeyPressed(event) && event.ctrlKey) {
             var arrangeAction = this.getArrangeAction(event);
             this.fireEvent('keyboard', 'arrange', [arrangeAction]);
+            return false;
         }
 
         if(event.keyCode == this.keyCodeMap.A && event.ctrlKey) {
             this.fireEvent('keyboard', 'select.all', [event]);
+            return false;
         }
     },
 

@@ -1,33 +1,8 @@
 visualHUD.Libs.canvasDragInterface = {
     offsets: [],
 
-    checkPosition: function(element, position){
-
-        var boundTo = element.offsetParent();
-        var limits = this.limits || {
-            top: 0,
-            left: 0,
-            right: boundTo.width(),
-            bottom: boundTo.height()
-        };
-
-        var elementSize = {
-            width: element.width(),
-            height: element.height()
-        };
-
-        if(position.left + elementSize.width > limits.right){
-            position.left = limits.right - elementSize.width;
-        }
-
-        if(position.top + elementSize.height > limits.bottom){
-            position.top = limits.bottom - elementSize.height;
-        }
-
-        position.left = Math.round(position.left < 0 ? 0 : position.left);
-        position.top = Math.round(position.top < 0 ? 0 : position.top);
-
-        return position;
+    getView: function() {
+        return this.options.view;
     },
 
     setMode: function(mode){
@@ -55,10 +30,10 @@ visualHUD.Libs.canvasDragInterface = {
             case 'resize': {
                 this.setOptions({
                     bodyDragClass: 'resize',
-                    onbeforestart: this.beforeStart,
+                    onbeforestart: null,
                     onstart: this.startResizeBox,
-                    ondrag: this.resizeBox,
-                    ondrop: this.resizeBoxDrop
+                    ondrag: null,
+                    ondrop: null
                 });
                 break;
             }
@@ -239,92 +214,99 @@ visualHUD.Libs.canvasDragInterface = {
         return false;
     },
 
-    startResizeBox: function(event, element){
-        this.mode = 'resizeBox';
-        for(var a = 0, b = this.compass.length; a < b; a++){
-            var i = this.resizeHandle.hasClass(this.compass[a]);
-            if(i){
-                this.resizeDirection = this.compass[a];
-                break;
-            }
-        };
+    startResizeBox: function(drag, event, mouse){
+        this.resizeDirection = this.currentElement.data('resizedirection');
+        this.currentElement = this.currentElement.closest('div.hud-item');
+        this.limits = this.getView().getCanvasOffset();
+        this.positionCache = null;
+
+        this.setOptions({
+            ondrag: this.resizeBox,
+            ondrop: this.resizeBoxDrop
+        });
+
     },
-    resizeBox: function(event, position, mouse){
+    resizeBox: function(drag, event, position, mouse){
 
         if(this.options.grid) {
             mouse.x -= mouse.x % this.options.grid;
             mouse.y -= mouse.y % this.options.grid;
-        };
+        }
 
-        var margin = true;
-        var relative = true;
-        var _position = this.currentElement.position();
+        // cache position and dimensions to avoid recalculations
+        var position = this.positionCache = this.positionCache || this.currentElement.position();
 
-        var t = _position.top;
-        var l = _position.left;
+        var t = position.top;
+        var l = position.left;
 
-        var w = this.currentElement.width();
-        var h = this.currentElement.height();
+        var w = this.positionCache.width || this.currentElement.width();
+        var h = this.positionCache.height || this.currentElement.height();
 
-        var b = _position.top + h;
-        var r = _position.left + w;
+        var b = position.top + h;
+        var r = position.left + w;
 
         if(this.resizeDirection == 'n' || this.resizeDirection == 'ne' || this.resizeDirection == 'nw'){
-            t = Math.max(mouse.y - visualHUD.application.canvasPosition.top, 0);
-            h = Math.max(b - t, 1); // _position.left - mouse.x - visualHUD.application.canvasPosition.left;
+            t = Math.max(mouse.y - this.limits.top, 0);
+            h = Math.max(b - t, 1);
             if(h == 1){
                 t = b - h;
-            };
+            }
+        }
 
-        };
         if(this.resizeDirection == 'w' || this.resizeDirection == 'nw' || this.resizeDirection == 'sw'){
-            l = Math.max(mouse.x - visualHUD.application.canvasPosition.left, 0);
-            w = Math.max(r - l, 1); //_position.top - mouse.y -  visualHUD.application.canvasPosition.top;
+            l = Math.max(mouse.x - this.limits.left, 0);
+            w = Math.max(r - l, 1);
 
             if(w == 1){
                 l = r - w;
-            };
-
-
-        };
+            }
+        }
 
         if(this.resizeDirection == 'e' || this.resizeDirection == 'ne' || this.resizeDirection == 'se'){
-            w = mouse.x - _position.left - visualHUD.application.canvasPosition.left;
-            w = mouse.x > visualHUD.application.canvasPosition.right ? visualHUD.application.canvasPosition.right - visualHUD.application.canvasPosition.left - _position.left : w;
-        };
+            w = mouse.x - position.left - this.limits.left;
+            w = mouse.x > this.limits.right ? this.limits.right - this.limits.left - position.left : w;
+        }
+
         if(this.resizeDirection == 's' || this.resizeDirection == 'se' || this.resizeDirection == 'sw'){
-            h = mouse.y - _position.top -  visualHUD.application.canvasPosition.top;
-            h = mouse.y > visualHUD.application.canvasPosition.bottom ? visualHUD.application.canvasPosition.bottom - visualHUD.application.canvasPosition.top - _position.top : h;
-        };
+            h = mouse.y - position.top -  this.limits.top;
+            h = mouse.y > this.limits.bottom ? this.limits.bottom - this.limits.top - position.top : h;
+        }
 
         if(this.options.grid) {
             w -= w % this.options.grid;
             h -= h % this.options.grid;
-        };
+        }
 
-        this.currentElement.css({ width: Math.max(w, 1), height:  Math.max(h, 1),top: t, left: l });
+        position = this.positionCache = {
+            width: Math.max(1, w),
+            height:  Math.max(1, h),
+            top: t,
+            left: l
+        }
+
+        this.currentElement.css(position);
     },
     resizeBoxDrop: function(){
-        var _data = this.currentElement.data('HUDItem');
-        var size = {
-            width: this.currentElement.width(),
-            height: this.currentElement.height()
-        };
+        var HUDItemView = this.currentElement.data('HUDItem');
+        var size = this.positionCache;
 
-        for(var k in size){
-            var element = _data.form.get(0)[k];
-            if(element){
-                element.value = size[k] = size[k] / visualHUD.scaleFactor;
-                if(element.className.indexOf('range') != -1){
-                    $(element).trigger('blur');
-                };
-            };
-        };
+        this.positionCache.height = Math.max(HUDItemView.model.get('minHeight') * visualHUD.scaleFactor + HUDItemView.model.get('padding') * 2 * visualHUD.scaleFactor, this.positionCache.height);
+        this.positionCache.width = Math.max(HUDItemView.model.get('minWidth') * visualHUD.scaleFactor + HUDItemView.model.get('padding') * 2 * visualHUD.scaleFactor, this.positionCache.width);
 
+        this.currentElement.css(this.positionCache);
 
-        visualHUD.application.setupHudItem[_data.properties.itemType](this.currentElement, _data, size);
+        // update model with new data
+        HUDItemView.model.set('width', this.positionCache.width);
+        HUDItemView.model.set('height', this.positionCache.height);
 
+        // update form values with new data
+        HUDItemView.getForm().setValues(size, {silent: true});
 
+        // set default state for drop manager
+        this.setMode(null);
+
+        // reset position cache
+        this.positionCache = null
     },
 
     startMoveElement: function(drag, event, element){
@@ -366,7 +348,6 @@ visualHUD.Libs.canvasDragInterface = {
 
         this.getView().select(this.currentElement, false);
     },
-
     moveElement: function(drag, event, position, mouse){
 
         var newPosition = this.currentElement.checkPosition(position);
@@ -382,7 +363,6 @@ visualHUD.Libs.canvasDragInterface = {
             this.slaveElements[a].$el.css(pos);
         }
     },
-
     moveElementDrop: function(drag, event, target){
         this.currentElement.$el.removeClass('drag-start');
         this.getView().fireEvent('drop.move', [this.currentElement]);

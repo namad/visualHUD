@@ -10,6 +10,9 @@ visualHUD.Views.Window = Backbone.View.extend({
         height: 'auto'
     },
 
+    mixin: [
+    ],
+
     htmlTpl: [
         '<div class="xpk-mwindow-wrap">',
             '<div class="xpk-mwindow-content">',
@@ -25,23 +28,39 @@ visualHUD.Views.Window = Backbone.View.extend({
     ],
 
     initialize: function() {
-        this.render();
-    },
+        var mixin = [this];
 
-    render: function() {
+        _.each(this.mixin, function(className) {
+            mixin.push(Backbone.resolveNamespace(className));
+        });
+
+        if(this.mixin.length) {
+            _.extend.apply(_, mixin);
+        }
+
         var html = _.template(this.htmlTpl.join(''), {
             title: this.options.title || 'Modal Window',
-            html: this.options.html || ''
+            html: this.html || this.options.html || ''
         });
         this.$el.append(html);
 
         this.getRefs();
+        this.bindEvents();
 
+        this.init();
+        this.render();
+    },
+
+    /**
+     * Abstract function that will be executed during construction
+     */
+    init: function() {
+    },
+
+    render: function() {
         this.$el.appendTo(document.body);
-
         this.rendered = true;
-
-        this.fireEvent('render', [this]);
+        this.fireEvent('render', this);
     },
 
     getRefs: function() {

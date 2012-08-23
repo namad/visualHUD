@@ -1,4 +1,4 @@
-visualHUD.Views.ToolTip = Backbone.View.extend({
+visualHUD.Widgets.ToolTip = Backbone.View.extend({
     tagName: 'div',
     className: 'hint-wrap',
 
@@ -25,7 +25,7 @@ visualHUD.Views.ToolTip = Backbone.View.extend({
         this.options = _.extend({}, this.defaults, options || {});
 
         this.bound = {
-            show: visualHUD.Function.createBuffered(this.show, this.options.delay, this, [event])
+            show: visualHUD.Function.createBuffered(this.show, this.options.delay, this)
         };
 
         this.getDOMRefs();
@@ -120,7 +120,7 @@ visualHUD.Views.ToolTip = Backbone.View.extend({
 
     hide: function(){
         if(!this.$activeElement) {
-            return false;
+            return;
         }
 
         this.$corner.css('visibility', 'hidden');

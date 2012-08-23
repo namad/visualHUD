@@ -10,7 +10,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
 
         var getIconItemTemplate = function() {
             return [
-                '<div class="item-icon"><img src="<%= icon %>" /></div>'
+                '<div class="item-icon"><img src="<%= icon.url %>" /></div>'
             ]
         }
 
@@ -102,7 +102,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'cssClass': 'obit-item',
                 'template': [
                     '<div class="item-counter"><span class="counter"><%= text[0] %></span></div>',
-                    '<div class="item-icon"><img src="<%= icon %>" /></div>',
+                    '<div class="item-icon"><img src="<%= icon.url %>" /></div>',
                     '<div class="item-counter"><span class="counter"><%= text[1] %></span></div>'
                 ]
             },

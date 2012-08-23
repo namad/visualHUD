@@ -29,6 +29,11 @@ visualHUD.Models.ClientSettings = Backbone.Model.extend({
         window.localStorage.setItem('vhudClient', JSON.stringify(data));
     },
 
+    reset: function() {
+        this.set(this.defaults);
+        this.save();
+    },
+
     getStatusByName: function(name) {
         switch(name) {
             case 'armorIndicator':

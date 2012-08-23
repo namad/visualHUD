@@ -32,7 +32,8 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'toggleChat': null,
         'scoreboxLayout': null,
         'scoreboxMode': null,
-        'barDirection': null
+        'barDirection': null,
+        'resizable': false
     },
 
     /**
@@ -42,11 +43,13 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'chatArea': {
             padding: 5,
             toggleChat: false,
-            'coordinates': {
+            width: 640,
+            height: 150,
+            coordinates: {
                 top: 0,
                 left: 0,
                 width: 640,
-                height: null
+                height: 150
             }
         },
         'timer': {
@@ -175,8 +178,8 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'rect':{
             color: 'FFFFFF',
             opacity: 100,
-            width: 0,
-            height: 0,
+            width: 100,
+            height: 100,
             minWidth: 1,
             minHeight: 1,
             maxWidth: 640,
@@ -184,7 +187,12 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             teamColors: false,
             boxStyle: 0,
             hairLine: 0,
-            borderRadius: 0
+            borderRadius: 0,
+            coordinates: {
+                width: 100,
+                height: 100
+            },
+            resizable: true
         },
         'chatArea':{
             coordinates: {
@@ -206,6 +214,23 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             borderRadius: 0
         },
         'bar': {
+            colorRanges: [
+                {
+                    name: 'Low',
+                    color: 'FF0000',
+                    range: [-999, 25]
+                },
+                {
+                    name: 'Normal',
+                    color: 'FFFFFF',
+                    range: [26,100]
+                },
+                {
+                    name: 'Hight',
+                    color: 'FFA000',
+                    range: [101, 999]
+                }
+            ],
             color: '000000',
             opacity: 30,
             width: 100,
@@ -215,13 +240,14 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             maxWidth: 640,
             maxHeight: 100,
             padding: 0,
-            barsOpacity: 80,
+            barsOpacity: 70,
             text: 125,
             barDirection: 0,
             coordinates: {
                 width: 100,
                 height: 24
-            }
+            },
+            resizable: true
         }
     },
 

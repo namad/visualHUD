@@ -1,0 +1,587 @@
+/* line 17, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../Ruby193/lib/ruby/gems/1.9.1/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* Variables */
+/* line 1, ../sass/_sidebar-elements.scss */
+.sidebar-block {
+  margin-top: -1px 0 1px;
+  padding: 20px;
+  border-bottom: 1px solid #262626;
+  border-top: 1px solid #4d4d4d;
+  -webkit-box-shadow: #4d4d4d 0px 1px 0px;
+  -moz-box-shadow: #4d4d4d 0px 1px 0px;
+  box-shadow: #4d4d4d 0px 1px 0px;
+}
+
+/* line 10, ../sass/_sidebar-elements.scss */
+.stage-controls h4 {
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+/* Forms
+------------------------------ */
+/* line 5, ../sass/_app-form.scss */
+.app-form .control-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: #2b2b2b;
+  border-bottom: 1px solid #262626;
+  -webkit-box-shadow: #4d4d4d 0px 1px 0px;
+  -moz-box-shadow: #4d4d4d 0px 1px 0px;
+  box-shadow: #4d4d4d 0px 1px 0px;
+  height: 65px;
+}
+/* line 16, ../sass/_app-form.scss */
+.app-form .control-header .header-wrap {
+  padding: 20px;
+  padding-left: 75px;
+  padding-top: 17px;
+  background-position: 25px 50%;
+  background-repeat: no-repeat;
+}
+/* line 24, ../sass/_app-form.scss */
+.app-form .control-header .item-type {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  color: #999999;
+}
+/* line 30, ../sass/_app-form.scss */
+.app-form .control-header .item-name {
+  font-size: 1.5em;
+  color: white;
+  line-height: 0.75em;
+}
+
+/* line 43, ../sass/_app-form.scss */
+.app-form .form-bbar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 38px;
+  border-top: 1px solid #4d4d4d;
+  box-shadow: 0 -1px 8px #292929;
+}
+
+/* line 52, ../sass/_app-form.scss */
+.form-bbar .item-status {
+  font-size: 10px;
+  line-height: 38px;
+  padding: 0 0 0 20px;
+  float: left;
+}
+
+/* line 58, ../sass/_app-form.scss */
+.form-bbar .item-status span {
+  vertical-align: middle;
+}
+
+/* line 61, ../sass/_app-form.scss */
+.form-bbar .item-status .item-value {
+  font-weight: bold;
+  margin: 0 0 0 5px;
+  display: inline-block;
+  width: 20px;
+}
+
+/* line 68, ../sass/_app-form.scss */
+.app-form {
+  padding: 0;
+  margin: 0 0 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* line 75, ../sass/_app-form.scss */
+.app-form-container {
+  overflow: hidden;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* IE 8+ */
+  padding: 66px 0px 39px;
+}
+
+/* line 84, ../sass/_app-form.scss */
+.app-form-container .app-form-controls {
+  height: 100%;
+  overflow: auto;
+}
+
+/* line 90, ../sass/_app-form.scss */
+.app-form fieldset {
+  border: medium none;
+  padding-right: 10px;
+  padding-top: 0.5em;
+  background: url(../images/fieldset_splitter.png) no-repeat;
+  margin: 1em 0;
+}
+
+/* line 98, ../sass/_app-form.scss */
+.app-form fieldset.form-actions {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  height: 30px;
+  background: url("../images/canvas_toolbar_bg.png") repeat-x scroll 0 0 #161616;
+}
+
+/* line 108, ../sass/_app-form.scss */
+.app-form legend {
+  font-size: 0.9em;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 1px 5px;
+  padding-left: 20px;
+  margin: 0 0 0 -15px;
+  background: #333333 url(../images/legend_arrow.gif) no-repeat 0 -18px;
+  color: #aaa;
+  cursor: pointer;
+  -moz-border-radius: 3px;
+}
+
+/* line 121, ../sass/_app-form.scss */
+.app-form legend:hover {
+  color: #FFF;
+}
+
+/* line 125, ../sass/_app-form.scss */
+fieldset.collapsed {
+  padding-top: 0.5em;
+}
+
+/* line 129, ../sass/_app-form.scss */
+.collapsed legend {
+  background-position: 0 0 !important;
+}
+
+/* line 133, ../sass/_app-form.scss */
+.collapsed .f-row {
+  display: none !important;
+}
+
+/* line 137, ../sass/_app-form.scss */
+.app-form .f-row {
+  padding: 3px 10px 3px 5px;
+  display: block;
+}
+
+/* line 142, ../sass/_app-form.scss */
+.app-form .f-label {
+  display: inline-block;
+  padding: 0 10px 0 0;
+  text-align: right;
+  vertical-align: middle;
+}
+
+/* line 149, ../sass/_app-form.scss */
+.app-form .f-inputs {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* line 155, ../sass/_app-form.scss */
+.app-form .l-vertical .f-label {
+  vertical-align: top;
+  margin-top: 3px;
+}
+
+/* line 160, ../sass/_app-form.scss */
+.app-form .f-checkboxes label {
+  width: auto !important;
+  padding: 0;
+  vertical-align: middle;
+  margin: 0 !important;
+}
+
+/* line 167, ../sass/_app-form.scss */
+.app-form .f-checkboxes .label {
+  padding: 0 0 0 8px;
+  vertical-align: middle;
+}
+
+/* line 172, ../sass/_app-form.scss */
+.app-form .f-checkboxes input {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 177, ../sass/_app-form.scss */
+.app-form .milti-textboxes label {
+  margin: 0 0 0 15px !important;
+  width: auto !important;
+}
+
+/* line 182, ../sass/_app-form.scss */
+.app-form input.date {
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  padding-left: 18px;
+}
+
+/* line 188, ../sass/_app-form.scss */
+.app-form .f-hint {
+  padding-top: 3px;
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* line 194, ../sass/_app-form.scss */
+.app-form .not-valid {
+  background: #f5d6d6;
+}
+
+/* line 198, ../sass/_app-form.scss */
+.app-form .not-valid .f-hint {
+  color: #c33;
+}
+
+/* line 202, ../sass/_app-form.scss */
+.app-form .required-field {
+  color: #900;
+}
+
+/* line 206, ../sass/_app-form.scss */
+.f-inputs .input-helper {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 13px;
+  padding: 4px;
+  margin-left: 0px;
+  border: 1px solid #CCC;
+}
+
+/* line 215, ../sass/_app-form.scss */
+.f-inputs .input-helper:hover {
+  border-color: #c33;
+}
+
+/* line 219, ../sass/_app-form.scss */
+.textbox-wrap {
+  display: inline-block;
+}
+
+/* line 223, ../sass/_app-form.scss */
+.textbox-wrap input {
+  padding-left: 18px;
+}
+
+/* line 227, ../sass/_app-form.scss */
+.app-form fieldset {
+  padding-left: 75px;
+  position: relative;
+}
+
+/* line 232, ../sass/_app-form.scss */
+.app-form .f-label {
+  margin-left: -75px;
+  width: 65px;
+}
+
+/* line 237, ../sass/_app-form.scss */
+.app-form .form-buttons {
+  padding-left: 70px;
+}
+
+/* line 241, ../sass/_app-form.scss */
+.color-picker-box {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #FFF;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+/* line 250, ../sass/_app-form.scss */
+.color-picker-hint {
+  display: inline-block;
+  vertical-align: middle;
+  font-style: italic;
+  color: #999999;
+  font-size: 0.8em;
+  margin-left: 10px;
+}
+
+/* line 259, ../sass/_app-form.scss */
+.color-picker-wrapper {
+  width: 208px;
+  background: #333;
+  margin: -5px;
+  padding: 5px;
+  border-bottom: 1px solid #1a1a1a;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.9);
+  -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 1px 8px;
+}
+
+/* line 271, ../sass/_app-form.scss */
+.color-cell {
+  border: 1px solid #111;
+  display: block;
+  float: left;
+  width: 14px;
+  height: 14px;
+}
+
+/* line 280, ../sass/_app-form.scss */
+.active-color,
+.color-cell-hover {
+  border-color: #FFFFFF;
+  cursor: pointer;
+}
+
+/* line 285, ../sass/_app-form.scss */
+.color-range-inputs input {
+  margin-left: 2px;
+  text-align: center;
+}
+
+/* line 290, ../sass/_app-form.scss */
+.counter-text {
+  position: relative;
+  margin-top: -26px;
+  margin-left: 100px;
+  width: auto;
+}
+
+/* line 297, ../sass/_app-form.scss */
+.counter-text .f-label {
+  margin-left: 0;
+  width: auto;
+}
+
+/* line 302, ../sass/_app-form.scss */
+.counter-text .f-inputs {
+  width: auto;
+}
+
+/* line 306, ../sass/_app-form.scss */
+.dhtml-menu-active {
+  position: relative;
+  z-index: 1001;
+}
+
+/* slider root element */
+/* line 312, ../sass/_app-form.scss */
+.slider {
+  background: #DDD;
+  display: inline-block;
+  height: 5px;
+  position: relative;
+  border: 1px solid #333;
+  border-color: #666 #FFF #FFF #666;
+  width: 160px;
+  margin: 8px 0;
+  vertical-align: middle;
+}
+
+/* line 324, ../sass/_app-form.scss */
+.slider:hover {
+  border-color: #3d7bad #a4c9e3 #a4c9e3 #3d7bad;
+}
+
+/* progress bar (enabled with progress: true) */
+/* line 329, ../sass/_app-form.scss */
+.progress {
+  height: 100%;
+  background-color: #979797;
+  cursor: default;
+}
+
+/* line 335, ../sass/_app-form.scss */
+.slider:hover .progress {
+  background-color: #93c0de;
+}
+
+/* drag handle */
+/* line 340, ../sass/_app-form.scss */
+.handle {
+  background: url(../images/slider_knob.png) no-repeat;
+  height: 23px;
+  width: 12px;
+  top: -8px;
+  position: absolute;
+  display: block;
+  cursor: default;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 354, ../sass/_app-form.scss */
+.handle:focus,
+.handle:hover {
+  background-position: 0 -23px;
+  outline: 0 none !important;
+}
+
+/* the input field */
+/* line 360, ../sass/_app-form.scss */
+input.range {
+  border: 0 none;
+  background: transparent;
+  color: #FFF;
+  padding: 2px 0;
+  margin: 0 0 0 10px;
+  text-align: center;
+  width: 25px;
+}
+
+/* line 370, ../sass/_app-form.scss */
+input.range:focus {
+  background-color: #000;
+}
+
+/* line 15, ../sass/vhud.scss */
+.vh-viewport {
+  overflow: hidden;
+}
+
+/* line 19, ../sass/vhud.scss */
+.vh-region-top {
+  border: 1px solid;
+  border-color: #4d4d4d #303030 #262626;
+  background: #333;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  left: 10px;
+  top: 10px;
+  right: 10px;
+  line-height: 58px;
+  height: 58px;
+}
+
+/* line 29, ../sass/vhud.scss */
+.vh-region-right {
+  border: 1px solid;
+  border-color: #4d4d4d #303030 #262626;
+  background: #333;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  top: 80px;
+  right: 10px;
+  bottom: 10px;
+  width: 325px;
+  overflow: auto;
+  border-width: 1px 0;
+}
+
+/* line 39, ../sass/vhud.scss */
+.vh-region-bottom {
+  border: 1px solid;
+  border-color: #4d4d4d #303030 #262626;
+  background: #333;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  left: 10px;
+  bottom: 10px;
+  right: 345px;
+  height: 38px;
+}
+
+/* line 47, ../sass/vhud.scss */
+.vh-region-center {
+  border: 1px solid;
+  border-color: #4d4d4d #303030 #262626;
+  background: #333;
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 4px;
+  width: 640px;
+  height: 480px;
+  left: 50%;
+  top: 50%;
+  margin: -240px 0 0 -480px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 15px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 15px;
+  box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 15px;
+  background-color: #1a1a1a;
+  border: 0 none;
+  z-index: 0;
+}

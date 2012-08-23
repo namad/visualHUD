@@ -33,11 +33,15 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             htmlTpl = this.prepareTemplate();
 
         var coordinates = this.model.get('coordinates');
+        var resizable = this.model.get('resizable');
 
         this.$el.addClass(this.options.htmlTplRecord.get('cssClass'));
         this.$el.html(htmlTpl);
         this.$el.css({visibility: 'hidden'});
 
+        if(this.model.get('resizable') == true) {
+            this.appendResizehandles();
+        }
         this.getDOMRefs();
 
         _.each(this.model.attributes, function(value, field) {
@@ -48,10 +52,16 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
 
         var width = coordinates.width,
             height = coordinates.height,
-            top = width ? coordinates.top : coordinates.top - this.$el.height() / 2,
-            left = height ? coordinates.left : coordinates.left - this.$el.width() / 2
+            top = this.model.wasDropped ? coordinates.top - this.$el.height() / 2 : coordinates.top * visualHUD.scaleFactor,
+            left = this.model.wasDropped ? coordinates.left - this.$el.width() / 2 : coordinates.left * visualHUD.scaleFactor;
+
+        if(this.model.wasDropped) {
+
+        }
 
         this.$el.css({
+            width: this.model.get('width') || 'auto',
+            height: this.model.get('height') || 'auto',
             top: top,
             left: left
         });
@@ -59,7 +69,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         this.refreshCoordinates();
 
         // render associated item form
-        this.options.formView.render();
+        this.getForm().render();
         this.$el.css({visibility: ''});
     },
 
@@ -75,6 +85,15 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
 
         template = _.template(htmlTpl, data);
         return template;
+    },
+
+    appendResizehandles: function() {
+        var handles = [];
+        _.each(['nw', 'n', 'ne','e','se','s', 'sw', 'w'], function(cls) {
+            handles.push('<div class="resize-handle '+ cls +'" data-resizeDirection="'+ cls +'"></div>');
+        });
+
+        this.$el.append(handles.join(''));
     },
 
     getDOMRefs: function() {
@@ -135,16 +154,18 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             (refreshStatus === true) && this.refreshCoordinates();
         }
         else {
-            console.warn('Update method is not defined!');
+            console.warn('this.', methodName,' is not defined.');
         }
     },
 
     refreshCoordinates: function() {
         var position = this.$el.position(),
-            coordinates = _.extend(position, {
-                height: this.$el.height(),
-                width: this.$el.width()
-            });
+            coordinates = {
+                top: position.top / visualHUD.scaleFactor,
+                left: position.left / visualHUD.scaleFactor,
+                height: this.$el.height() / visualHUD.scaleFactor,
+                width: this.$el.width() / visualHUD.scaleFactor
+            };
 
         this.model.set('coordinates', coordinates);
 
