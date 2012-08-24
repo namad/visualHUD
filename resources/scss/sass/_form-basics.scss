@@ -1,0 +1,50 @@
+/* Inputs
+------------------------------ */
+input {
+    vertical-align: middle
+}
+
+input, textarea, select {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 1em;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* IE 8+ */
+}
+
+input[type="text"], select {
+    border: 1px solid;
+    border-color: #CCCCCC #FFF #FFF #CCC;
+    padding: 2px;
+    line-height: 1;
+    margin: 0;
+}
+
+select {
+    padding: 2px;
+}
+
+option {
+    padding-left: 3px;
+}
+
+optgroup {
+    font: inherit;
+    font-style: normal;
+    font-weight: bold;
+    padding-left: 3px;
+}
+
+optgroup > option {
+    padding-left: 10px;
+}
+
+input[type="text"]:focus {
+}
+
+input[type="checkbox"] {
+    border: 0 none;
+    width: 16px;
+    height: 16px;
+}

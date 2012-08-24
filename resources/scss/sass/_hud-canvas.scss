@@ -1,7 +1,7 @@
 .hud-canvas {
-    width: 640px;
-    height: 480px;
-    background: #222 no-repeat;
+    width: $canvasWidth;
+    height: $canvasHeight;
+    background: $grayDarker no-repeat;
     position: relative;
     overflow: hidden;
 }
@@ -89,20 +89,6 @@
 
 .hud-canvas:hover .-visual-extras {
     display: block;
-}
-
-.visual-extras {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    -moz-box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.95);
-    opacity: 0.9;
-    background: #000;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
 }
 
 .grid-5  .hud-elements {

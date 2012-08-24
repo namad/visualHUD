@@ -1,0 +1,125 @@
+@mixin button-default-hover {
+    color: #FFF;
+    background-position: 0 -50px;
+    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 2px);
+}
+
+@mixin button-defaults {
+    &:hover {
+        @include button-default-hover;
+    }
+
+    &:focus {
+        @include button-default-hover;
+    }
+
+    &:active {
+        background-position: 0 -100px;
+    }
+}
+button {
+    color: rgba(255, 255, 255, 0.8);
+    background: #106396 url(../images/button_normal.png) repeat-x;
+    border: 0 none;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 0 20px;
+    @include border-radius(15px);
+    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 2px);
+
+    span {
+        display: block;
+        line-height: 16px;
+        padding: 7px 0;
+    }
+
+    span.w-icon {
+        padding-left: 24px;
+        margin-left: -5px;
+        background-repeat: no-repeat;
+        background-position: 0 50%;
+    }
+
+    @include button-defaults;
+}
+
+
+.button-main {
+    background-color: #d43434;
+    background-image: url(../images/button_main.png);
+}
+
+
+button.button-aux {
+    background-position: 0 50px;
+    background-color: transparent;
+    @include box-shadow(none);
+
+    @include button-defaults;
+}
+
+button.button-small {
+    font-size: 0.8em;
+    padding: 0 15px;
+    @include border-radius(12px);
+
+    span {
+        padding: 3px 0;
+    }
+}
+
+button.button-big {
+    font-size: 1.5em;
+    padding: 8px 20px 9px;
+    @include border-radius(21px);
+
+    span {
+        line-height: 23px;
+    }
+
+    span.w-icon {
+        margin-left: -5px;
+        background-position: 0 50%;
+    }
+}
+
+
+button {
+    .button-icon {
+        padding-left: 7px;
+        padding-right: 7px;
+
+        span.w-icon {
+            padding: 0px;
+            width: 16px;
+            overflow: hidden;
+            margin: 0;
+            text-indent: -10000px;
+        }
+    }
+
+    span.plus {
+        background-image: url(../images/btn_ico_plus.png);
+    }
+    span.download {
+        background-image: url(../images/btn_ico_download.png);
+    }
+    span.trash {
+         background-image: url(../images/btn_ico_trash.png);
+    }
+    span.load {
+        background-image: url(../images/btn_ico_load.png);
+    }
+    span.report-bug {
+        background-image: url(../images/btn_ico_bug.png);
+    }
+    span.restart {
+        background-image: url(../images/btn_icon_reload.png);
+    }
+}
+
+
+button:disabled {
+    background: #CCC !important;
+    color: #666 !important;
+}

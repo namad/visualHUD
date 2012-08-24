@@ -1,0 +1,237 @@
+@mixin toolbar-icon-item {
+    .item-name {
+        display: inline-block;
+        width: 16px;
+        height: 38px;
+        text-indent: -10000px;
+    }
+    .item-value {
+        margin-left: -4px;
+    }
+}
+
+@mixin toolbar-submenu {
+    position: absolute;
+    left: 0;
+    bottom: 42px;
+    min-width: 100%;
+    display: none;
+}
+
+.app-toolbar {
+    height: 38px;
+    list-style: none;
+    font-size: 10px;
+    text-transform: uppercase;
+
+    .root-item {
+        display: block;
+        float: left;
+        position: relative;
+        line-height: 38px;
+        padding: 0 40px 0 20px;
+        cursor: pointer;
+        white-space: nowrap;
+        background: url(../images/canvas_toolbar_sprite.png) no-repeat 100% -38px;
+        margin: 0 1px 0 0;
+
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            right: -2px;
+            background: url(../images/canvas_toolbar_sprite.png) no-repeat;
+        }
+    }
+    .rtl-item {
+        float: right;
+        margin: 0 0 0 1px;
+
+        &:before {
+            left: -2px;
+        }
+    }
+
+    li {
+        .item-name {
+            color: $silver;
+            margin-right: 0px;
+            opacity: 0.75;
+        }
+        .item-value {
+            font-weight: normal;
+            color: $white;
+            display: inline-block;
+            width: 16px;
+            text-align: right;
+        }
+        &:hover .item-name {
+            color: $silver;
+            opacity: 1;
+        }
+        &.active {
+            background-color: darken($grayDark, 3%);
+            color: $silver;
+        }
+    }
+}
+
+
+.app-toolbar li {
+    ul {
+        @include toolbar-submenu;
+    }
+    form {
+        background: #141414;
+        @include toolbar-submenu;
+    }
+    &.active ul {
+        display: block;
+        @include box-shadow(rgba(0, 0, 0, 0.95) 0px 1px 4px);
+    }
+    &.active form {
+        display: block;
+        @include box-shadow(rgba(0, 0, 0, 0.95) 0px 1px 4px);
+    }
+}
+
+.app-toolbar ul {
+    li {
+        float: none;
+        border: 0 none;
+        line-height: 1;
+        padding: 0;
+        border-top: 1px solid #333;
+        background: #141414;
+    }
+    li:before {
+        display: none;
+    }
+    li:first-child {
+        border: 0 none;
+    }
+    input {
+        width: 13px;
+        height: 13px;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0;
+        margin-right: 5px;
+    }
+    label {
+        display: inline-block;
+        line-height: 30px;
+        padding: 0 15px;
+        vertical-align: middle;
+    }
+    label span {
+        cursor: pointer;
+        vertical-align: middle;
+        color: $gray;
+    }
+    label:hover span {
+        color: $white;
+    }
+}
+
+.app-toolbar {
+    li.grid-toggle {
+        @include toolbar-icon-item;
+
+        .item-name {
+            background: url(../images/btn_ico_grid.png) no-repeat 0 50%;
+        }
+    }
+    li.grid-snap {
+        @include toolbar-icon-item;
+
+        .item-name {
+            background: url(../images/btn_ico_snap.png) no-repeat 0 50%;
+        }
+    }
+    li.shot-toggle {
+        @include toolbar-icon-item;
+        .item-name {
+            background: url(../images/btn_ico_shot.png) no-repeat 0 50%;
+        }
+        .item-value {
+            display: none
+        }
+        ul {
+            right: 0;
+            left: auto;
+        }
+    }
+    li.trash {
+        @include toolbar-icon-item;
+        .item-name {
+            background: url(../images/btn_ico_trash.png) no-repeat 0 50%;
+        }
+        .item-value {
+            display: none
+        }
+    }
+    li.switch-large {
+        @include toolbar-icon-item;
+        .item-name {
+            background: url(../images/btn_ico_large.png) no-repeat 0 50%;
+        }
+    }
+    li.switch-compact {
+        display: none;
+        @include toolbar-icon-item;
+
+        .item-name {
+            background: url(../images/btn_ico_compact.png) no-repeat 0 50%;
+        }
+    }
+    li.hud-extras .item-value {
+        display: none
+    }
+
+    li.draw-gun ul {
+        width: 100px;
+    }
+}
+
+.app-toolbar .player-status {
+    .f-inputs {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .f-row {
+        display: block;
+        padding: 0px 15px;
+        border-top: 1px solid #333;
+    }
+    .f-row:first-child {
+        border: 0 none;
+    }
+    .f-label {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50px;
+    }
+}
+
+
+.app-toolbar a.set-custom-bg {
+    display: inline-block;
+    line-height: 30px;
+    padding-left: 38px;
+    background: url(../images/btn_ico_import.png) no-repeat 13px center;
+    text-decoration: none;
+    color: #666;
+}
+
+.app-toolbar a.set-custom-bg:hover {
+    color: #FFF;
+}
+
+.app-toolbar ul li.disabled-item label span {
+    color: #444;
+    cursor: auto;
+}
+

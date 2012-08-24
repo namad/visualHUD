@@ -1,13 +1,9 @@
 .hud-item-box {
     overflow: hidden;
     position: relative;
-    background-color: rgba(255, 255, 255, 0.25);
     width: 100%;
     height: 100%;
-
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* IE 8+ */
+    @include box-sizing(border-box);
 }
 
 .resize-handle {
@@ -24,9 +20,6 @@
 .hud-item-box .h-bar {
     width: 100%;
     height: 100%;
-}
-
-.ltr-bar .h-bar {
 }
 
 .rtl-bar .h-bar {

@@ -1,63 +1,66 @@
+@mixin handle-hover {
+    background-position: 0 -23px;
+    outline: 0 none !important;
+}
+
 /* slider root element */
 .slider {
-  background: #DDD;
-  display: inline-block;
-  height: 5px;
-  position: relative;
-  border: 1px solid #333;
-  border-color: #666 #FFF #FFF #666;
-  width: 160px;
-  margin: 8px 0;
-  vertical-align: middle;
+    background: #DDD;
+    display: inline-block;
+    height: 5px;
+    position: relative;
+    border: 1px solid #333;
+    border-color: #666 #FFF #FFF #666;
+    width: 160px;
+    margin: 8px 0;
+    vertical-align: middle;
 
-/* progress bar (enabled with progress: true) */
-  .progress {
-    height: 100%;
-    background-color: #979797;
-    cursor: default;
-  }
+    .progress {
+        height: 100%;
+        background-color: #979797;
+        cursor: default;
+    }
 
-/* drag handle */
-  .handle {
-    background: url(../images/slider_knob.png) no-repeat;
-    height: 23px;
-    width: 12px;
-    top: -8px;
-    position: absolute;
-    display: block;
-    cursor: default;
-    border: 0 none;
-    padding: 0;
-    margin: 0;
-  }
-}
+    .handle {
+        background: url(../images/slider_knob.png) no-repeat;
+        height: 23px;
+        width: 12px;
+        top: -8px;
+        position: absolute;
+        display: block;
+        cursor: default;
+        border: 0 none;
+        padding: 0;
+        margin: 0;
 
-.slider:hover {
-  border-color: #3d7bad #a4c9e3 #a4c9e3 #3d7bad;
+        &:focus {
+            @include handle-hover;
+        }
+        &:hover {
+            @include handle-hover;
+        }
 
-  .progress {
-    background-color: #93c0de;
-  }
-}
+    }
+    &:hover {
+        border-color: #3d7bad #a4c9e3 #a4c9e3 #3d7bad;
 
-
-.handle:focus,
-.handle:hover {
-  background-position: 0 -23px;
-  outline: 0 none !important;
+        .progress {
+            background-color: #93c0de;
+        }
+    }
 }
 
 /* the input field */
 input.range {
-  border: 0 none;
-  background: transparent;
-  color: #FFF;
-  padding: 2px 0;
-  margin: 0 0 0 10px;
-  text-align: center;
-  width: 25px;
-}
+    border: 0 none;
+    background: transparent;
+    color: #FFF;
+    padding: 2px 0;
+    margin: 0 0 0 10px;
+    text-align: center;
+    width: 25px;
 
-input.range:focus {
-  background-color: darken($main-text-color, 20%);
+    &:focus {
+        background-color: darken($grayDark, 20%);
+    }
 }

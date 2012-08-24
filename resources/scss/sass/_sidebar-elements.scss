@@ -1,9 +1,7 @@
 .sidebar-block {
-    margin-top: -1px 0 1px;
+    margin: -1px 0 1px;
     padding: 20px;
-    border-bottom: 1px solid darken($main-bg-color, 5%);
-    border-top: 1px solid lighten($main-bg-color, 10%);
-    @include box-shadow(lighten($main-bg-color, 10%) 0px 1px 0px); 
+    @include box-bevel-and-accent;
 }
 
 

@@ -1,6 +1,8 @@
 /* Forms
 ------------------------------ */
 
+$appFormLabelWidth: 65px;
+
 .app-form {
 
     padding: 0;
@@ -10,13 +12,10 @@
 
     .control-header {
         position: absolute;
-        top: 0;
+        top: -1px;
         width: 100%;
-        background: darken($main-bg-color, 3%);
-
-        border-bottom: 1px solid darken($main-bg-color, 5%);    
-        @include box-shadow(lighten($main-bg-color, 10%) 0px 1px 0px); 
-
+        background: darken($grayDark, 3%);
+        @include box-bevel-and-accent;
         height: 65px;
 
         .header-wrap {
@@ -30,12 +29,12 @@
         .item-type {
             font-size: 0.8em;
             text-transform: uppercase;
-            color: darken($main-text-color, 20%);
+            color: darken($textColor, 20%);
         }
 
         .item-name {
             font-size: 1.5em;
-            color: lighten($main-text-color, 20%);
+            color: lighten($textColor, 20%);
             line-height: 0.75em;
         }
     }
@@ -45,8 +44,8 @@
         bottom: 0;
         width: 100%;
         height: 38px;
-        border-top: 1px solid lighten($main-bg-color, 10%);
-        box-shadow: 0 -1px 8px darken($main-bg-color, 5%);
+        border-top: 1px solid $bevelLight;
+        box-shadow: 0 -1px 8px darken($grayDark, 5%);
 
         .item-status {
             font-size: 10px;
@@ -104,14 +103,14 @@
         padding: 1px 5px;
         padding-left: 20px;
         margin: 0 0 0 -15px;
-        background: $main-bg-color url(../images/legend_arrow.gif) no-repeat 0 -18px;
-        color: darken($main-text-color, 5%);
+        background: $grayDark url(../images/legend_arrow.gif) no-repeat 0 -18px;
+        color: darken($textColor, 5%);
         cursor: pointer;
         -moz-border-radius: 3px;
     }
 
     legend:hover {
-        color: lighten($main-text-color, 10%);
+        color: lighten($textColor, 10%);
     }
 }
 
@@ -156,110 +155,22 @@
     padding: 0;
 }
 
-.app-form  .milti-textboxes label {
-    margin: 0 0 0 15px !important;
-    width: auto !important;
-}
-
-.app-form input.date {
-    background-repeat: no-repeat;
-    background-position: 0 50%;
-    padding-left: 18px;
-}
-
 .app-form .f-hint {
     padding-top: 3px;
     font-size: 0.8em;
     color: #555;
 }
 
-
-.f-inputs .input-helper {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 13px;
-    padding: 4px;
-    margin-left: 0px;
-    border: 1px solid #CCC;
-}
-
-.f-inputs .input-helper:hover {
-    border-color: #c33;
-}
-
-.textbox-wrap {
-    display: inline-block;
-}
-
-.textbox-wrap input {
-    padding-left: 18px;
-}
-
 .app-form fieldset {
-    padding-left: 75px;
+    padding-left: $appFormLabelWidth + 10px;
     position: relative;
 }
 
 .app-form  .f-label {
-    margin-left: -75px;
-    width: 65px;
+    margin-left: -1 * $appFormLabelWidth - 10px;
+    width: $appFormLabelWidth;
 }
 
 .app-form .form-buttons {
-    padding-left: 70px;
-}
-
-.color-picker-box {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #FFF;
-    vertical-align: middle;
-    margin-left: 5px;
-}
-
-.color-picker-hint {
-    display: inline-block;
-    vertical-align: middle;
-    font-style: italic;
-    color: #999999;
-    font-size: 0.8em;
-    margin-left: 10px;
-}
-
-.color-picker-wrapper {
-    width: 208px;
-    background: #333;
-    margin: -5px;
-    padding: 5px;
-    border-bottom: 1px solid #1a1a1a;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.9);
-    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 1px 8px;
-}
-
-.color-cell {
-    border: 1px solid #111;
-    display: block;
-    float: left;
-    width: 14px;
-    height: 14px;
-}
-
-.active-color,
-.color-cell-hover {
-    border-color: #FFFFFF;
-    cursor: pointer;
-}
-
-.color-range-inputs input {
-    margin-left: 2px;
-    text-align: center;
-}
-
-
-.dhtml-menu-active {
-    position: relative;
-    z-index: 1001;
+    padding-left: $appFormLabelWidth - 5px;
 }

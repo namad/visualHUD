@@ -1,9 +1,9 @@
 @charset "utf-8";
 /* CSS Document */
 
-.scale-factor-2 .vh-region-center { width: 1280px; height:960px; margin: -480px 0 0 -805px; }
+.scale-factor-2 .vh-viewport-center { width: 1280px; height:960px; margin: -480px 0 0 -805px; }
 
-.scale-factor-2 .tools-off .vh-region-center { margin-left: -640px; }
+.scale-factor-2 .tools-off .vh-viewport-center { margin-left: -640px; }
 
 .scale-factor-2 .hud-canvas { width: 1280px; height:960px; }
 .scale-factor-2 .canvas-1 .hud-canvas { background-image:url(../images/canvas_1_1.jpg); }

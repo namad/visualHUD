@@ -1,0 +1,77 @@
+@mixin viewport-region {
+    background: rgba($grayDark, 0.95);
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 4px);
+    @include bevel-and-emboss;
+}
+
+.vh-viewport {
+    overflow: hidden;
+}
+
+.vh-viewport-topbar {
+    @include viewport-region;
+    left: $basePostionOffset;
+    top: $basePostionOffset;
+    right: $basePostionOffset;
+    line-height: $topbarHeight - 2px;
+    height: $topbarHeight - 2px;
+
+}
+
+.vh-viewport-sidebar {
+    position: absolute;
+    top: $sidebarTop;
+    right: 0;
+    padding-right: $basePostionOffset;
+    bottom: $basePostionOffset;
+    width: $sidebarWidth;
+}
+
+.vh-viewport-sidebar-content {
+    @include viewport-region;
+    overflow: auto;
+    border-width: 1px 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.vh-viewport-bottombar {
+    @include viewport-region;
+    left: $basePostionOffset;
+    bottom: $basePostionOffset;
+    right: $sidebarWidth + 20px;
+    height: 38px;
+    overflow: visible;
+}
+
+.vh-viewport-center {
+    overflow: hidden;
+    position: absolute;
+
+    width: $canvasWidth;
+    height: $canvasHeight;
+    left: 50%;
+    top: 50%;
+    margin: $canvasMarginTop 0 0 $canvasMarginLeft;
+    @include strong-drop-shadow;
+    background-color: darken($grayDark, 10%);
+    border: 0 none;
+    z-index: 0;
+}
+
+.tools-off .vh-viewport-topbar,
+.tools-off .vh-viewport-bottombar {
+    display: none;
+}
+
+.tools-off .vh-viewport-sidebar {
+    top: $basePostionOffset
+}
+
+.tools-off .vh-viewport-center {
+    //margin-left: -320px;
+}

@@ -1,59 +1,26 @@
 @import "basic";
+@import "variables";
+@import "mixin";
+
+@import "viewport";
+@import "stage-controls";
 @import "sidebar-elements";
-@import "app-form";
+@import "app-toolbar";
+@import "app-topbar";
+
+
+@import "form-basics";
+@import "buttons";
 @import "range-input";
+@import "color-picker";
 
-@mixin viewport-region {
-    border: 1px solid;
-    border-color: lighten($main-bg-color, 10%) darken($main-bg-color, 1%) darken($main-bg-color, 5%);
-    background: #333;
-    position: absolute;
-    z-index: 1;
-    overflow: hidden;
-    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 4px);
-}
+@import "app-form";
 
-.vh-viewport {
-    overflow: hidden;
-}
+@import "hud-canvas";
+@import "hud-items";
 
-.vh-region-top {
-    @include viewport-region;
-    left: 10px;
-    top: 10px;
-    right: 10px;
-    line-height: 58px;
-    height: 58px;
+@import "modal-win";
+@import "popover";
+@import "tooltip";
 
-}
-
-.vh-region-right {
-    @include viewport-region;
-    top: 80px;
-    right: 10px;
-    bottom: 10px;
-    width: 325px;
-    overflow: auto;
-    border-width: 1px 0;
-}
-
-.vh-region-bottom {
-    @include viewport-region;
-    left: 10px;
-    bottom: 10px;
-    right: 345px;
-    height: 38px;
-}
-
-.vh-region-center {
-    @include viewport-region;
-    width: 640px;
-    height: 480px;
-    left: 50%;
-    top: 50%;
-    margin: -240px 0 0 -480px;
-    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 2px 15px);
-    background-color: darken($main-bg-color, 10%);
-    border: 0 none;
-    z-index: 0;
-}
+@import "scale-factor";
