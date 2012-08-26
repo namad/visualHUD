@@ -59,7 +59,6 @@ visualHUD.Views.Canvas = Backbone.View.extend({
 
     initialize: function() {
         _.extend(this, visualHUD.Libs.selectionManagerInterface);
-        this.initializeSelectionManager();
         this.initializeDragManager();
     },
 
@@ -89,7 +88,7 @@ visualHUD.Views.Canvas = Backbone.View.extend({
 
             if(key == 'snapGrid'){
                 this.dragManager.setOptions({
-                    grid: parseInt(value, 10) * visualHUD.scaleFactor
+                    grid: Math.max(parseInt(value, 10) * visualHUD.scaleFactor, visualHUD.scaleFactor)
                 });
             }
 
@@ -138,14 +137,7 @@ visualHUD.Views.Canvas = Backbone.View.extend({
         });
 
         // extend drag manage with canvas specific functionality
-        _.extend(this.dragManager,
-            visualHUD.Libs.canvasDragInterface,
-            {
-                getView: function() {
-                    return me;
-                }
-            }
-        );
+        _.extend(this.dragManager, visualHUD.Libs.canvasDragInterface);
     },
 
     checkDragAction: function(event) {
@@ -196,6 +188,19 @@ visualHUD.Views.Canvas = Backbone.View.extend({
         _.extend(canvasPosition, size);
 
         return canvasPosition;
+    },
+
+    beginUpdate: function() {
+        this.$el.addClass('hud-items-hidden');
+    },
+
+    completeUpdate: function() {
+        this.$el.removeClass('hud-items-hidden');
+
+        this.$el.find('div.' + visualHUD.Views.HUDItem.prototype.className).each(function(idx) {
+            var view = $(this).data('HUDItem');
+            view.refreshCoordinates();
+        });
     }
 });
 

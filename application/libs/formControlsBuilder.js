@@ -39,6 +39,14 @@ visualHUD.Libs.formControlsBuilder = {
             hint: null,
             wrap: true
         },
+        textarea: {
+            rows: 2,
+            cols: 20,
+            value: '',
+            wrap: true,
+            hint: null,
+            name: 'textarea'
+        },
         rangeInput: {
             value: 0,
             name: 'rangeinput',
@@ -46,27 +54,42 @@ visualHUD.Libs.formControlsBuilder = {
             wrap: true
         },
         checkbox: {
+            type: 'checkbox',
             hint: null,
             label: null,
             checked: false,
             name: 'checkbox',
+            value: 'on',
             boxLabel: 'Checkbox',
             wrap: true
         },
+        checkboxGroup: {
+            wrap: true,
+            hint: null
+        },
         radiobutton: {
+            type: 'radiobutton',
             hint: null,
             label: null,
             checked: false,
             name: 'radiobutton',
-            boxLabel: 'radiobutton',
+            value: 'on',
+            boxLabel: 'Radiobutton',
             wrap: true
+        },
+        radiobuttonGroup: {
+            wrap: true,
+            hint: null
         },
         select: {
             width: null,
             value: 0,
             name: 'select',
             hint: null,
-            wrap: true
+            wrap: true,
+            displayField: 'name',
+            valueField: 'id',
+            options: {}
         },
         button: {
             name: '',
@@ -81,10 +104,17 @@ visualHUD.Libs.formControlsBuilder = {
             hint: null
         },
         alignControl: {
+            label: 'Align',
             hint: null,
             wrap: true
         },
         arrangeControl: {
+            label: 'Arrange',
+            hint: null,
+            wrap: true
+        },
+        groupActionsControl: {
+            label: 'Actions',
             hint: null,
             wrap: true
         },
@@ -106,6 +136,9 @@ visualHUD.Libs.formControlsBuilder = {
         textbox: [
             '<input type="text" size="<%= size %>" name="<%= name %>" value="<%= value %>" maxlength="<%= maxlength %>"  />'
         ],
+        textarea: [
+            '<textarea name="<%= name %>" rows="<%= rows %>" cols="<%= cols %>"><%= value %></textarea>'
+        ],
         fieldset: [
             '<fieldset>',
             '<legend><%= label %></legend>',
@@ -116,33 +149,39 @@ visualHUD.Libs.formControlsBuilder = {
             '<input type="text" size="8" maxlength="3" value="<%= value %>" class="range range-input" name="<%= name %>"  />'
         ],
         checkbox: [
-            '<label class="check-label"><input type="checkbox" name="<%= name %>" <%= value ? \'checked="checked"\' : \'\' %>"><span class="label"><%= boxLabel %></span></label>'
+            '<label class="check-label"><input type="checkbox" name="<%= name %>" value="<%= value %>" <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label"><%= boxLabel %></span></label>'
         ],
         radiobutton: [
-            '<label class="check-label"><input type="radio" name="<%= name %>" <%= value ? \'checked="checked"\' : \'\' %>"><span class="label"><%= boxLabel %></span></label>'
+            '<label class="check-label"><input type="radio" name="<%= name %>" value="<%= value %>"  <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label"><%= boxLabel %></span></label>'
         ],
         select: [
             '<select type="text" name="<%= name %>" value="<%= value %>" <% if(width) { %>style="width:<%= width %>"<% }; %>><%= options %></select>'
         ],
         button: [
-            '<button name="<%= name %>" type="<%= action %>"value="<%= value %>" class="<%= cssClass %>" data-tooltip="<%= tooltip %>"><span class="<%= icon %>"><%= text %></span></button>'
+            '<button name="<%= name %>" type="<%= action %>" value="<%= value %>" class="<%= cssClass %>" data-tooltip="<%= tooltip %>"><span class="<%= icon %>"><%= text %></span></button>'
         ],
         alignControl: [
             '<ul class="library-items align-controls icons-24px clearfloat">',
-            '<li class="align-top" data-action="top"><span class="item-name">Align top edges</span></li>',
-            '<li class="align-vertical" data-action="vertical"><span class="item-name">Align vertical centers</span></li>',
-            '<li class="align-bottom" data-action="bottom"><span class="item-name">Align bottom edges</span></li>',
-            '<li class="align-left" data-action="left"><span class="item-name">Align left edges</span></li>',
-            '<li class="align-horizontal" data-action="horizontal"><span class="item-name">Align horizontal centers</span></li>',
-            '<li class="align-right" data-action="right"><span class="item-name">Align right edges</span></li>',
+            '<li class="align-top" data-action="top" data-tooltip="Align top edges"><span class="item-name">Align top edges</span></li>',
+            '<li class="align-vertical" data-action="vertical" data-tooltip="Align vertical centers"><span class="item-name">Align vertical centers</span></li>',
+            '<li class="align-bottom" data-action="bottom" data-tooltip="Align bottom edges"><span class="item-name">Align bottom edges</span></li>',
+            '<li class="align-left" data-action="left" data-tooltip="Align left edges"><span class="item-name">Align left edges</span></li>',
+            '<li class="align-horizontal" data-action="horizontal" data-tooltip="Align horizontal centers"><span class="item-name">Align horizontal centers</span></li>',
+            '<li class="align-right" data-action="right" data-tooltip="Align right edges"><span class="item-name">Align right edges</span></li>',
             '</ul>'
         ],
         arrangeControl: [
             '<ul class="library-items arrange-controls icons-24px clearfloat">',
-            '<li class="bring-front" data-action="arrangeFront"><span class="item-name">Bring to front <small>(CTRL + SHIFT + UP)</small></span></li>',
-            '<li class="send-back" data-action="arrangeBack"><span class="item-name">Send to back <small>(CTRL + SHIFT + DOWN)</small></span></li>',
-            '<li class="bring-forward" data-action="arrangeForward"><span class="item-name">Bring forward <small>(CTRL + UP)</small></span></li>',
-            '<li class="send-backward" data-action="arrangeBackward"><span class="item-name">Send backward <small>(CTRL + DOWN)</small></span></li>',
+            '<li class="bring-front" data-action="bring-front" data-tooltip="Bring to front <small>(CTRL + SHIFT + UP)</small>"><span class="item-name">Bring to front <small>(CTRL + SHIFT + UP)</small></span></li>',
+            '<li class="send-back" data-action="send-back" data-tooltip="Send to back <small>(CTRL + SHIFT + DOWN)</small>"><span class="item-name">Send to back <small>(CTRL + SHIFT + DOWN)</small></span></li>',
+            '<li class="bring-forward" data-action="bring-forward" data-tooltip="Bring forward <small>(CTRL + UP)</small>"><span class="item-name">Bring forward <small>(CTRL + UP)</small></span></li>',
+            '<li class="send-backward" data-action="send-backward" data-tooltip="Send backward <small>(CTRL + DOWN)</small>"><span class="item-name">Send backward <small>(CTRL + DOWN)</small></span></li>',
+            '</ul>'
+        ],
+        groupActionsControl: [
+            '<ul class="library-items group-action-controls icons-24px clearfloat">',
+            '<li class="delete" data-action="delete-selected" data-tooltip="Delete selected items"></li>',
+            '<li class="group" data-action="group-selected" data-tooltip="Group/ungroup selected items"></li>',
             '</ul>'
         ],
         colorPicker: [
@@ -159,8 +198,8 @@ visualHUD.Libs.formControlsBuilder = {
         '<% if(hint) { %><div class="f-hint"><%= hint %></div><% }; %>'
     ],
 
-    getBaseElement: function() {
-        return $('<div class="f-row" />')
+    getBaseElement: function(attributes) {
+        return $('<div class="f-row" />').addClass(attributes.cssClass || '').attr('id', attributes.id || '');
     },
 
     getBaseMarkup: function(markup) {
@@ -171,10 +210,10 @@ visualHUD.Libs.formControlsBuilder = {
     createFormControl: function(attributes, markup) {
         var markup = markup || this.getTemplateByType(attributes.type);
         var defaults = this.getDefaultsByType(attributes.type);
-        var attributes = _.extend(defaults, attributes);
+        var attributes = _.extend({}, defaults, attributes);
         var template = attributes.wrap ? this.getBaseMarkup(markup) : markup;
         var html = _.template(template, attributes);
-        var element = attributes.wrap ? this.getBaseElement().html(html) : $(html);
+        var element = attributes.wrap ? this.getBaseElement(attributes).html(html) : $(html);
 
         return element;
     },
@@ -193,40 +232,73 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createCheckboxGroup: function(atributes) {
+    createCheckboxGroup: function(attributes) {
+        return this.createChecksGroup('checkbox', attributes);
+    },
 
+    createRadiobuttonGroup: function(attributes) {
+        return this.createChecksGroup('radiobutton', attributes);
+    },
+
+    createChecksGroup: function(defaultType, attributes) {
+        var checkboxTemplate = this.getTemplateByType(defaultType),
+            checkboxDefaults = this.getDefaultsByType(defaultType),
+            markup = [];
+
+        attributes.cssClass = defaultType + '-group layout-' + (attributes.layout || '');
+
+        _.each(attributes.options, function(item) {
+            var attributes = _.extend({}, checkboxDefaults, item);
+            markup.push(_.template(checkboxTemplate, attributes));
+        }, this);
+
+        return this.createFormControl(attributes, markup.join(''));
+    },
+
+    createSelectOptionsMapFromCollection: function(collection, attributes) {
+        var selectOptionsMap = {};
+
+       collection.each(function(record) {
+           selectOptionsMap[record.get(attributes.valueField)] = record.get(attributes.displayField);
+       });
+
+       return selectOptionsMap;
+    },
+
+    generateSelectOptionsFromMap: function (opts, selectHTML) {
+        var optionHTMLTemplate = '<option value="<%= value %>"><%= label %></option>';
+        var optgroupHTMLTemplates = ['<optgroup label="<%= label %>">', '</optgroup>'];
+
+        _.each(opts, function (value, key) {
+
+            if ($.isPlainObject(value)) {
+                selectHTML.push(
+                    _.template(optgroupHTMLTemplates[0], {
+                        label: key
+                    })
+                );
+                this.generateSelectOptionsFromMap(value, selectHTML);
+                selectHTML.push(optgroupHTMLTemplates[1]);
+            }
+            else {
+                selectHTML.push(
+                    _.template(optionHTMLTemplate, {
+                        value:key,
+                        label:value
+                    })
+                );
+            }
+        }, this);
+        return selectHTML.join('')
     },
 
     createSelect:function (attributes) {
-        var optionHTMLTemplate = '<option value="<%= value %>"><%= label %></option>';
-        var optgroupHTMLTemplates = ['<optgroup label="<%= label %>">', '</optgroup>'];
-        var selectHTML = [];
 
-        var generateSelectOptions = function (opts) {
-            _.each(opts, function (value, key) {
+        if(attributes.collection) {
+            attributes.options = this.createSelectOptionsMapFromCollection(attributes.collection, attributes);
+        }
 
-                if ($.isPlainObject(value)) {
-                    selectHTML.push(
-                        _.template(optgroupHTMLTemplates[0], {
-                            label: key
-                        })
-                    );
-                    generateSelectOptions(value);
-                    selectHTML.push(optgroupHTMLTemplates[1]);
-                }
-                else {
-                    selectHTML.push(
-                        _.template(optionHTMLTemplate, {
-                            value:key,
-                            label:value
-                        })
-                    );
-                }
-            });
-            return selectHTML.join('')
-        };
-
-        attributes.options = generateSelectOptions(attributes.options || []);
+        attributes.options = this.generateSelectOptionsFromMap(attributes.options, []);
 
         var element = this.createFormControl(attributes);
 

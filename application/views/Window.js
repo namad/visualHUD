@@ -58,7 +58,7 @@ visualHUD.Views.Window = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.appendTo(document.body);
+        this.$el.css({display: 'none'}).appendTo(document.body);
         this.rendered = true;
         this.fireEvent('render', this);
     },
@@ -154,10 +154,10 @@ visualHUD.Views.Window = Backbone.View.extend({
         var _winHeight = $(document.body).height();
         var _topOffset = $(window).scrollTop();
 
-        _top[0] = _winHeight / 2 - heightBounds[0] / 2;
+        _top[0] = Math.round(_winHeight / 2 - heightBounds[0] / 2);
         _top[0] +=  _topOffset;
 
-        _top[1] = heightBounds[1] > _winHeight ? 25 : _winHeight/2 - heightBounds[1]/2;
+        _top[1] = heightBounds[1] > _winHeight ? 25 : Math.round(_winHeight/2 - heightBounds[1]/2);
         _top[1] += _topOffset;
 
         if(_top[1] < 10){

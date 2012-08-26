@@ -11,31 +11,59 @@
         return current;
     };
 
+    // Since we are using Backbone let's make sure that there are no conflicts in namespaces
+    if(typeof Backbone.resolveNamespace == 'undefined') {
+        Backbone.resolveNamespace = resolveNamespace;
+    }
+    else {
+        throw ('Native Backbone.resolveNamespace instance already defined.')
+    }
+
     var Application = function(options) {
         _.extend(this, options || {});
+        
         this.eventbus = new EventBus({application: this});
+        
+        this.createApplicationNamespace();
         this.initialize.apply(this, arguments);
-
-        var nameSpace = window;
-
-        // create global reference in the defined namespace
-        if(this.nameSpace) {
-            nameSpace = nameSpace[this.nameSpace]
-        }
-        if(this.name) {
-            nameSpace[this.name] = this;
-        }
 
         $($.proxy(this.onReady, this));
     };
 
     _.extend(Application.prototype, {
-        name: 'application',
-
+        name: 'Backbone.Application',
+        
         models: {},
         collections: {},
         controllers: {},
+        
+        allocationMap: {
+            model: 'Models',
+            collection: 'Collections',
+            controller: 'Controllers',
+            view: 'Views'
+        },
 
+        createApplicationNamespace: function() {
+            var nameSpace = window;
+
+            // create global reference in the defined namespace
+            if(this.nameSpace) {
+                // if it wasn't already defined, create it
+                if(typeof nameSpace[this.nameSpace] == 'undefined') {
+                    nameSpace[this.nameSpace] = {}
+                }
+            }
+
+            // let's have a link to the application namespace
+            // this way we will be able to get all references to Models, Collections and Controllers
+            // using givin namespace
+            nameSpace[this.nameSpace] = this
+            
+            _.each(this.allocationMap, function(name, key) {
+                this[name] = this[name] || {};
+            }, this);
+        },
         /**
          * Abstract fuction that will be called during application instance creation
          */
@@ -58,14 +86,16 @@
         /**
          * Function that will convert string identifier into the instance reference	 
          */ 
-        parseClasses: function(classes) {
-            var hashMap = {};
+        getClasseRefs: function(type, classes) {
+            var hashMap = {},
+                allocationMap = this.allocationMap[type],
+                root = this[allocationMap];
 
             _.each(classes, function(cls) {
-                var classReference = resolveNamespace(cls),
+                var classReference = resolveNamespace(cls, root),
                     id = cls.split('.').pop();
 
-                hashMap[id] = classReference;
+                hashMap[cls] = classReference;
             }, this);
 
             return hashMap;
@@ -79,21 +109,22 @@
             this.controllers = {};
 
             _.each(controllers, function(ctrl) {
-                var classReference = resolveNamespace(ctrl),
+                var root =  this[this.allocationMap.controller],
+                    classReference = resolveNamespace(ctrl, root),
                     id = ctrl.split('.').pop();
 
                 var controller = new classReference({
-                    id: id,
+                    id: ctrl,
                     application: this
                 });
 
-                controller.views = this.parseClasses(controller.views || []);
+                controller.views = this.getClasseRefs('view', controller.views || []);
 
-                _.extend(this.models, this.parseClasses(controller.models || []));
-                _.extend(this.collections, this.parseClasses(controller.collections || {}));
+                _.extend(this.models, this.getClasseRefs('model', controller.models || []));
+                _.extend(this.collections, this.getClasseRefs('collection', controller.collections || {}));
 
                 this.buildCollections();
-                this.controllers[id] = controller;
+                this.controllers[ctrl] = controller;
             }, this);
         },
 
@@ -258,7 +289,7 @@
 
         /**
          * Getter that will return the reference to the view instance
-         */	
+         */
         getView: function(name) {
             return this._viewsCache[name];
         },
@@ -281,10 +312,8 @@
                 });
 
             this._viewsCache = this._viewsCache || {};
-
             this._viewsCache[name] = new view(options);
-
-            return this._viewsCache[name]
+            return this._viewsCache[name];
         },
 
         /**
@@ -355,7 +384,7 @@
             getAlias: function() {
                 return this.options.alias;
             },
-            /*
+            /**
              * Instead of calling View.trigger lets use custom function
              * It will notify the EventBus about new event
              */
@@ -376,12 +405,8 @@
 
     _.extend(EventBus.prototype, {
         pool: {},
-        /*
-        listeners = {
-            'view_alias': {
-                'event_name': fn
-            }
-        }
+        /**
+         * Add new listeners to the event bus
          */
         addListeners: function(selectors, controller) {
 
@@ -407,6 +432,9 @@
             }
         },
 
+        /**
+         * Execute event listener by given selector and event name
+         */
         fireEvent: function(selector, event, args) {
             var application = this.getApplication();
 

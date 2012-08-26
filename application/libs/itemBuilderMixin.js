@@ -74,6 +74,9 @@ visualHUD.Libs.itemBuilderMixin = {
                 blocks = [this.getDOMRefs().iconBlock, this.getDOMRefs().textBlock];
             }
 
+            var iconPositionFn = position == 'left' || position == 'right' ? 'removeClass' : 'addClass';
+            this.$el[iconPositionFn]('icon-top');
+
             for(var a = 0, b = blocks.length; a < b; a++){
                 blocks[a].appendTo(this.$el);
             }

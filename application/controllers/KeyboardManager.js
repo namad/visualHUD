@@ -17,7 +17,8 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
         C: 67,
         D: 68,
         DEL: 46,
-        R: 82
+        R: 82,
+        G: 71
     },
 
     moveCodeMap: {
@@ -45,7 +46,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
         }
 
         if(event.keyCode == this.keyCodeMap.F){
-            this.fireEvent('keyboard', 'tab', [event]);
+            this.fireEvent('keyboard', 'fullscreen.toggle', [event]);
             return false;
         }
 
@@ -65,6 +66,14 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
 
         if(event.keyCode == this.keyCodeMap.A && event.ctrlKey) {
             this.fireEvent('keyboard', 'select.all', [event]);
+            return false;
+        }
+
+        if(event.keyCode == this.keyCodeMap.G && event.shiftKey) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            this.fireEvent('keyboard', 'group', [event]);
             return false;
         }
     },

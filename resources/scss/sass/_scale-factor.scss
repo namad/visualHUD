@@ -121,10 +121,10 @@ $bigCanvasMarginLeft: -1 * $bigCanvasWidth/2 - $sidebarWidth/2;
     }
 
     .item-counter span.textstyle-2 {
-        text-shadow: 2px 2px 0px #000;
+        @include text-shadow(2px 2px 0px #000);
     }
     .item-counter span.textstyle-3 {
-        text-shadow: 3px 3px 0px #000;
+        @include text-shadow(3px 3px 0px #000);
     }
 
     .obit-item {
@@ -149,6 +149,10 @@ $bigCanvasMarginLeft: -1 * $bigCanvasWidth/2 - $sidebarWidth/2;
     }
     .chat-messages .name {
         margin-right: 10px;
+    }
+
+    .powerup-item .item-counter span.counter {
+        @include text-shadow(none);
     }
 }
 

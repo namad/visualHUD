@@ -2,6 +2,12 @@
 ------------------------------ */
 
 $appFormLabelWidth: 65px;
+$appFormControlHeight: 23px;
+
+@mixin appFormInputStyle {
+    padding: 2px;
+    height: $appFormControlHeight;
+}
 
 .app-form {
 
@@ -116,13 +122,13 @@ $appFormLabelWidth: 65px;
 
 
 .app-form .f-row {
+    margin: 0;
     padding: 3px 10px 3px 5px;
-    display: block;
 }
 
 .app-form .f-label {
     display: inline-block;
-    padding: 0 10px 0 0;
+    padding: 3px 10px 0 0;
     text-align: right;
     vertical-align: middle;
 }
@@ -173,4 +179,13 @@ $appFormLabelWidth: 65px;
 
 .app-form .form-buttons {
     padding-left: $appFormLabelWidth - 5px;
+}
+
+.app-form {
+    input[type=text] {
+        @include appFormInputStyle;
+    }
+    select {
+        @include appFormInputStyle;
+    }
 }

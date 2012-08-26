@@ -322,6 +322,8 @@ visualHUD.Libs.canvasDragInterface = {
         this.offsets = [];
         this.drawLine = false;
 
+        this.getView().select(this.currentElement, false);
+
         var masterElement = null,
             selection = this.getView().getSelection(),
             isMatch = false;
@@ -346,7 +348,6 @@ visualHUD.Libs.canvasDragInterface = {
             }
         }
 
-        this.getView().select(this.currentElement, false);
     },
     moveElement: function(drag, event, position, mouse){
 

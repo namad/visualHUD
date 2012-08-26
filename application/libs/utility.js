@@ -1,4 +1,10 @@
 visualHUD.Libs.utility = {
+    getGuid: function() {
+        var S4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        };
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    },
     fontToBoxSize: function(size){
         return {
             width: Math.round(104 * size),
@@ -118,7 +124,7 @@ visualHUD.Libs.utility = {
 
         return styles;
     },
-    getRCornersMarkup: function(box){
+    getRCornersMarkup: function(attributes){
         var rectMatrix = {
             '3': [
                 [0,		50, 	95],
@@ -144,14 +150,14 @@ visualHUD.Libs.utility = {
             ]
         };
 
-        var borderRadius = parseInt(box.borderRadius);
-        var baseOpacity = box.opacity;
+        var borderRadius = parseInt(attributes.borderRadius, 10);
+        var baseOpacity = parseInt(attributes.opacity, 10);
 
         var offsets = {
             topLeft: [0,0],
-            topRight: [0, box.coordinates.width - borderRadius],
-            bottomLeft: [ box.coordinates.height - borderRadius, 0],
-            bottomRight: [ box.coordinates.height - borderRadius,  box.coordinates.width - borderRadius]
+            topRight: [0, attributes.coordinates.width - borderRadius],
+            bottomLeft: [ attributes.coordinates.height - borderRadius, 0],
+            bottomRight: [ attributes.coordinates.height - borderRadius,  attributes.coordinates.width - borderRadius]
         };
 
         var matrix = rectMatrix[borderRadius];
@@ -238,19 +244,19 @@ visualHUD.Libs.utility = {
                 offset: offsets[k],
                 direction: directionsMap[k]
             }));
-        };
+        }
 
-        var offsetMap = [borderRadius, 0, box.coordinates.width - borderRadius];
+        var offsetMap = [borderRadius, 0, attributes.coordinates.width - borderRadius];
 
         for(var a = 0, b = 3; a < b; a++){
             corners.push({
                 top: a == 0 ? 0 : borderRadius,
                 left: offsetMap[a],
-                width: a == 0 ? box.coordinates.width - 2 * borderRadius : borderRadius,
-                height: box.coordinates.height - (a == 0 ? 0 : 2 * borderRadius),
+                width: a == 0 ? attributes.coordinates.width - 2 * borderRadius : borderRadius,
+                height: attributes.coordinates.height - (a == 0 ? 0 : 2 * borderRadius),
                 opacity: baseOpacity
             });
-        };
+        }
         return corners;
     }
 };

@@ -5,24 +5,29 @@ input {
 }
 
 input, textarea, select {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-family: $sansFontFamily;
     font-size: 1em;
-
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* IE 8+ */
+    margin: 0;
+    @include box-sizing(border-box);
 }
 
 input[type="text"], select {
     border: 1px solid;
-    border-color: #CCCCCC #FFF #FFF #CCC;
-    padding: 2px;
+    border-color: #CCC #FFF #FFF;
+    padding: 4px;
     line-height: 1;
+    height: 30px;
     margin: 0;
 }
 
-select {
-    padding: 2px;
+textarea {
+    height: auto;
+}
+
+input[readonly],
+select[readonly],
+textarea[readonly] {
+    background-color: $grayLighter;
 }
 
 option {
@@ -43,8 +48,84 @@ optgroup > option {
 input[type="text"]:focus {
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+    vertical-align: middle;
+    margin: 0;
+}
+
+// Position radios and checkboxes better
+input[type="radio"],
 input[type="checkbox"] {
-    border: 0 none;
-    width: 16px;
-    height: 16px;
+    margin: 1px 0 0;
+    margin-top: 1px \9; /* IE8-9 */
+    line-height: normal;
+    cursor: pointer;
+}
+
+// Reset width of input images, buttons, radios, checkboxes
+input[type="file"],
+input[type="image"],
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto; // Override of generic input selector
+}
+
+.f-row {
+    display: block;
+    margin: 0 0 10px 0;
+}
+
+.f-inputs {
+    display: block;
+}
+
+.f-hint {
+    font-size: 10px;
+    color: $silver;
+    margin: 5px 0 0 0;
+}
+
+.f-label {
+    display: block;
+    margin: 0 0 5px 0;
+    color: $white;
+}
+
+// CHECKBOXES & RADIOS
+// -------------------
+
+// Indent the labels to position radios/checkboxes as hanging
+.check-label {
+    min-height: 18px; // clear the floating input if there is no label text
+    display: block;
+    cursor: pointer;
+}
+
+.box-label {
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.checkbox-group {
+    .check-label {
+        display: block;
+        margin: 0 0 10px 0;
+    }
+    .check-label:last-child {
+        margin: 0
+    }
+}
+
+.layout-inline {
+    .check-label {
+        display: inline-block;
+        margin: 0 15px 0 0;
+    }
+    .check-label:last-child {
+        margin: 0
+    }
 }

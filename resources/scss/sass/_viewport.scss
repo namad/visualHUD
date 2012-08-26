@@ -32,6 +32,7 @@
 
 .vh-viewport-sidebar-content {
     @include viewport-region;
+    @include box-sizing(border-box);
     overflow: auto;
     border-width: 1px 0;
     position: relative;
@@ -49,7 +50,7 @@
 }
 
 .vh-viewport-center {
-    overflow: hidden;
+    overflow: visible;
     position: absolute;
 
     width: $canvasWidth;
@@ -72,6 +73,32 @@
     top: $basePostionOffset
 }
 
-.tools-off .vh-viewport-center {
-    //margin-left: -320px;
+#preloader {
+    background: #222222 url(../images/app_bg.png);
+    display: block;
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    .preloader-message {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        margin-top: -12px;
+        text-align: center;
+    }
+
+    .indicator {
+        height: 24px;
+        line-height: 24px;
+
+        display: inline-block;
+        background: url(../images/ajax_loader_24px_333.gif) no-repeat;
+        padding-left: 34px;
+        color: #FFFFFF;
+    }
+
 }

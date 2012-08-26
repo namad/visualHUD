@@ -10,7 +10,7 @@ visualHUD.Views.DownloadWindow = visualHUD.Views.Window.extend({
         'keyup input[name=hud_name]': 'validateName'
     },
     html: ([
-        '<div class="mb-10">',
+        '<div class="mb-20">',
         '<p>You are about to download your custom HUD. Please, name it and click [Download] button. </p>',
         'Don\'t know how to use a custom HUD? Check out holysh1t\'s custom <a href="http://www.holysh1t.net/quakelive-custom-hud-install-guide/" target="_blank">HUD install guide</a>.',
         '</div>'
@@ -63,7 +63,10 @@ visualHUD.Views.DownloadWindow = visualHUD.Views.Window.extend({
     },
 
     beginDownload: function() {
+        var data = this.collection.serialize();
+        console.log(data);
         this.fireEvent('download', [this]);
+        return false;
     },
 
     setFocus: function() {

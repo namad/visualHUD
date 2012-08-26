@@ -6,7 +6,8 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'TopBar',
         'StageControls',
         'GroupActionsPanel',
-        'DownloadWindow'
+        'DownloadWindow',
+        'LoadWindow'
     ],
 
     models: [
@@ -18,46 +19,42 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'StageControlsDictionary',
         'HUDItemTemplates',
         'HUDItemIconEnums',
-        'HUDItems'
+        'HUDItems',
+        'HUDPresets'
     ],
 
     initialize: function(options) {
-        this.addListeners([
-            {
-                'Viewport': {
-                    render: this.onViewportRender
-                }
+        this.addListeners({
+            'Viewport': {
+                render: this.onViewportRender
             },
-            {
-                'CanvasToolbar': {
-                    'toolbar.menu:show': this.onCanvasMenuShow,
-                    'toolbar.menu:hide': this.onCanvasMenuHide,
-                    'toolbar.menu:action': this.setCanvasOptions
-                }
+            'CanvasToolbar': {
+                'toolbar.menu:show': this.onCanvasMenuShow,
+                'toolbar.menu:hide': this.onCanvasMenuHide,
+                'toolbar.menu:action': this.setCanvasOptions
             },
-            {
-                'TopBar': {
-                    'toolbar:action': this.toolbarAction
-                }
+            'TopBar': {
+                'toolbar:action': this.toolbarAction
             },
-            {
-                'Canvas': {
-                    'selectionchange': this.onSelectionChange
-                }
+            'Canvas': {
+                'selectionchange': this.onSelectionChange
             },
-            {
-                'keyboard': {
-                    'tab': this.toggleToolbars
-                }
+            'StageControls': {
+                'scalefactor.change': this.switchScaleFactor
+            },
+            'keyboard': {
+                'fullscreen.toggle': this.toggleFullscreen
             }
-        ]);
+        });
     },
 
     onLaunch: function() {
         var clientSettingsModel = this.getModel('ClientSettings');
 
-        var viewport = this.createView('Viewport');
-        var toobar = this.createView('CanvasToolbar', {
+        var viewport = this.createView('Viewport', {
+            clientSettingsModel: clientSettingsModel
+        });
+        var toolbar = this.createView('CanvasToolbar', {
             clientSettingsModel: clientSettingsModel
         });
         var canvas = this.createView('Canvas', {
@@ -70,15 +67,13 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             collection: this.getCollection('StageControlsDictionary')
         });
 
-        toobar.render(viewport);
+        toolbar.render(viewport);
         canvas.render(viewport);
         topBar.render(viewport);
         stageControls.render(viewport);
         groupActionsPanel.render(viewport);
 
-        viewport.render([toobar, canvas, topBar, stageControls]);
-
-        clientSettingsModel.on('change', clientSettingsModel.save, clientSettingsModel);
+        viewport.render([toolbar, canvas, topBar, stageControls]);
     },
 
     onViewportRender: function(view) {
@@ -108,37 +103,41 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     /**
      * Event Handler triggered by [Download] button
      */
-    downalodHUD: function() {
+    downloadHUD: function() {
         var HUDItemsCollection = this.getCollection('HUDItems');
+        var downloadWindow = this.getView('DownloadWindow');
 
-        if(!this.downloadWindow) {
-            var winConstructor = this.getViewConstructor('DownloadWindow');
-            this.downloadWindow = new  winConstructor({
+        if(!this.getView('DownloadWindow')) {
+            this.createView('DownloadWindow', {
                 width: 600,
                 title: 'Download HUD',
-                jsonData: JSON.stringify(HUDItemsCollection.toJSON())
+                collection: HUDItemsCollection
             });
         }
 
-        this.downloadWindow.show();
+        this.application.growl.alert({
+            title: 'Oopsie',
+            message: 'Testing'
+        });
+
+        this.getView('DownloadWindow').show();
     },
 
     /**
      * Event Handler triggered by [Load Preset] button
      */
-    loadHUD: function() {
+    loadPreset: function() {
         var HUDPresetsCollection = this.getCollection('HUDPresets');
 
-        if(!this.presetWindow) {
-            var winConstructor = this.getViewConstructor('LoadWindow');
-            this.downloadWindow = new  winConstructor({
+        if(!this.getView('LoadWindow')) {
+            this.createView('LoadWindow', {
                 width: 600,
-                title: 'Load Preset',
-                jsonData: JSON.stringify(HUDItemsCollection.toJSON())
+                title: 'Import HUD',
+                presetCollection: HUDPresetsCollection
             });
         }
 
-        this.downloadWindow.show();
+        this.getView('LoadWindow').show();
     },
 
     /**
@@ -181,8 +180,20 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         this.getApplication().toolTips.enable();
     },
 
-    toggleToolbars: function(event) {
-        this.getView('Viewport').toggleToolbars();
+    toggleFullscreen: function(event) {
+        var clientSettingsModel = this.getModel('ClientSettings'),
+            fullScreenView = !clientSettingsModel.get('fullScreenView');
+
+        clientSettingsModel.set('fullScreenView', fullScreenView);
+
+        if(fullScreenView == false) {
+            this.getView('CanvasToolbar').hideMenu();
+        }
+    },
+
+    switchScaleFactor: function(scale) {
+        var path = window.location.pathname;
+        window.location.href = path + (scale == 2 ? '?large' : '');
     }
 });
 

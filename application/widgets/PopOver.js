@@ -117,6 +117,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
         this.visible = true;
         this.trigger('show', this);
 
+        $(document).bind('mousewheel.hidePopover', visualHUD.Function.bind(this.hide, this));
     },
 
     hide: function(){
@@ -133,6 +134,8 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
 
         this.visible = false;
         this.trigger('hide', this);
+
+        $(document).unbind('mousewheel.hidePopover');
     },
 
     positionsMaps: {

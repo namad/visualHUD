@@ -1,6 +1,7 @@
 //
 // Variables
 // --------------------------------------------------
+$legacy-support-for-ie: false;
 
 
 // Viewport UI
@@ -43,7 +44,7 @@ $white:                 #fff;
     @include box-shadow(rgba(0, 0, 0, 0.75) 0px 2px 15px);
 }
 @mixin light-accent-shadow {
-    @include box-shadow(lighten($grayDark, 10%) 0px 1px 0px);
+    @include box-shadow(lighten($grayDark, 7%) 0px 1px 0px);
 }
 
 

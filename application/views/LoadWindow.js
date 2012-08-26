@@ -1,59 +1,155 @@
 visualHUD.Views.LoadWindow = visualHUD.Views.Window.extend({
+    mixin: [
+        'visualHUD.Libs.formControlsBuilder',
+        'visualHUD.Libs.formBuilderMixin.base'
+    ],
     events: {
-        'click button[name=downloadHUD]': 'beginDownload',
+        'click button[name=loadHUD]': 'loadHUD',
         'click button[name=cancel]': 'hide',
-        'change input[name=hud_name]': 'validateName',
-        'keyup input[name=hud_name]': 'validateName'
+        'click input[value=custom]': 'showCustomHUDControl',
+        'click input[value=predefined]': 'showPredefinedHUDControl',
+        'keyup textarea[name=hudJSON]': 'validateHUDJSON'
     },
-    initialize: function() {
-        this.options.html = ([
-            '<div class="mb-10">',
-                '<p>You can load predefined HUD or import custom HUD previously build with Visual HUD application. In order to import custom HUD, select appropriate option from drop down below and click [Load] button.</p>',
-            '</div>',
+    html: ([
+        '<div class="mb-20">',
+        'You can load predefined HUD or import custom HUD previously build with Visual HUD application. In order to import custom HUD, select appropriate option from drop down below and click [Load] button.',
+        '</div>'
+    ]).join(''),
 
-            '<form class="mwin-form" id="loadHUDForm">',
-                '<label class="check-label"><input type="radiobutton" name="import" checked="checked" value="custom"><span class="label">Previously Downloaded</span></label>',
-                '<label class="check-label"><input type="radiobutton" name="import" value="preset"><span class="label">Predefined HUD</span></label>',
+    init: function() {
+        var form = this.buildForm([
+            {
+                type: 'form',
+                cssClass: 'mwin-form',
+                id: 'importHUDForm',
+                items: [
+                    {
+                        type: 'radiobuttonGroup',
+                        layout: 'inline',
+                        label: 'Import:',
+                        options: [
+                            {
+                                name: 'presetType',
+                                value: 'custom',
+                                boxLabel: 'Custom HUD',
+                                checked: true
+                            },
+                            {
+                                name: 'presetType',
+                                value: 'predefined',
+                                boxLabel: 'Predefined HUD'
+                            }
+                        ]
+                    },
+                    {
+                        type: 'select',
+                        cssClass: 'hidden',
+                        id: 'predefinedHUDControl',
+                        name: 'presetName',
+                        label: null,
+                        valueField: 'id',
+                        displayField: 'name',
+                        width: null,
+                        collection: this.options.presetCollection
+                    },
+                    {
+                        type: 'textarea',
+                        id: 'customHUDControl',
+                        name: 'hudJSON',
+                        label: null,
+                        rows: 10,
+                        hint: 'Custom HUD code can be found at *.vhud file. <a href="http://visualhud.pk69.com/help/import.html" target="_blank">Learn more</a>'
+                    },
+                    {
+                        type: 'toolbar',
+                        items: [
+                            {
+                                type: 'button',
+                                text: 'Load HUD',
+                                icon: 'load',
+                                role: 'main',
+                                name: 'loadHUD'
+                            },
+                            {
+                                type: 'button',
+                                text: 'Cancel',
+                                role: 'aux',
+                                name: 'cancel'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]);
 
-                '<div class="" id="customForm">',
-                '</div>',
-                '<div class="" id="presetForm">',
-                '</div>',
+        this.$content.get(0).appendChild(form);
+        this.$content.find('form').bind('change', visualHUD.Function.bind(this.validateHUDJSON, this));
 
-                '<label class="f-row">',
-                    '<span class="f-label">HUD name:</span>',
-                    '<span class="f-inputs"><input type="text" name="hud_name" size="32" maxlength="128"></span>',
-                    '<div class="f-hint">HUD name should be at least 3 characters length and contain only letters and numbers</div>',
-                '</label>',
-                '<div class="f-row">',
-                    '<button type="submit" name="downloadHUD" value="Load" class="button-main mr-5"><span class="w-icon download">Download</span></button>',
-                    '<button type="button" name="cancel" value="Cancel" class="button-aux"><span>Cancel</span></button>',
-                '</div>',
-            '</form>'
-        ]).join('');
-
-        this.on('show', this.setFocus, this);
-        this.render();
+        this.on('show', this.validateHUDJSON, this);
     },
 
-    beginDownload: function() {
-        this.fireEvent('download', [this]);
+    showCustomHUDControl: function() {
+        var customHUDControl = this.$customHUDControl || this.$('#customHUDControl');
+        var predefinedHUDControl = this.$predefinedHUDControl || this.$('#predefinedHUDControl');
+
+        this.$customHUDControl = customHUDControl.removeClass('hidden');
+        this.$predefinedHUDControl = predefinedHUDControl.addClass('hidden');
+
+        this.reposition();
+
+        this.$el.find('[name=hudJSON]').focus().select();
     },
 
-    setFocus: function() {
-        this.$el.find('input[name=hud_name]').focus();
-        this.validateName();
+    showPredefinedHUDControl: function() {
+        var customHUDControl = this.$customHUDControl || this.$('#customHUDControl');
+        var predefinedHUDControl = this.$predefinedHUDControl || this.$('#predefinedHUDControl');
+
+        this.$customHUDControl = customHUDControl.addClass('hidden');
+        this.$predefinedHUDControl = predefinedHUDControl.removeClass('hidden');
+
+        this.reposition();
+
+        this.$el.find('[name=presetName]').focus();
     },
 
-    validateName: function() {
-        var textbox = this.$textbox || this.$content.find('input[name=hud_name]').get(0);
-        var submitButton = this.$submitButton || this.$content.find('button[name=downloadHUD]');
+    validateHUDJSON: function() {
+        var textbox = this.$textarea || this.$content.find('[name=hudJSON]').get(0);
+        var isCustomPreset = this.$content.find('[name=presetType][value=custom]').get(0).checked;
+        var submitButton = this.$submitButton || this.$content.find('button[name=loadHUD]');
 
         this.$submitButton = submitButton;
         this.$textbox = textbox;
 
-        var isValid = textbox.value.length && (/^[a-z_\-\s0-9\.]{3,128}$/).test(textbox.value);
+        var isValid = !isCustomPreset;
+
+        try {
+            var data = JSON.parse(textbox.value);
+            isValid = _.isArray(data) && data.length;
+        }
+        catch(e) {
+        }
         submitButton.attr('disabled', isValid == false);
+    },
+
+    loadHUD: function() {
+        var values = this.$('#importHUDForm').serializeForm(),
+            json, data;
+
+        switch(values.presetType) {
+            case 'custom': {
+                data = values.hudJSON;
+                break;
+            }
+            case 'predefined': {
+                data = this.options.presetCollection.get(values.presetName).get('preset');
+                break;
+            }
+        }
+
+        if(data && data.length) {
+            this.fireEvent('load', [data]);
+            this.hide();
+        }
     }
 });
 

@@ -3,138 +3,194 @@
     "deployDir":".",
     "licenseText":"",
     "pkgs":[{
-        "name":"visualHUD",
+        "name":"visualHUD_APP",
         "file":"vhud-2.0.js",
         "isDebug":true,
         "fileIncludes":[
             {
                 "text":"application.js",
-                "path":""
-            },
-            {
-                "text":"ClientSettings.js",
-                "path":"models/"
-            },
-            {
-                "text":"HUDItem.js",
-                "path":"models/"
-            },
-            {
-                "text":"DictionaryAbstract.js",
-                "path":"collections/"
-            },
-            {
-                "text":"HUDItemIconEnums.js",
-                "path":"collections/"
-            },
-            {
-                "text":"HUDItems.js",
-                "path":"collections/"
-            },
-            {
-                "text":"HUDItemTemplates.js",
-                "path":"collections/"
-            },
-            {
-                "text":"StageControlsDefaults.js",
-                "path":"collections/"
-            },
-            {
-                "text":"StageControlsDictionary.js",
-                "path":"collections/"
-            },
-            {
-                "text":"HUDManager.js",
-                "path":"controllers/"
-            },
-            {
-                "text":"Viewport.js",
-                "path":"controllers/"
-            },
-            {
-                "text":"canvasDragInterface.js",
-                "path":"libs/"
-            },
-            {
-                "text":"itemBuilderMixin.js",
-                "path":"libs/"
-            },
-            {
-                "text":"layersManager.js",
-                "path":"libs/"
-            },
-            {
-                "text":"selectionManagerInterface.js",
-                "path":"libs/"
+                "path":"../application/"
             },
             {
                 "text":"utility.js",
-                "path":"libs/"
+                "path":"../application/libs/"
             },
             {
-                "text":"Canvas.js",
-                "path":"views/"
+                "text":"itemBuilderMixin.js",
+                "path":"../application/libs/"
             },
             {
-                "text":"CanvasToolbar.js",
-                "path":"views/"
+                "text":"layersManager.js",
+                "path":"../application/libs/"
             },
             {
-                "text":"GroupActionsPanel.js",
-                "path":"views/"
+                "text":"canvasDragInterface.js",
+                "path":"../application/libs/"
             },
             {
-                "text":"HUDItem.js",
-                "path":"views/"
-            },
-            {
-                "text":"StageControls.js",
-                "path":"views/"
-            },
-            {
-                "text":"TopBar.js",
-                "path":"views/"
-            },
-            {
-                "text":"Viewport.js",
-                "path":"views/"
-            },
-            {
-                "text":"FocusManager.js",
-                "path":"controllers/"
-            },
-            {
-                "text":"KeyboardManager.js",
-                "path":"controllers/"
-            },
-            {
-                "text":"colorHelper.js",
-                "path":"libs/"
-            },
-            {
-                "text":"formBuilderMixin.js",
-                "path":"libs/"
+                "text":"selectionManagerInterface.js",
+                "path":"../application/libs/"
             },
             {
                 "text":"formControlsBuilder.js",
-                "path":"libs/"
+                "path":"../application/libs/"
+            },
+            {
+                "text":"formBuilderMixin.js",
+                "path":"../application/libs/"
             },
             {
                 "text":"plugins.js",
-                "path":"libs/"
+                "path":"../application/libs/"
             },
             {
-                "text":"Window.js",
-                "path":"views/"
+                "text":"colorHelper.js",
+                "path":"../application/libs/"
+            },
+
+            {
+                "text":"DragZoneBase.js",
+                "path":"../application/utils/"
+            },
+
+            {
+                "text":"ClientSettings.js",
+                "path":"../application/models/"
             },
             {
-                "text":"DownloadWindow.js",
-                "path":"views/"
+                "text":"HUDItem.js",
+                "path":"../application/models/"
+            },
+
+            {
+                "text":"DictionaryAbstract.js",
+                "path":"../application/collections/"
+            },
+            {
+                "text":"HUDItemIconEnums.js",
+                "path":"../application/collections/"
+            },
+            {
+                "text":"HUDItems.js",
+                "path":"../application/collections/"
+            },
+            {
+                "text":"HUDItemTemplates.js",
+                "path":"../application/collections/"
+            },
+            {
+                "text":"StageControlsDictionary.js",
+                "path":"../application/collections/"
+            },
+            {
+                "text":"HUDPresets.js",
+                "path":"../application/collections/"
+            },
+
+            {
+                "text":"Viewport.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"TopBar.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"CanvasToolbar.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"Canvas.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"HUDItem.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"StageControls.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"GroupActionsPanel.js",
+                "path":"../application/views/"
             },
             {
                 "text":"HUDItemForm.js",
-                "path":"views/"
+                "path":"../application/views/"
+            },
+            {
+                "text":"Window.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"DownloadWindow.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"LoadWindow.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"ToolTip.js",
+                "path":"../application/widgets/"
+            },
+            {
+                "text":"PopOver.js",
+                "path":"../application/widgets/"
+            },
+            {
+                "text":"Growl.js",
+                "path":"../application/widgets/"
+            },
+
+            {
+                "text":"HUDManager.js",
+                "path":"../application/controllers/"
+            },
+            {
+                "text":"KeyboardManager.js",
+                "path":"../application/controllers/"
+            },
+            {
+                "text":"FocusManager.js",
+                "path":"../application/controllers/"
+            },
+            {
+                "text":"Viewport.js",
+                "path":"../application/controllers/"
             }]
+    }, {
+        "name":"visualHUD_CoreDependencies",
+        "file":"core.js",
+        "isDebug":true,
+        "fileIncludes":[
+            {
+                "text":"underscore.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"backbone.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"backbone.application.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"jquery.color.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"jquery.easing.1.3.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"rangeinput.js",
+                "path":"../resources/js/"
+            }              
+
+        ]
     }],
     "resources":[]
 }

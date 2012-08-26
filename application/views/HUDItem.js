@@ -25,6 +25,8 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         this.model.on('change', this.onModelUpdate, this);
         this.model.on('destroy', this.onModelDestroy, this);
 
+        this.model._HUDItem = this;
+
         this.render();
     },
 
@@ -60,10 +62,10 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         }
 
         this.$el.css({
-            width: this.model.get('width') || 'auto',
-            height: this.model.get('height') || 'auto',
-            top: top,
-            left: left
+            width: this.model.get('width') * visualHUD.scaleFactor || 'auto',
+            height: this.model.get('height') * visualHUD.scaleFactor || 'auto',
+            top: Math.round(top),
+            left: Math.round(left)
         });
 
         this.refreshCoordinates();
@@ -132,7 +134,6 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         this.remove();
         this.getForm().remove();
         this.options.formView = null;
-
         delete this;
     },
 
@@ -153,35 +154,31 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             fn.call(this, value);
             (refreshStatus === true) && this.refreshCoordinates();
         }
-        else {
-            console.warn('this.', methodName,' is not defined.');
-        }
     },
 
     refreshCoordinates: function() {
-        var position = this.$el.position(),
-            coordinates = {
-                top: position.top / visualHUD.scaleFactor,
-                left: position.left / visualHUD.scaleFactor,
-                height: this.$el.height() / visualHUD.scaleFactor,
-                width: this.$el.width() / visualHUD.scaleFactor
-            };
+        if(this.$el.is(':visible')) {
+            var position = this.$el.position(),
+                coordinates = {
+                    top: position.top / visualHUD.scaleFactor,
+                    left: position.left / visualHUD.scaleFactor,
+                    height: this.$el.height() / visualHUD.scaleFactor,
+                    width: this.$el.width() / visualHUD.scaleFactor
+                };
 
-        this.model.set('coordinates', coordinates);
-
-        return coordinates;
+            this.model.set('coordinates', coordinates);
+            return coordinates;
+        }
     },
 
     move: function(direction, offset) {
-        var currentPosition = _.clone(this.model.get('coordinates'));
+        var position = this.$el.position();
+        position[direction] += offset;
 
-        currentPosition[direction] += offset;
+        var newPosition = this.checkPosition(position);
 
-        var position = this.checkPosition(currentPosition);
-
-        this.model.set('coordinates', position);
-
-        this.$el.css(direction, position[direction]);
+        this.$el.css(newPosition);
+        this.refreshCoordinates();
 
     },
 
@@ -220,6 +217,14 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
 
     itemClick: function(event) {
         this.fireEvent('click', [this, event]);
+    },
+
+    getGroup: function() {
+        return this.model.get('group');
+    },
+
+    setGroup: function(name) {
+        this.model.set('group', name || null)
     },
     /*
         Abstract methods, should be defined within visualHUD.Libs.itemBuilderMixin

@@ -33,7 +33,8 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'scoreboxLayout': null,
         'scoreboxMode': null,
         'barDirection': null,
-        'resizable': false
+        'resizable': false,
+        'group': null
     },
 
     /**
@@ -134,7 +135,7 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
                 },
                 {
                     name: 'Normal',
-                    color: 'FFFFFF',
+                    color: 'FCCC30',
                     range: [26,100]
                 },
                 {
@@ -251,6 +252,15 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         }
     },
 
+    initialize: function(options) {
+//        var defaultValuesByType = this.getDefaultsByType(this.attributes.itemType) || {},
+//            defaultValuesByName = this.getDefaultsByName(this.attributes.name) || {};
+//
+//        _.extend(this.attributes, defaultValuesByType, defaultValuesByName, options || {});
+
+        this.legacyCleanUp();
+    },
+
     /**
      * Set defaults for newly created item
      * @param options
@@ -263,6 +273,8 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         // mix defaults in particular order, from more generic to more specific
         _.extend(this.attributes, options, defaultValuesByType, defaultValuesByName);
 
+
+
         return this;
     },
 
@@ -272,6 +284,50 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
 
     getDefaultsByName: function(type) {
         return this.defaultsByName[type] || null;
+    },
+
+    legacyCleanUp: function() {
+        var data = this.attributes;
+
+        // always reset obits to their default values
+        if(data.itemType == 'obits') {
+            this.set(this.getDefaultsByType(data.itemType), {silent: true});
+        }
+
+        if(data.name == 'scoreBox') {
+            if('scoreboxStyle' in data) {
+                this.set({'iconStyle': data.scoreboxStyle}, {silent: true});
+                delete datascoreboxStyle;
+            }
+
+            if('spacing' in data) {
+                this.set({'iconSpacing': data.spacing}, {silent: true});
+                delete data.spacing;
+            }
+
+            if('layout' in data) {
+                this.set({'scoreboxLayout': data.layout}, {silent: true});
+                delete data.layout;
+            }
+
+            if('mode' in data) {
+                this.set({'scoreboxMode': data.mode}, {silent: true});
+                delete data.mode;
+            }
+        }
+
+        if(data.name == 'powerupIndicator' && data.iconStyle != null) {
+            this.set({'iconStyle': null}, {silent: true});
+        }
+
+        if(data.name == 'skillIndicator' && 'opacity' in data) {
+            this.model.set({'textOpacity': data.opacity}, {silent: true});
+            delete data.opacity;
+        }
+
+        if('rbox' in data) {
+            delete data.rbox;
+        }
     }
 });
 

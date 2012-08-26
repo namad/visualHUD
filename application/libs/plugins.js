@@ -54,29 +54,29 @@
     var rinput = /color|date|datetime|email|hidden|month|number|password|range|search|tel|text|time|url|week/i;
 
     $.fn.serializeForm = function(){
-        return this.map(function () {
+        var valueObject = {};
+
+        this.map(function () {
             //return this.elements ? jQuery.makeArray(this.elements) : this;
             return jQuery.makeArray($(this).getFormElements());
         }).filter(function () {
                 return this.name && !this.disabled && (this.checked || rselectTextarea.test(this.nodeName) || rinput.test(this.type));
         }).map(function (i, elem) {
-            var val = jQuery(this).val(),
-                valueObject = {};
+            var val = jQuery(this).val();
             valueObject[elem.name] = val;
 
-            return valueObject
-
-            return val == null ? null : jQuery.isArray(val) ? jQuery.map(val, function (val, i) {
-                    return {
-                        name: elem.name,
-                        value: val
-                    };
-                }) : {
-                    name: elem.name,
-                    value: val
-                };
+//            return val == null ? null : jQuery.isArray(val) ? jQuery.map(val, function (val, i) {
+//                    return {
+//                        name: elem.name,
+//                        value: val
+//                    };
+//                }) : {
+//                    name: elem.name,
+//                    value: val
+//                };
             }).get();
 
+        return valueObject;
     };
 
     $.fn.deserialize = function(d,config) {

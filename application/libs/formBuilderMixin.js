@@ -108,6 +108,18 @@ visualHUD.Libs.formBuilderMixin = {
             }
         },
 
+        getGradientOptions: function() {
+            return {
+                '0': 'Solid',
+                'Gradient': {
+                    '1': 'Top to bottom',
+                    '2': 'Bottom to top',
+                    '3': 'Left to right',
+                    '4': 'Right to left'
+                }
+            }
+        },
+
         getTextColorInput: function() {
             return this.getColorInputBasic({
                 'name': 'textColor',
@@ -250,7 +262,7 @@ visualHUD.Libs.formBuilderMixin = {
                             'type': 'checkbox',
                             'name': 'teamColors',
                             'boxLabel': 'Use team colors',
-                            'value': this.model.get('teamColors')
+                            'checked': this.model.get('teamColors')
                         }
                     ]
                 },
@@ -284,7 +296,7 @@ visualHUD.Libs.formBuilderMixin = {
                         },
                         {
                             'type': 'alignControl',
-                            'label': 'Allign'
+                            'label': 'Align'
                         }
                     ]
                 }
@@ -367,7 +379,7 @@ visualHUD.Libs.formBuilderMixin = {
                             'type': 'checkbox',
                             'name': 'singlePowerup',
                             'boxLabel': 'Show single icon',
-                            'value': this.model.get('singlePowerup')
+                            'checked': this.model.get('singlePowerup')
                         }
                     ]
                 },
@@ -419,15 +431,8 @@ visualHUD.Libs.formBuilderMixin = {
                     type: 'fieldset',
                     label: 'Text Properties',
                     items: [
-                        {
-                            'type': 'textbox',
-                            'name': 'textColor',
-                            'label': 'Color',
-                            'size': 10,
-                            'maxlength': 6,
-                            'value': this.model.get('textColor')
-                        },
                         this.getTextStyleSelect(),
+                        this.getTextColorInput(),
                         this.getTextSizeInput(),
                         this.getTextOpacityInput()
                     ]
@@ -469,8 +474,7 @@ visualHUD.Libs.formBuilderMixin = {
                             'size': 32,
                             'maxlength': '64',
                             'value': this.model.get('template')
-                        },
-                        this.getTextOpacityInput()
+                        }
                     ]
                 },
                 {
@@ -480,6 +484,17 @@ visualHUD.Libs.formBuilderMixin = {
                         this.getTextStyleSelect(),
                         this.getTextSizeInput(),
                         this.getTextOpacityInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Color Range',
+                    items: [
+                        {
+                            'type': 'colorRange',
+                            'name': 'colorRanges',
+                            'ranges': this.model.get('colorRanges')
+                        }
                     ]
                 },
                 {
@@ -734,18 +749,6 @@ visualHUD.Libs.formBuilderMixin = {
     },
 
     'rect': {
-        getGradientOptions: function() {
-            return {
-                '0': 'Solid',
-                'Gradient': {
-                    '1': 'Top to bottom',
-                    '2': 'Bottom to top',
-                    '3': 'Left to right',
-                    '4': 'Right to left'
-                }
-            }
-        },
-
         createControls: function(form) {
             var markup = [
                 {
@@ -778,13 +781,13 @@ visualHUD.Libs.formBuilderMixin = {
                             'type': 'checkbox',
                             'name': 'teamColors',
                             'boxLabel': 'Use team colors',
-                            'value': this.model.get('teamColors')
+                            'checked': this.model.get('teamColors')
                         },
                         {
                             'type': 'checkbox',
                             'name': 'teamColors',
                             'boxLabel': 'Use team colors',
-                            'value': this.model.get('teamColors')
+                            'checked': this.model.get('teamColors')
                         }
                     ]
                 },
@@ -844,7 +847,7 @@ visualHUD.Libs.formBuilderMixin = {
                             'type': 'checkbox',
                             'name': 'showChat',
                             'boxLabel': 'Show chat',
-                            'value': this.model.get('showChat')
+                            'checked': this.model.get('showChat')
                         }
                     ]
                 },

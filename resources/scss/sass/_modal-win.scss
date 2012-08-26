@@ -107,36 +107,32 @@
     z-index: 99;
 }
 
+.mwin-form {
+    input[type=text],
+    input[type=password],
+    textarea,
+    select {
+        width: 100%;
+    }
 
-.xpk-win-content .f-label {
-    display: block;
-    margin: 0 0 5px 0;
-}
+    .layout-inline {
+        white-space: nowrap;
 
-.xpk-win-content .f-row {
-    display: block;
-    margin: 0 0 10px 0;
-}
-
-.xpk-win-content input,
-.xpk-win-content select,
-.xpk-win-content textarea {
-    padding: 5px;
-    border: 1px inset #CCC;
-    width: 100%;
-}
-
-.xpk-win-content input,
-.xpk-win-content select {
-    height: 30px;
-}
-
-.xpk-win-content .f-hint {
-    font-size: 10px;
-    color: #CCC;
-    margin: 5px 0 0 0;
-}
-
-.xpk-win-content .app-form {
-    height: auto !important;
+        .f-label,
+        .f-inputs {
+            display: inline-block;
+            margin: 0 10px 0 0;
+            vertical-align: middle;
+        }
+        .f-inputs {
+            margin: 0;
+        }
+        .check-label {
+            display: inline-block;
+            margin: 0 15px 0 0;
+        }
+        .check-label:last-child {
+            margin: 0
+        }
+    }
 }

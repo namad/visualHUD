@@ -56,8 +56,8 @@ _.extend(visualHUD.Utils.DragZoneBase.prototype, {
         }
 
         if(this.options.init) {
-            this.options.init.call(this);
-        };
+            this.options.init.apply(this.scope, [this]);
+        }
 
         return this;
     },

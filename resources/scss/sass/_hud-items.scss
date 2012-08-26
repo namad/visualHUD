@@ -148,11 +148,11 @@ body.draw .hud-item,
 }
 
 .item-counter span.textstyle-2 {
-    text-shadow: 1px 1px 0px #000;
+    @include text-shadow(1px 1px 0px #000);
 }
 
 .item-counter span.textstyle-3 {
-    text-shadow: 2px 2px 0px #000;
+    @include text-shadow(2px 2px 0px #000);
 }
 
 .accuracy .item-counter {
@@ -262,7 +262,7 @@ body.draw .hud-item,
 }
 
 .powerup-item .item-counter span.counter {
-    text-shadow: none;
+    @include text-shadow(none);
 }
 
 .powerup-item:last-child {
@@ -316,7 +316,7 @@ body.draw .hud-item,
     margin-top: 3px;
     display: none;
     font-family: Aero;
-    text-shadow: 1px 1px 0px #000;
+    @include text-shadow(1px 1px 0px #000);
     padding-left: 3px;
     letter-spacing: 0.1em;
 }

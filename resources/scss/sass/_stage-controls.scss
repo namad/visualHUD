@@ -1,3 +1,10 @@
+@mixin active-item-state {
+    background-color: #292929;
+    border-color: #131313 #1e1e1e #1e1e1e;
+    @include box-shadow(0 1px #3d3d3d);
+    color: $white;
+}
+
 .library-items {
     list-style: none;
 }
@@ -6,31 +13,26 @@
     cursor: move;
     display: block;
     float: left;
-    margin: 0 8px 8px 0;
+    margin: 0 10px 10px 0;
     border: 1px solid;
     border-color: #292929 #292929 #131313;
-    width: 47px;
-    height: 47px;
+    @include min-width(46px);
+    @include min-height(46px);
     background-position: center center;
     background-repeat: no-repeat;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-}
+    @include border-radius(3px);
+    @include box-shadow(inset 0 1px #484848, 0 1px #3d3d3d);
 
-.library-items li:hover {
-    background-color: #292929;
-    border-color: #131313 #1e1e1e #1e1e1e;
-}
+    &:hover,
+    &.active {
+        @include active-item-state
+    }
 
-.library-items li.active {
-    background-color: #292929;
-    border-color: #131313 #1e1e1e #1e1e1e;
-}
+    &.disabled,
+    &.drag-start {
+        opacity: 0.25;
+    }
 
-.library-items li.disabled,
-.library-items li.drag-start {
-    opacity: 0.25;
 }
 
 .lib-element-health {
@@ -102,63 +104,117 @@
 }
 
 .icons-24px li {
-    width: 22px;
-    height: 22px;
+    @include min-width(22px);
+    @include min-height(22px);
     cursor: pointer;
-    margin: 0 2px 0 0;
+    margin: 0 4px 0 0;
 }
 
 .icons-32px li {
-    width: 30px;
-    height: 30px;
+    @include min-width(30px);
+    @include min-height(30px);
     cursor: pointer;
-    margin: 0 2px 0 0;
+    margin: 0 6px 0 0;
 }
 
 .align-controls li {
     background-image: url(../images/icons/align_icons_sprite.png);
-}
 
-.align-controls li.align-top {
-    background-position: 0 0;
-}
+    &.align-top {
+        background-position: 0 0;
+    }
 
-.align-controls li.align-vertical {
-    background-position: -24px 0;
-}
+    &.align-vertical {
+        background-position: -24px 0;
+    }
 
-.align-controls li.align-bottom {
-    background-position: -48px 0;
-}
+    &.align-bottom {
+        background-position: -48px 0;
+    }
 
-.align-controls li.align-left {
-    background-position: -72px 0;
-}
+    &.align-left {
+        background-position: -72px 0;
+    }
 
-.align-controls li.align-horizontal {
-    background-position: -96px 0;
-}
+    &.align-horizontal {
+        background-position: -96px 0;
+    }
 
-.align-controls li.align-right {
-    background-position: -120px 0;
+    &.align-right {
+        background-position: -120px 0;
+    }
 }
 
 .arrange-controls li {
     background-image: url(../images/icons/arrange_icons_sprite.png);
+    &.bring-front {
+        background-position: -1px -1px;
+    }
+
+    &.send-back {
+        background-position: -25px -1px;
+    }
+
+    &.send-backward {
+        background-position: -49px -1px;
+    }
+
+    &.bring-forward {
+        background-position: -73px -1px;
+    }
 }
 
-.arrange-controls li.bring-front {
-    background-position: -1px -1px;
+.group-action-controls li {
+
+    background-position: 50% 50%;
+
+    &.delete {
+        background-image: url(../images/btn_ico_trash.png);
+    }
+    &.group {
+        background-image: url(../images/btn_ico_group.png);
+    }
 }
 
-.arrange-controls li.send-back {
-    background-position: -25px -1px;
+.stage-controls-drag-helper {
+    z-index: 1000;
+    width: 47px;
+    height: 47px;
+    border: 1px dotted #CCC;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
-.arrange-controls li.send-backward {
-    background-position: -49px -1px;
+.viewport-size-controls li {
+    margin: 0 5px 0 0;
+    background-repeat: no-repeat;
+    background-position: 10px 50%;
+    .item-name {
+        display: block;
+        line-height: 30px;
+        padding: 0 10px 0 35px;
+        color: #BBB;
+    }
+    &.normal-viewport {
+        background-image: url(../images/btn_icon_editor_normal.png);
+    }
+    &.doubled-viewport {
+        background-image: url(../images/btn_icon_editor_large.png);
+    }
 }
 
-.arrange-controls li.bring-forward {
-    background-position: -73px -1px;
+.scale-factor-1 li.normal-viewport {
+    @include active-item-state;
+}
+
+.scale-factor-2 li.doubled-viewport {
+    @include active-item-state;
+}
+
+.new-item-drag .hud-canvas {
+    outline: 2px solid #FFF;
+}
+
+.new-item-drop-over .hud-canvas {
+    outline: 2px solid #0099cc !important;
 }

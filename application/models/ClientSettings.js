@@ -1,5 +1,8 @@
 visualHUD.Models.ClientSettings = Backbone.Model.extend({
     defaults: {
+        'scaleFactor': 1,
+        'fullScreenView': false,
+        'pinSidebar': true,
         'lagometr': false,
         'speedometr': false,
         'pickup': false,
@@ -22,10 +25,16 @@ visualHUD.Models.ClientSettings = Backbone.Model.extend({
             savedSettings = JSON.parse(savedSettings)
             this.set(savedSettings)
         }
+        this.on('change', this.save, this);
     },
 
     save: function() {
         var data = this.toJSON();
+        var reset = {
+            fullScreenView: false
+        };
+        _.extend(data, reset);
+
         window.localStorage.setItem('vhudClient', JSON.stringify(data));
     },
 
