@@ -116,16 +116,13 @@ visualHUD.Views.Window = Backbone.View.extend({
 
         this.$contentWrapper.addClass('xpk-win-show').css({'width': 10, 'height':10});
 
-        var animateWindow = $.proxy(this.animateWindow, this);
+        var animateWindow = visualHUD.Function.bind(this.animateWindow, this, [animateToWidth,animateToHeight, topBounds]);
 
         if($.showModalOverlay) {
-            $.showModalOverlay(200, 0.70,
-                function(){
-                    animateWindow(animateToWidth,animateToHeight, topBounds);
-                });
+            $.showModalOverlay(200, 0.70, animateWindow);
         }
         else {
-            animateWindow(animateToWidth,animateToHeight, topBounds);
+            animateWindow();
         }
     },
 
@@ -175,8 +172,8 @@ visualHUD.Views.Window = Backbone.View.extend({
         var options = this.options;
         var element = this.$el;
 
-        var reposition = $.proxy(this.reposition, this);
-        var keyboardListiner = $.proxy(this.keyboardListiner, this);
+        var reposition = visualHUD.Function.createBuffered(this.reposition, 200, this);
+        var keyboardListener = visualHUD.Function.bind(this.keyboardListiner, this);
 
 
         this.$el.css({
@@ -200,7 +197,7 @@ visualHUD.Views.Window = Backbone.View.extend({
                 me.fireEvent('show', [me]);
 
                 $(window).bind('resize.windowReposition', reposition);
-                $(document).bind('keyup.windowKeyboardListiner', keyboardListiner);
+                $(document).bind('keyup.windowKeyboardListiner', keyboardListener);
             }
         });
 
@@ -213,17 +210,18 @@ visualHUD.Views.Window = Backbone.View.extend({
     },
 
     reposition: function() {
-        var _duration = 250;
-        var _top = this.getTopPosition([0, this.$el.height()]);
-        var _easing = jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing';
+        if(this.$el.is(':visible')) {
+            var _duration = 250;
+            var _top = this.getTopPosition([0, this.$el.height()]);
+            var _easing = jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing';
 
-        this.$el.animate({
-            top: _top[1]
-        },{
-            easing: _easing,
-            duration: _duration
-        });
-
+            this.$el.animate({
+                top: _top[1]
+            },{
+                easing: _easing,
+                duration: _duration
+            });
+        }
     },
 
     keyboardListiner: function(event) {

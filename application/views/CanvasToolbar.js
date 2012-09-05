@@ -117,6 +117,12 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
                     value: 1,
                     name: 'pickup',
                     label: 'Item Pickup'
+                },
+                {
+                    control: 'checkbox',
+                    value: 1,
+                    name: 'recordingMessage',
+                    label: 'Demo Recording Message'
                 }
             ]
         },
@@ -219,7 +225,7 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         'click .player-status form': 'stopPropagation',
         'click li.root-item ul': 'onSubmenuClick',
         'click li.root-item': 'onRootitemClick',
-        'mouseover li.root-item.ul': 'stopPropagation'
+        'mouseover li.root-item ul': 'stopPropagation'
     },
 
     initialize: function() {
@@ -250,6 +256,7 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         this.$el.append(tpl);
 
         this.renderPlayerStatusControls();
+        this.renderImageImportMenuItem();
 
         var clientSettingsModel = this.options.clientSettingsModel;
         this.setClientSettings(clientSettingsModel.toJSON());
@@ -322,6 +329,22 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         });
 
         playerStatusListItem.append(form);
+    },
+
+    renderImageImportMenuItem: function() {
+        var submenuElement = this.$el.find('li.shot-toggle ul'),
+            importLinkTpl = ([
+                '<a href="#" class="set-custom-bg">',
+                    'Import image',
+                '</a>'
+            ]).join(''),
+            menuItem = $('<li />').html(importLinkTpl).appendTo(submenuElement),
+            importLink = menuItem.find('a.set-custom-bg');
+
+        importLink.click(visualHUD.Function.bind(function(event) {
+            this.fireEvent('import.image');
+            event.preventDefault();
+        }, this));
     },
 
     onRootitemClick: function(event) {

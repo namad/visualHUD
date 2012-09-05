@@ -15,6 +15,8 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
         width: 200
     },
 
+    rendered: false,
+
     initialize: function(options) {
         this.$el.append(this.htmlTpl.join(''));
 
@@ -29,11 +31,11 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
         };
 
         this.getDOMRefs();
-        this.render();
     },
 
     render: function() {
         this.$el.appendTo(document.body);
+        this.rendered = true;
     },
 
     getDOMRefs: function() {
@@ -62,6 +64,10 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
     },
 
     show: function(event){
+
+        if(this.rendered == false) {
+            this.render();
+        }
 
         if(this.$activeElement == null) {
             return;

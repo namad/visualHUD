@@ -5,6 +5,13 @@
     color: $white;
 }
 
+@mixin default-item-state {
+    background-color: transparent;
+    border-color: #292929 #292929 #131313;
+    @include box-shadow(inset 0 1px #484848, 0 1px #3d3d3d);
+    color: $silver;
+}
+
 .library-items {
     list-style: none;
 }
@@ -15,13 +22,14 @@
     float: left;
     margin: 0 10px 10px 0;
     border: 1px solid;
-    border-color: #292929 #292929 #131313;
+    
+    @include default-item-state;
     @include min-width(46px);
     @include min-height(46px);
+    @include border-radius(3px);
+    
     background-position: center center;
     background-repeat: no-repeat;
-    @include border-radius(3px);
-    @include box-shadow(inset 0 1px #484848, 0 1px #3d3d3d);
 
     &:hover,
     &.active {
@@ -32,8 +40,226 @@
     &.drag-start {
         opacity: 0.25;
     }
-
+    
+    .icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-position: center center;
+        background-repeat: no-repeat;        
+    }
+    .item-name {
+        display: none;
+    }
 }
+
+.ctrl-group li.ctrl{
+    margin: 0;
+    position: relative;
+    @include border-radius(0);
+
+    &:hover,
+    &.active {
+        z-index: 2;
+    }
+}
+
+.ctrl-group > .ctrl + .ctrl {
+  margin-left: -1px;
+}
+
+.ctrl-group > .ctrl:first-child {
+    @include border-radius(3px 0 0 3px);
+}
+
+.ctrl-group > .ctrl:last-child {
+    @include border-radius(0 3px 3px 0);
+}
+
+.icons-24px li {
+    @include min-width(22px);
+    @include min-height(22px);
+    cursor: pointer;
+    margin: 0 4px 0 0;
+    
+    .icon {
+        width: 22px;
+        height: 22px;
+    }    
+}
+
+.icons-32px li {
+    @include min-width(30px);
+    @include min-height(30px);
+    cursor: pointer;
+    margin: 0 6px 0 0;
+    
+    .icon {
+        width: 30px;
+        height: 30px;
+    } 
+}
+
+.align-controls li  {
+    .icon {
+         background-image: url(../images/icons/align_icons_sprite.png);
+    } 
+
+    &.align-top .icon {
+        background-position: 0 0;
+    }
+
+    &.align-vertical  .icon{
+        background-position: -24px 0;
+    }
+
+    &.align-bottom  .icon{
+        background-position: -48px 0;
+    }
+
+    &.align-left  .icon{
+        background-position: -72px 0;
+    }
+
+    &.align-horizontal  .icon{
+        background-position: -96px 0;
+    }
+
+    &.align-right  .icon{
+        background-position: -120px 0;
+    }
+}
+
+.arrange-controls li {
+    .icon {
+        background-image: url(../images/icons/arrange_icons_sprite.png);
+    }    
+    &.bring-front .icon {
+        background-position: -1px -1px;
+    }
+
+    &.send-back  .icon {
+        background-position: -25px -1px;
+    }
+
+    &.send-backward  .icon {
+        background-position: -49px -1px;
+    }
+
+    &.bring-forward  .icon {
+        background-position: -73px -1px;
+    }
+}
+
+.group-action-controls li {
+
+    background-position: 50% 50%;
+
+    &.delete {
+        background-image: url(../images/btn_ico_trash.png);
+    }
+    &.group {
+        background-image: url(../images/btn_ico_group.png);
+    }
+}
+
+.stage-controls-drag-helper {
+    z-index: 1000;
+    width: 47px;
+    height: 47px;
+    border: 1px dotted #CCC;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.viewport-size-controls,
+.viewport-layout-controls {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.viewport-size-controls .ctrl,
+.viewport-layout-controls .ctrl {
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    @include min-width(36px);
+    
+    .item-name {
+        display: none;
+        line-height: 30px;
+        padding: 0 10px 0 35px;
+        color: #BBB;
+    }
+}
+
+.viewport-size-controls,
+.viewport-layout-controls {
+    .normal-viewport {
+        background-image: url(../images/btn_icon_editor_normal.png);
+    }
+    .doubled-viewport {
+        background-image: url(../images/btn_icon_editor_large.png);
+    }
+    .normal-layout {
+        background-image: url(../images/btn_ico_layout_full.png);
+    }
+    .compact-layout {
+        background-image: url(../images/btn_ico_layout_compact.png);
+    }    
+}
+
+.tools-off .viewport-layout-controls  {
+    .compact-layout {
+        @include active-item-state;
+        z-index: 2;            
+    }
+}
+
+.tools-on .viewport-layout-controls  {
+    .normal-layout {
+        @include active-item-state;
+        z-index: 2;            
+    }
+}
+
+.scale-factor-1 li.normal-viewport {
+    @include active-item-state;
+    z-index: 2;
+}
+
+.scale-factor-2 li.doubled-viewport {
+    @include active-item-state;
+    z-index: 2;
+}
+
+.align-popover {
+    .popover-title {
+        display: none;
+    }
+    .popover-content {
+        padding: 9px;
+    }
+    .align-controls li{
+        @include box-shadow(none);
+        float: none;
+        border: 0 none;
+        padding: 3px 0;
+    }
+    .align-controls .item-name {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 8px;
+        padding-right: 8px;
+    }
+    .align-controls .icon {
+        margin-left: 5px;
+    }    
+}
+
+
+/*
+Icons
+*/
+
 
 .lib-element-health {
     background-image: url(../images/icons/create_health.png);
@@ -97,124 +323,4 @@
 
 .lib-element-chat {
     background-image: url(../images/icons/create_chat.png);
-}
-
-.library-items li .item-name {
-    display: none;
-}
-
-.icons-24px li {
-    @include min-width(22px);
-    @include min-height(22px);
-    cursor: pointer;
-    margin: 0 4px 0 0;
-}
-
-.icons-32px li {
-    @include min-width(30px);
-    @include min-height(30px);
-    cursor: pointer;
-    margin: 0 6px 0 0;
-}
-
-.align-controls li {
-    background-image: url(../images/icons/align_icons_sprite.png);
-
-    &.align-top {
-        background-position: 0 0;
-    }
-
-    &.align-vertical {
-        background-position: -24px 0;
-    }
-
-    &.align-bottom {
-        background-position: -48px 0;
-    }
-
-    &.align-left {
-        background-position: -72px 0;
-    }
-
-    &.align-horizontal {
-        background-position: -96px 0;
-    }
-
-    &.align-right {
-        background-position: -120px 0;
-    }
-}
-
-.arrange-controls li {
-    background-image: url(../images/icons/arrange_icons_sprite.png);
-    &.bring-front {
-        background-position: -1px -1px;
-    }
-
-    &.send-back {
-        background-position: -25px -1px;
-    }
-
-    &.send-backward {
-        background-position: -49px -1px;
-    }
-
-    &.bring-forward {
-        background-position: -73px -1px;
-    }
-}
-
-.group-action-controls li {
-
-    background-position: 50% 50%;
-
-    &.delete {
-        background-image: url(../images/btn_ico_trash.png);
-    }
-    &.group {
-        background-image: url(../images/btn_ico_group.png);
-    }
-}
-
-.stage-controls-drag-helper {
-    z-index: 1000;
-    width: 47px;
-    height: 47px;
-    border: 1px dotted #CCC;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-.viewport-size-controls li {
-    margin: 0 5px 0 0;
-    background-repeat: no-repeat;
-    background-position: 10px 50%;
-    .item-name {
-        display: block;
-        line-height: 30px;
-        padding: 0 10px 0 35px;
-        color: #BBB;
-    }
-    &.normal-viewport {
-        background-image: url(../images/btn_icon_editor_normal.png);
-    }
-    &.doubled-viewport {
-        background-image: url(../images/btn_icon_editor_large.png);
-    }
-}
-
-.scale-factor-1 li.normal-viewport {
-    @include active-item-state;
-}
-
-.scale-factor-2 li.doubled-viewport {
-    @include active-item-state;
-}
-
-.new-item-drag .hud-canvas {
-    outline: 2px solid #FFF;
-}
-
-.new-item-drop-over .hud-canvas {
-    outline: 2px solid #0099cc !important;
 }

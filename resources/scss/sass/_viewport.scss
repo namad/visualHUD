@@ -73,6 +73,35 @@
     top: $basePostionOffset
 }
 
+
+.pin-sidebar-action {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    display: none;
+}
+.tools-off .pin-sidebar-action {
+    display: block;
+}
+.pin-sidebar-icon {
+    width: 100%;
+    height: 100%;
+    background: url(../images/pin-sidebar-icon.png) no-repeat 0 32px;
+    cursor: pointer;
+}
+
+.vh-viewport-sidebar:hover .pin-sidebar-icon {
+    background-position: 0 0;
+}
+
+.sidebar-pinned .pin-sidebar-icon {
+    background-position: 0 -32px!important;
+}
+
+
 #preloader {
     background: #222222 url(../images/app_bg.png);
     display: block;
@@ -82,7 +111,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    
+
     .preloader-message {
         position: absolute;
         width: 100%;

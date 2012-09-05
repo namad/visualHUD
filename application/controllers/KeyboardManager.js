@@ -50,6 +50,16 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             return false;
         }
 
+        if(event.keyCode == this.keyCodeMap.V && event.ctrlKey){
+            this.fireEvent('keyboard', 'clone', [event]);
+            return false;
+        }
+
+        if(event.keyCode == this.keyCodeMap.Z && event.ctrlKey){
+            this.fireEvent('keyboard', 'undo', [event]);
+            return false;
+        }
+
         if(this.isMoveKeyPressed(event.keyCode)) {
             var delta = this.getMoveDelta(event);
             var direction = this.getMoveDirection(event.keyCode);

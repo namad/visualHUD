@@ -107,17 +107,9 @@ a span {
     cursor: pointer;
 }
 
-a:visited {
-}
-
 a:hover {
     text-decoration: none;
-    color: #c33;
 }
-
-a:active {
-}
-
 /* Fonts preferences
 ------------------------------ */
 .f-9 {
@@ -449,4 +441,20 @@ code {
 .f-right {
     float: right !important;
     zoom: 100%;
+}
+
+.rbox-3 {
+    @include border-radius(3px);
+}
+
+.rbox-5 {
+    @include border-radius(5px);
+}
+
+.rbox-8 {
+    @include border-radius(8px);
+}
+
+.rbox-10 {
+    @include border-radius(10px);
 }

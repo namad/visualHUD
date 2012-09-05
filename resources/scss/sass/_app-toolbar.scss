@@ -205,6 +205,7 @@
         display: block;
         padding: 0px 15px;
         border-top: 1px solid #333;
+        margin: 0;
     }
     .f-row:first-child {
         border: 0 none;
@@ -213,6 +214,11 @@
         display: inline-block;
         vertical-align: middle;
         width: 50px;
+        margin: 0;
+    }
+
+    .range {
+        height: 23px;
     }
 }
 
@@ -220,8 +226,8 @@
 .app-toolbar a.set-custom-bg {
     display: inline-block;
     line-height: 30px;
-    padding-left: 38px;
-    background: url(../images/btn_ico_import.png) no-repeat 13px center;
+    padding-left: 33px;
+    background: url(../images/btn_ico_plus_small.png) no-repeat 13px center;
     text-decoration: none;
     color: #666;
 }

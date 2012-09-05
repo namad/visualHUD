@@ -20,7 +20,6 @@ $growlBgBevelDark: darken($growlBgColor, 5%);
 
 .growl-message-wrapper {
     margin: 0;
-    color: $white;
     width: 100%;
 }
 
@@ -29,6 +28,7 @@ $growlBgBevelDark: darken($growlBgColor, 5%);
     margin: 3px;
     border: 1px solid;
     border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
+    color: lighten($growlBgColor, 50%);
     @include box-sizing(border-box);
     @include box-shadow(rgba(0, 0, 0, 0.9) 0px 1px 5px);
     width: 100%;
@@ -49,14 +49,13 @@ $growlBgBevelDark: darken($growlBgColor, 5%);
     .message {
         font-size: 1.1em;
         padding: 20px;
-        padding-top: 15px;
         text-align: left;
     }
 
     h4 {
         font-size: 1.5em;
         font-weight: normal;
-        margin-bottom: 5px;
+        margin: -5px 0 5px;
         color: #FFF;
         line-height: 25px;
         height: 25px;
@@ -76,6 +75,7 @@ $growlBgBevelDark: darken($growlErrorBg, 5%);
     .growl-message {
         background: rgba($growlErrorBg, 0.9);
         border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
+        color: lighten($growlErrorBg, 55%);
     }
 }
 
@@ -87,6 +87,7 @@ $growlBgBevelDark: darken($growlWarnBg, 5%);
     .growl-message {
         background-color: rgba($growlWarnBg, 0.9);
         border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
+        color: lighten($growlWarnBg, 55%);
     }
 
 }
@@ -99,6 +100,7 @@ $growlBgBevelDark: darken($growlSuccessBg, 5%);
     .growl-message {
         background-color: rgba($growlSuccessBg, 0.9);
         border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
+        color: lighten($growlBgBevelLight, 55%);
     }
 
 }

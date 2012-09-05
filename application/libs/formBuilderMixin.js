@@ -823,6 +823,7 @@ visualHUD.Libs.formBuilderMixin = {
                     items: [
                         this.getWidthInput(),
                         this.getHeightInput(),
+                        this.getPaddingInput(),
                         this.getSelectBasic({
                             'name': 'borderRadius',
                             'label': 'Rounded',

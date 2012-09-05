@@ -288,19 +288,20 @@ visualHUD.Libs.canvasDragInterface = {
     },
     resizeBoxDrop: function(){
         var HUDItemView = this.currentElement.data('HUDItem');
-        var size = this.positionCache;
 
         this.positionCache.height = Math.max(HUDItemView.model.get('minHeight') * visualHUD.scaleFactor + HUDItemView.model.get('padding') * 2 * visualHUD.scaleFactor, this.positionCache.height);
         this.positionCache.width = Math.max(HUDItemView.model.get('minWidth') * visualHUD.scaleFactor + HUDItemView.model.get('padding') * 2 * visualHUD.scaleFactor, this.positionCache.width);
 
-        this.currentElement.css(this.positionCache);
-
-        // update model with new data
-        HUDItemView.model.set('width', this.positionCache.width);
-        HUDItemView.model.set('height', this.positionCache.height);
-
-        // update form values with new data
-        HUDItemView.getForm().setValues(size, {silent: true});
+        HUDItemView.update({
+            coordinates: {
+                top: Math.round(this.positionCache.top / visualHUD.scaleFactor),
+                left: Math.round(this.positionCache.left / visualHUD.scaleFactor),
+                width: Math.round(this.positionCache.width / visualHUD.scaleFactor),
+                height: Math.round(this.positionCache.height / visualHUD.scaleFactor)
+            },
+            width: this.positionCache.width,
+            height: this.positionCache.height
+        });
 
         // set default state for drop manager
         this.setMode(null);
@@ -322,7 +323,7 @@ visualHUD.Libs.canvasDragInterface = {
         this.offsets = [];
         this.drawLine = false;
 
-        this.getView().select(this.currentElement, false);
+        this.getView().select(this.currentElement, true);
 
         var masterElement = null,
             selection = this.getView().getSelection(),

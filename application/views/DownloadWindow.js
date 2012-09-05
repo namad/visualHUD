@@ -27,6 +27,12 @@ visualHUD.Views.DownloadWindow = visualHUD.Views.Window.extend({
                 items: [
                     {
                         type: 'textbox',
+                        name: 'hud_data',
+                        inputType: 'hidden',
+                        wrap: false
+                    },
+                    {
+                        type: 'textbox',
                         name: 'hud_name',
                         label: 'HUD name',
                         size: 32,
@@ -63,10 +69,16 @@ visualHUD.Views.DownloadWindow = visualHUD.Views.Window.extend({
     },
 
     beginDownload: function() {
-        var data = this.collection.serialize();
-        console.log(data);
-        this.fireEvent('download', [this]);
-        return false;
+        try {
+            var data = this.collection.serialize();
+            this.$el.find('input[name=hud_data]').val(JSON.stringify(data));
+            this.fireEvent('download', [this]);
+            this.hide();
+        }
+        catch(e) {
+            throw(e.message);
+            return false;
+        }
     },
 
     setFocus: function() {

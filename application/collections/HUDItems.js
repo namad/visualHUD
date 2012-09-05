@@ -38,6 +38,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
         if(data && data.length) {
             try {
                 this.reset(data, {silent: true});
+                this.cleanDefaultChat();
                 success = true;
             }
             catch(e) {
@@ -48,12 +49,29 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
         this.trigger('load', success);
     },
 
+    cleanDefaultChat: function() {
+        var defaultChat = this.where({
+            name: 'chatArea',
+            isDefaultChat: true
+        });
+        if(defaultChat.length) {
+            this.remove(defaultChat, {silent: true});
+        }
+    },
+
     /**
      * Prepare data for HUD download
      * @return {Array}
      */
     serialize: function() {
-        var outputData = [];
+        var outputData = [],
+            defaultChat = new this.model();
+
+        defaultChat.setDefaultValues({
+            isDefaultChat: true,
+            itemType: 'chatArea',
+            name: 'chatArea'
+        });
 
         this.each(function(record) {
             var HUDItemView = record._HUDItem,
@@ -77,11 +95,11 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
 
             if(data.itemType == 'textItem'){
                 data.textCoordinates = {
-                    top: refs.text[0].offsetTop / visualHUD.scaleFactor,
-                    left: refs.text[0].offsetLeft / visualHUD.scaleFactor,
-                    width: refs.text.eq(0).width() / visualHUD.scaleFactor,
-                    height: refs.text.eq(0).height() / visualHUD.scaleFactor
-                };
+                    top: refs.templateText[0].offsetTop / visualHUD.scaleFactor,
+                    left: refs.templateText[0].offsetLeft / visualHUD.scaleFactor,
+                    width: refs.templateText.eq(0).width() / visualHUD.scaleFactor,
+                    height: refs.templateText.eq(0).height() / visualHUD.scaleFactor
+                }
                 data.counterCoordinates = {
                     top: refs.counter[0].offsetTop / visualHUD.scaleFactor,
                     left: refs.counter[0].offsetLeft / visualHUD.scaleFactor,
@@ -90,7 +108,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
                 };
             }
 
-            if(data.itemType == 'rect' || data.itemType == 'chatArea'){
+            if(data.itemType == 'rect'){
                 var borderRadius = parseInt(data.borderRadius, 10);
                 if(borderRadius > 0) {
                     data.boxStyle = 0;
@@ -98,8 +116,15 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
                 }
             }
 
+            if(data.name == 'chatArea') {
+                defaultChat = null;
+            }
+
             outputData.push(data);
         });
+
+        defaultChat && outputData.push(defaultChat.toJSON());
+        defaultChat = null;
 
         return outputData;
     }

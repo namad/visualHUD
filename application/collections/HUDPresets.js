@@ -39,7 +39,7 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
                         "text":"100",
                         "textColor":"FFFFFF",
                         "coordinates":{
-                            "top":436,
+                            "top":435,
                             "left":400,
                             "width":127,
                             "height":35,

@@ -48,6 +48,7 @@ visualHUD.Widgets.Growl = Backbone.View.extend({
 
     disabled: false,
     visible: false,
+    rendered: false,
 
     initialize: function(options) {
 
@@ -56,11 +57,12 @@ visualHUD.Widgets.Growl = Backbone.View.extend({
         this.$el.css({margin: this.options.offset}).addClass(this.options.position);
 
         this.bindEvents();
-        this.render();
+
     },
 
     render: function() {
         this.$el.appendTo(document.body);
+        this.rendered = true;
         this.trigger('render', this);
     },
 
@@ -81,6 +83,10 @@ visualHUD.Widgets.Growl = Backbone.View.extend({
     },
 
     alert: function(options) {
+
+        if(this.rendered == false) {
+            this.render();
+        }
 
         if (this.options.single) {
             this.$el.children().remove();
@@ -106,6 +112,8 @@ visualHUD.Widgets.Growl = Backbone.View.extend({
         hideFn();
 
         this.trigger('show', [this]);
+
+        return $messageElement;
     },
 
     hide: function($element) {

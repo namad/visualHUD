@@ -24,25 +24,31 @@ visualHUD.Views.StageControls = Backbone.View.extend({
         '</ul>',
         '</div>',
         '<div class="sidebar-block stage-controls" id="editorSettingsArea">',
-        '<h4>Editor Size</h4>',
-        '<ul class="library-items icons-32px viewport-size-controls clearfloat">',
-            '<li data-viewportsize="1" data-tooltip="640x480" class="normal-viewport"><span class="item-name">Normal</span></li>',
-            '<li data-viewportsize="2" data-tooltip="1280x960" class="doubled-viewport"><span class="item-name">Doubled</span></li>',
+        '<h4>Editor Size and Layout</h4>',
+        '<ul class="library-items icons-32px viewport-size-controls ctrl-group clearfloat">',
+            '<li data-viewportsize="1" data-tooltip="Normal<small>640x480</small>" class="ctrl normal-viewport"><span class="item-name">Normal</span></li>',
+            '<li data-viewportsize="2" data-tooltip="Doubled<small>1280x960</small>" class="ctrl doubled-viewport"><span class="item-name">Doubled</span></li>',
         '</ul>',
+        '<ul class="library-items icons-32px viewport-layout-controls ctrl-group clearfloat">',
+            '<li data-layout="false" data-tooltip="Full Layout" class="ctrl normal-layout"><span class="item-name">Normal</span></li>',
+            '<li data-layout="true" data-tooltip="Compact Layout" class="ctrl compact-layout"><span class="item-name">Doubled</span></li>',
+        '</ul>',        
         '</div>'
     ],
 
     stageControlTpl: [
-        '<li class="<%= cssClass %>"  data-id="<%= id %>" data-tooltip="<%= label %>">',
+        '<li class="<%= cssClass %>"  id="<%= id %>" data-id="<%= id %>" data-tooltip="<%= label %>">',
         '<span class="item-name"><%= label %></span>',
         '</li>'
     ],
 
     events: {
         'mousedown #stageControlsArea li': 'startDrag',
-        'click #editorSettingsArea li': 'switchEditorSize',
-        'mouseenter #editorSettingsArea li': 'exposeEditor',
-        'mouseleave #editorSettingsArea li': 'maskEditor'
+        'dblclick #stageControlsArea li': 'dropHUDItem',
+        'click .viewport-size-controls li': 'switchEditorSize',
+        'click .viewport-layout-controls li': 'switchEditorLayout',
+        'mouseenter .viewport-size-controls li': 'exposeEditor',
+        'mouseleave .viewport-size-controls li': 'maskEditor'
     },
 
     initialize: function() {
@@ -86,7 +92,7 @@ visualHUD.Views.StageControls = Backbone.View.extend({
                 dragManager.ghost.addClass('stage-controls-drag-helper');
             },
             onbeforestart: function(){
-                dropArea = this.getCanvasPosition();
+                dropArea = this.viewport.getCanvasView().getCanvasOffset();
                 hudCanvas = this.viewport.$centerArea;
             },
             onstart: function(dragManager){
@@ -137,7 +143,7 @@ visualHUD.Views.StageControls = Backbone.View.extend({
 
         if($target.hasClass('disabled')){
             return false;
-        };
+        }
 
         this.dragManager.start(event, $target);
 
@@ -146,31 +152,27 @@ visualHUD.Views.StageControls = Backbone.View.extend({
         return false;
     },
 
+    dropHUDItem: function(event) {
+        var $target = $(event.currentTarget),
+            id = $target.data().id,
+            record = this.collection.get(id),
+            dropArea = this.viewport.getCanvasView().getCanvasOffset();
+
+        if($target.hasClass('disabled')){
+            return false;
+        }
+
+        this.fireEvent('item.drop', [record, {
+            top: Math.round(dropArea.height/2),
+            left: Math.round(dropArea.width/2)
+        }]);
+    },
+
     switchEditorSize: function(event) {
         var $target = $(event.currentTarget),
             scale = parseInt($target.data('viewportsize'), 10);
 
         this.fireEvent('scalefactor.change', [scale]);
-
-
-    },
-
-    getCanvasPosition: function(){
-        var canvas = this.viewport.$centerArea;
-        var offset = canvas.offset();
-        var size = {
-            width: canvas.width(),
-            height: canvas.height()
-        };
-        var canvasPosition = {
-            top: offset.top,
-            left: offset.left,
-            right: offset.left + size.width,
-            bottom: offset.top + size.height
-        };
-
-        $.extend(canvasPosition, size);
-        return canvasPosition;
     },
 
     exposeEditor: function() {
@@ -181,6 +183,33 @@ visualHUD.Views.StageControls = Backbone.View.extend({
     maskEditor: function() {
         var hudCanvasWrap = this.viewport.$centerArea;
         hudCanvasWrap.removeClass('new-item-drop-over');
+    },
+
+    switchEditorLayout: function(event) {
+        var $target = $(event.currentTarget),
+            layout = $target.data('layout');
+            
+        this.fireEvent('layout.change', [layout]);
+    },
+    
+    updateControlsStatus: function(event, name) {
+        var element = this.$('#' + name),
+            record = this.collection.get(name),
+            isSingle = record.get('isSingle'),
+            clsFn = 'addClass';
+
+        switch(event) {
+            case 'create': {
+                clsFn = 'addClass';
+                break;
+            }
+            case 'destroy': {
+                clsFn = 'removeClass';
+                break;
+            }
+        }
+
+        isSingle && element[clsFn]('disabled');
     }
 
 });

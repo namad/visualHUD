@@ -41,23 +41,31 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
      * Hash Map that contains item specific defaults by name
      */
     defaultsByName: {
-        'chatArea': {
-            padding: 5,
-            toggleChat: false,
-            width: 640,
-            height: 150,
+        'chatArea':{
             coordinates: {
-                top: 0,
+                top: 285,
                 left: 0,
                 width: 640,
-                height: 150
-            }
+                height: 160
+            },
+            showChat: false,
+            color: '000000',
+            opacity: 75,
+            padding: 3,
+            width: 640,
+            height: 160,
+            minWidth: 1,
+            minHeight: 1,
+            maxWidth: 640,
+            maxHeight: 480,
+            boxStyle: 2,
+            borderRadius: 0
         },
         'timer': {
             colorRanges: [],
             text: '2:47'
         },
-        ammoIndicator: {
+        'ammoIndicator': {
             colorRanges: [
                 {
                     name: 'Low',
@@ -195,25 +203,7 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             },
             resizable: true
         },
-        'chatArea':{
-            coordinates: {
-                top: 301,
-                left: 0,
-                width: 640,
-                height: 120
-            },
-            color: '000000',
-            opacity: 75,
-            padding: 3,
-            width: 640,
-            height: 120,
-            minWidth: 1,
-            minHeight: 1,
-            maxWidth: 640,
-            maxHeight: 480,
-            boxStyle: 2,
-            borderRadius: 0
-        },
+
         'bar': {
             colorRanges: [
                 {
@@ -253,11 +243,6 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
     },
 
     initialize: function(options) {
-//        var defaultValuesByType = this.getDefaultsByType(this.attributes.itemType) || {},
-//            defaultValuesByName = this.getDefaultsByName(this.attributes.name) || {};
-//
-//        _.extend(this.attributes, defaultValuesByType, defaultValuesByName, options || {});
-
         this.legacyCleanUp();
     },
 
@@ -321,12 +306,20 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         }
 
         if(data.name == 'skillIndicator' && 'opacity' in data) {
-            this.model.set({'textOpacity': data.opacity}, {silent: true});
+            this.set({'textOpacity': data.opacity}, {silent: true});
             delete data.opacity;
         }
 
         if('rbox' in data) {
             delete data.rbox;
+        }
+
+        if('iconCoordinates' in data) {
+            delete data.iconCoordinates;
+        }
+
+        if('textCoordinates' in data) {
+            delete data.textCoordinates;
         }
     }
 });

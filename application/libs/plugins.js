@@ -1,4 +1,6 @@
 (function($){
+    $.event.props.push('dataTransfer');
+
     $.fn.coordinates = function(_relative, _margin) {
         if ( !this[0] ) return { top: 0, left: 0, right:0, bottom: 0, width: 0, height: 0 };
         var fn = _relative ? 'position' : 'offset';

@@ -14,9 +14,9 @@ visualHUD.Libs.selectionManagerInterface = {
         }
 
         var inGroup = view.getGroup();
-        var alreadyPresent = _.include(this.selection, view);
+        var alreadyPresent = this.isSelected(view);
 
-        if(alreadyPresent == false) {
+        if(this._selectionDisabled == false) {
             if(multiple == false) {
                 this.deselect();
             }
@@ -34,6 +34,10 @@ visualHUD.Libs.selectionManagerInterface = {
         if(inGroup) {
             this.selectByGroup(inGroup);
         }
+    },
+
+    isSelected: function(element) {
+        return _.include(this.selection, element);
     },
 
     deselect: function() {
@@ -77,12 +81,11 @@ visualHUD.Libs.selectionManagerInterface = {
         return this.selection;
     },
 
-    preventDeselect: function() {
+    disableSelection: function() {
         this._selectionDisabled = true;
-        this.selection.length = 0;
     },
 
-    enableDeselect: function() {
+    enableSelection: function() {
         this._selectionDisabled = false;
     },
 

@@ -34,6 +34,18 @@ visualHUD.Libs.formControlsBuilder = {
             size: '',
             label: 'Textbox',
             name: 'textbox',
+            inputType: 'text',
+            value: '',
+            maxlength: '',
+            hint: null,
+            wrap: true
+        },
+        fileInput: {
+            size: '',
+            label: 'Fileinput',
+            noFileMessage: 'No file selected',
+            text: 'Browse...',
+            name: 'file',
             value: '',
             maxlength: '',
             hint: null,
@@ -134,7 +146,7 @@ visualHUD.Libs.formControlsBuilder = {
             '<div class="form-toolbar clearfloat"></div>'
         ],
         textbox: [
-            '<input type="text" size="<%= size %>" name="<%= name %>" value="<%= value %>" maxlength="<%= maxlength %>"  />'
+            '<input type="<%= inputType %>" size="<%= size %>" name="<%= name %>" value="<%= value %>" maxlength="<%= maxlength %>"  />'
         ],
         textarea: [
             '<textarea name="<%= name %>" rows="<%= rows %>" cols="<%= cols %>"><%= value %></textarea>'
@@ -143,6 +155,12 @@ visualHUD.Libs.formControlsBuilder = {
             '<fieldset>',
             '<legend><%= label %></legend>',
             '</fieldset>'
+        ],
+        fileInput: [
+            '<span class="file-input">',
+                '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" /></span>',
+                '<span class="file-name"><%= noFileMessage %></span>',
+            '</span>'
         ],
         rangeInput: [
             '<div class="slider"><div class="progress"></div><input type="button" class="handle" /></div>',
@@ -162,20 +180,20 @@ visualHUD.Libs.formControlsBuilder = {
         ],
         alignControl: [
             '<ul class="library-items align-controls icons-24px clearfloat">',
-            '<li class="align-top" data-action="top" data-tooltip="Align top edges"><span class="item-name">Align top edges</span></li>',
-            '<li class="align-vertical" data-action="vertical" data-tooltip="Align vertical centers"><span class="item-name">Align vertical centers</span></li>',
-            '<li class="align-bottom" data-action="bottom" data-tooltip="Align bottom edges"><span class="item-name">Align bottom edges</span></li>',
-            '<li class="align-left" data-action="left" data-tooltip="Align left edges"><span class="item-name">Align left edges</span></li>',
-            '<li class="align-horizontal" data-action="horizontal" data-tooltip="Align horizontal centers"><span class="item-name">Align horizontal centers</span></li>',
-            '<li class="align-right" data-action="right" data-tooltip="Align right edges"><span class="item-name">Align right edges</span></li>',
+            '<li class="align-top" data-action="top" data-tooltip="Align top edges"><span class="icon"></span><span class="item-name">Top edges</span></li>',
+            '<li class="align-vertical" data-action="vertical" data-tooltip="Align vertical centers"><span class="icon"></span><span class="item-name">Vertical centers</span></li>',
+            '<li class="align-bottom" data-action="bottom" data-tooltip="Align bottom edges"><span class="icon"></span><span class="item-name">Bottom edges</span></li>',
+            '<li class="align-left" data-action="left" data-tooltip="Align left edges"><span class="icon"></span><span class="item-name">Left edges</span></li>',
+            '<li class="align-horizontal" data-action="horizontal" data-tooltip="Align horizontal centers"><span class="icon"></span><span class="item-name">Horizontal centers</span></li>',
+            '<li class="align-right" data-action="right" data-tooltip="Align right edges"><span class="icon"></span><span class="item-name">Right edges</span></li>',
             '</ul>'
         ],
         arrangeControl: [
             '<ul class="library-items arrange-controls icons-24px clearfloat">',
-            '<li class="bring-front" data-action="bring-front" data-tooltip="Bring to front <small>(CTRL + SHIFT + UP)</small>"><span class="item-name">Bring to front <small>(CTRL + SHIFT + UP)</small></span></li>',
-            '<li class="send-back" data-action="send-back" data-tooltip="Send to back <small>(CTRL + SHIFT + DOWN)</small>"><span class="item-name">Send to back <small>(CTRL + SHIFT + DOWN)</small></span></li>',
-            '<li class="bring-forward" data-action="bring-forward" data-tooltip="Bring forward <small>(CTRL + UP)</small>"><span class="item-name">Bring forward <small>(CTRL + UP)</small></span></li>',
-            '<li class="send-backward" data-action="send-backward" data-tooltip="Send backward <small>(CTRL + DOWN)</small>"><span class="item-name">Send backward <small>(CTRL + DOWN)</small></span></li>',
+            '<li class="bring-front" data-action="bring-front" data-tooltip="Bring to front <small>(CTRL + SHIFT + UP)</small>"><span class="icon"></span><span class="item-name">Bring to front <small>(CTRL + SHIFT + UP)</small></span></li>',
+            '<li class="send-back" data-action="send-back" data-tooltip="Send to back <small>(CTRL + SHIFT + DOWN)</small>"><span class="icon"></span><span class="item-name">Send to back <small>(CTRL + SHIFT + DOWN)</small></span></li>',
+            '<li class="bring-forward" data-action="bring-forward" data-tooltip="Bring forward <small>(CTRL + UP)</small>"><span class="icon"></span><span class="item-name">Bring forward <small>(CTRL + UP)</small></span></li>',
+            '<li class="send-backward" data-action="send-backward" data-tooltip="Send backward <small>(CTRL + DOWN)</small>"><span class="icon"></span><span class="item-name">Send backward <small>(CTRL + DOWN)</small></span></li>',
             '</ul>'
         ],
         groupActionsControl: [
@@ -316,9 +334,29 @@ visualHUD.Libs.formControlsBuilder = {
         attributes.cssClass += attributes.role ? ' button-' + attributes.role : '';
         attributes.icon = attributes.icon ? 'w-icon ' + attributes.icon : '';
 
+
+
         return this.createFormControl(attributes);
     },
 
+
+    createFileInput: function(attributes) {
+        attributes.cssClass += attributes.role ? ' button-' + attributes.role : '';
+        var element = this.createFormControl(attributes);
+        var fileinput = element.find('input[type=file]');
+        var filename = element.find('span.file-name');
+
+        var defaults = this.getDefaultsByType(attributes.type);
+        attributes = _.extend({}, defaults, attributes);
+
+        fileinput.bind('change', function() {
+            var value = $(this).val(),
+                fileName = value.split(/\\/).pop();
+            filename.text(fileName || attributes.noFileMessage);
+        });
+
+        return element;
+    },
 
     createColorRange:function (attributes) {
         var template = ([

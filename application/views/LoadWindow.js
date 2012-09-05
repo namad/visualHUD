@@ -58,7 +58,7 @@ visualHUD.Views.LoadWindow = visualHUD.Views.Window.extend({
                         name: 'hudJSON',
                         label: null,
                         rows: 10,
-                        hint: 'Custom HUD code can be found at *.vhud file. <a href="http://visualhud.pk69.com/help/import.html" target="_blank">Learn more</a>'
+                        hint: 'Custom HUD code can be found at *.vhud file. <a href="help/import.html" target="_blank">Learn more</a>'
                     },
                     {
                         type: 'toolbar',
@@ -73,6 +73,7 @@ visualHUD.Views.LoadWindow = visualHUD.Views.Window.extend({
                             {
                                 type: 'button',
                                 text: 'Cancel',
+                                action: 'reset',
                                 role: 'aux',
                                 name: 'cancel'
                             }
@@ -86,6 +87,7 @@ visualHUD.Views.LoadWindow = visualHUD.Views.Window.extend({
         this.$content.find('form').bind('change', visualHUD.Function.bind(this.validateHUDJSON, this));
 
         this.on('show', this.validateHUDJSON, this);
+        this.on('hide', this.reset, this);
     },
 
     showCustomHUDControl: function() {
@@ -129,6 +131,11 @@ visualHUD.Views.LoadWindow = visualHUD.Views.Window.extend({
         catch(e) {
         }
         submitButton.attr('disabled', isValid == false);
+    },
+
+    reset: function() {
+        this.$content.find('form').get(0).reset();
+        this.showCustomHUDControl();
     },
 
     loadHUD: function() {

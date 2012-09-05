@@ -169,6 +169,8 @@ visualHUD.Views.Viewport = Backbone.View.extend({
         }
 
         this.$el.toggleClass('tools-off', state);
+        this.$el.toggleClass('tools-on', !state);
+        
         $(window).trigger('resize.form');
     },
 

@@ -7,7 +7,8 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'StageControls',
         'GroupActionsPanel',
         'DownloadWindow',
-        'LoadWindow'
+        'LoadWindow',
+        'ImportImageWindow'
     ],
 
     models: [
@@ -31,16 +32,19 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             'CanvasToolbar': {
                 'toolbar.menu:show': this.onCanvasMenuShow,
                 'toolbar.menu:hide': this.onCanvasMenuHide,
-                'toolbar.menu:action': this.setCanvasOptions
+                'toolbar.menu:action': this.setCanvasOptions,
+                'import.image': this.importImage
             },
             'TopBar': {
-                'toolbar:action': this.toolbarAction
+                'toolbar.global:action': this.toolbarAction
             },
             'Canvas': {
-                'selectionchange': this.onSelectionChange
+                'selectionchange': visualHUD.Function.createBuffered(this.onSelectionChange, 50, this),
+                'import.image': this.importImage
             },
             'StageControls': {
-                'scalefactor.change': this.switchScaleFactor
+                'scalefactor.change': this.switchScaleFactor,
+                'layout.change': this.toggleFullscreen
             },
             'keyboard': {
                 'fullscreen.toggle': this.toggleFullscreen
@@ -89,6 +93,17 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         clientSettings.set(data.name,  value);
     },
 
+    importImage: function() {
+        if(!this.getView('ImportImageWindow')) {
+            this.createView('ImportImageWindow', {
+                width: 600,
+                title: 'Import Custom Background'
+            });
+        }
+
+        this.getView('ImportImageWindow').show();
+    },
+
     /**
      * Event handler triggered by visualHUD.Views.TopBar action
      * @param action
@@ -101,7 +116,7 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     },
 
     /**
-     * Event Handler triggered by [Download] button
+     * Event Handler triggered by TopBar [Download] button
      */
     downloadHUD: function() {
         var HUDItemsCollection = this.getCollection('HUDItems');
@@ -115,16 +130,29 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             });
         }
 
-        this.application.growl.alert({
-            title: 'Oopsie',
-            message: 'Testing'
-        });
+        if(HUDItemsCollection.length > 0) {
+            this.getView('DownloadWindow').show();
+        }
+        else {
+            var $alert = this.application.growl.alert({
+                title: 'Oops ;(',
+                status: 'warning',
+                message: ([
+                    '<p>Nothing to download, mate. Try to add new items or import custom HUD first.</p>',
+                    '<a href="#" class="import">Import now</a>'
+                ]).join('')
+            });
 
-        this.getView('DownloadWindow').show();
+            $alert.find('a.import').click(visualHUD.Function.bind(function() {
+                this.loadPreset();
+                this.application.growl.hide($alert);
+                return false;
+            }, this));
+        }
     },
 
     /**
-     * Event Handler triggered by [Load Preset] button
+     * Event Handler triggered by TopBar [Load Preset] button
      */
     loadPreset: function() {
         var HUDPresetsCollection = this.getCollection('HUDPresets');
@@ -141,14 +169,14 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     },
 
     /**
-     * Event Handler triggered by [Restart Application] button
+     * Event Handler triggered by TopBar [Restart Application] button
      */
     restartApplication: function() {
         window.location.reload();
     },
 
     /**
-     * Event Handler triggered by [Report Bug] button
+     * Event Handler triggered by TopBar [Report Bug] button
      */
     reportBug: function() {
 
@@ -162,14 +190,13 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
 
         if(selection.length == 1) {
             selection[0].getForm().show()
-        }
-        else if( selection.length > 1) {
-            this.getView('GroupActionsPanel').show();
-        }
-        else if(selection.length == 0) {
+        }        
+        else {
             this.getView('StageControls').show();
             this.application.getController('FocusManager').blur();
         }
+        
+        this.getView('TopBar').updateToolbarButtonsState(selection.length);
     },
 
     onCanvasMenuShow: function() {
@@ -180,10 +207,14 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         this.getApplication().toolTips.enable();
     },
 
-    toggleFullscreen: function(event) {
+    toggleFullscreen: function(arg) {        
         var clientSettingsModel = this.getModel('ClientSettings'),
             fullScreenView = !clientSettingsModel.get('fullScreenView');
 
+        if(typeof arg == 'boolean') {
+            fullScreenView = arg;
+        }
+        
         clientSettingsModel.set('fullScreenView', fullScreenView);
 
         if(fullScreenView == false) {

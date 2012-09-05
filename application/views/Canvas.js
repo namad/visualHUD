@@ -103,12 +103,12 @@ visualHUD.Views.Canvas = Backbone.View.extend({
 
                 this.$el.parent().attr('class', originalClassName);
 
-//                if(_this.client[name] < 4){
-//                    visualHUD.imageimport.dropImage();
-//                } else if(_this.client[name] == 4){
-//                    visualHUD.imageimport.setCustomBackground();
-//                }
-                //_this.canvas.css('background-image', '');
+                if(value < 3){
+                    this.$customImage && this.$customImage.hide();
+                }
+                else if(value == 3){
+                    this.setCustomBackground();
+                }
                 return;
             }
 
@@ -153,7 +153,7 @@ visualHUD.Views.Canvas = Backbone.View.extend({
             if(resizeHandle.length){
                 this.dragManager.setMode('resize').start(event, resizeHandle);
                 return false;
-            };
+            }
 
             if(hudItem.length) {
                 this.dragManager.setMode('move').start(event, hudItem);
@@ -201,6 +201,40 @@ visualHUD.Views.Canvas = Backbone.View.extend({
             var view = $(this).data('HUDItem');
             view.refreshCoordinates();
         });
+    },
+
+    setCustomBackground: function() {
+        var clientSettingsModel = this.options.clientSettingsModel;
+        var prev = clientSettingsModel.previous('canvasShot');
+        var src = clientSettingsModel.get('customBackground');
+
+        this.$customImage = this.$customImage || $('<img/>').css({ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'none'}).prependTo(this.$el);
+
+        if(src) {
+            this.$customImage.attr('src', src).show();
+        }
+        else {
+            if(visualHUD.growl) {
+                var $alert =  visualHUD.growl.alert({
+                    status: 'warning',
+                    title: 'No custom image',
+                    message: 'Custom background was not imported yet. Would you like to <a href="#" class="import">import</a>?'
+                });
+
+                $alert.find('a.import').click(visualHUD.Function.bind(function() {
+                    this.fireEvent('import.image');
+                    visualHUD.growl.hide($alert);
+                    return false;
+                }, this));
+            }
+            visualHUD.Function.createDelayed(function(attr, value) {
+                var data = {};
+                data[attr] = value;
+                clientSettingsModel.set(data);
+                this.viewport.getCanvasToolbarView().setClientSettings(data);
+            }, 10, this, ['canvasShot', prev])();
+        }
+
     }
 });
 

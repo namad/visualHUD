@@ -27,6 +27,8 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
 
         this.model._HUDItem = this;
 
+        this.delayedStatusUpdate = visualHUD.Function.createBuffered(this.refreshCoordinates, 10, this);
+
         this.render();
     },
 
@@ -38,7 +40,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         var resizable = this.model.get('resizable');
 
         this.$el.addClass(this.options.htmlTplRecord.get('cssClass'));
-        this.$el.html(htmlTpl);
+        this.$el.append(htmlTpl);
         this.$el.css({visibility: 'hidden'});
 
         if(this.model.get('resizable') == true) {
@@ -56,10 +58,6 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             height = coordinates.height,
             top = this.model.wasDropped ? coordinates.top - this.$el.height() / 2 : coordinates.top * visualHUD.scaleFactor,
             left = this.model.wasDropped ? coordinates.left - this.$el.width() / 2 : coordinates.left * visualHUD.scaleFactor;
-
-        if(this.model.wasDropped) {
-
-        }
 
         this.$el.css({
             width: this.model.get('width') * visualHUD.scaleFactor || 'auto',
@@ -103,6 +101,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
 
         if(!refs) {
             this.refs = {
+                layoutBox: this.$el.find('div.hud-item-layout'),
                 iconBlock: this.$el.find('div.item-icon'),
                 icon: this.$el.find('div.item-icon img'),
                 textBlock: this.$el.find('div.item-counter'),
@@ -134,14 +133,18 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         this.remove();
         this.getForm().remove();
         this.options.formView = null;
-        delete this;
+
+        this.fireEvent('destroy', [this.model]);
     },
 
     onModelUpdate: function(record, event) {
         var changes = event.changes;
 
+        console.info(' > HUD Item', record.get('name'), 'model has changed', JSON.stringify(changes));
+
         _.each(changes, function(set, field) {
-            set && this.callUpdateMethodByField(field, true);
+            var refreshStatus = field.match(/coordinates|width|height|padding|textSize|iconSize|iconSpacing|iconPosition/gi) != null;
+            set && this.callUpdateMethodByField(field, refreshStatus);
         }, this);
     },
 
@@ -150,23 +153,30 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             methodName = 'update' + field.charAt(0).toUpperCase() + field.substring(1),
             fn = this[methodName]; // these methods are from visualHUD.Libs.itemBuilderMixin
 
+        console.info(' > Updating HUD Item property', field, 'with new value:', value);
+
         if(_.isFunction(fn)) {
             fn.call(this, value);
-            (refreshStatus === true) && this.refreshCoordinates();
+            (refreshStatus === true) && this.delayedStatusUpdate(true);
         }
     },
 
-    refreshCoordinates: function() {
+    refreshCoordinates: function(silent) {
         if(this.$el.is(':visible')) {
+
+            console.info(' > Updating HUD Item Coordinates. isSilent:', silent || false);
+
             var position = this.$el.position(),
                 coordinates = {
-                    top: position.top / visualHUD.scaleFactor,
-                    left: position.left / visualHUD.scaleFactor,
-                    height: this.$el.height() / visualHUD.scaleFactor,
-                    width: this.$el.width() / visualHUD.scaleFactor
+                    top: Math.round(position.top / visualHUD.scaleFactor),
+                    left: Math.round(position.left / visualHUD.scaleFactor),
+                    height: Math.round(this.$el.height() / visualHUD.scaleFactor),
+                    width: Math.round(this.$el.width() / visualHUD.scaleFactor)
                 };
 
-            this.model.set('coordinates', coordinates);
+            this.model.set('coordinates', coordinates, {silent: silent});
+            (silent == true) && this.getForm().updateStatusBar();
+
             return coordinates;
         }
     },
@@ -226,9 +236,25 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
     setGroup: function(name) {
         this.model.set('group', name || null)
     },
+
+    update: function(data) {
+        console.info(' > Updating HUD Item', this.model.get('name'), JSON.stringify(data));
+
+        var form = this.getForm();
+        this.model.set(data);
+        form.setValues(data, {silent: true});
+    },
     /*
         Abstract methods, should be defined within visualHUD.Libs.itemBuilderMixin
     */
+    updateCoordinates: function(values) {
+        console.info(' > Updating HUD Item coordinates', JSON.stringify(values));
+        this.$el.css({
+            top: values.top * visualHUD.scaleFactor,
+            left: values.left * visualHUD.scaleFactor
+        });
+    },
+
     updateTextSize: function(value) {
     },
 

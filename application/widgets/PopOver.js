@@ -10,6 +10,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
     ],
 
     defaults: {
+        cls: '',
         opacity: 1,
         maxWidth: 500,
         offset: 10,
@@ -39,6 +40,10 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
         this.$corner.css('display', 'none');
         this.$el.css('display', 'none');
 
+        if(this.options.cls) {
+            this.$el.addClass(this.options.cls);
+        }
+        
         this.bindEvents();
         this.getDOMRefs();
         this.render();

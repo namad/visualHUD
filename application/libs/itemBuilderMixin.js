@@ -19,10 +19,9 @@ visualHUD.Libs.itemBuilderMixin = {
             var size = parseInt(value, 10) * visualHUD.scaleFactor,
                 textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
 
-            this.getDOMRefs().textBlock.width(textboxSize.width).height(textboxSize.height);
+            this.getDOMRefs().textBlock.width(textboxSize.width).height(textboxSize.height).css('line-height', textboxSize.height + 'px');
 
             this.getDOMRefs().counter.css({
-                'line-height': textboxSize.height + 'px',
                 'font-size': size + '%'
             });
         },
@@ -90,6 +89,10 @@ visualHUD.Libs.itemBuilderMixin = {
         updateIconSize: function(value) {
             var size = parseInt(value, 10) * visualHUD.scaleFactor;
 
+            this.getDOMRefs().icon.css({
+
+            });
+
             this.getDOMRefs().iconBlock.css({
                 'width': size + 'px',
                 'height': size + 'px',
@@ -141,6 +144,19 @@ visualHUD.Libs.itemBuilderMixin = {
             this.updateTextColorByStatus(text, value)
         }
 
+    },
+
+    'timer': {
+        updateTextSize: function(value) {
+            var size = parseInt(value, 10) * visualHUD.scaleFactor,
+                textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
+
+            this.getDOMRefs().textBlock.height(textboxSize.height).css('line-height', textboxSize.height + 'px');
+
+            this.getDOMRefs().counter.css({
+                'font-size': size + '%'
+            });
+        }
     },
 
     'powerupIndicator': {
@@ -202,7 +218,9 @@ visualHUD.Libs.itemBuilderMixin = {
             var size = parseInt(value, 10) * visualHUD.scaleFactor;
 
             var textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
-            this.getDOMRefs().textBlock.height(textboxSize.height);
+
+            this.getDOMRefs().textBlock.height(textboxSize.height).css('line-height', textboxSize.height + 'px');
+            this.$el.height(textboxSize.height).css('line-height', textboxSize.height + 'px');
 
             var textCss = {
                 'line-height': textboxSize.height + 'px',
@@ -242,12 +260,57 @@ visualHUD.Libs.itemBuilderMixin = {
             this.getDOMRefs().chatList.css({padding: padding});
         },
 
-        updateToggleChat: function(value) {
+        updateShowChat: function(value) {
             var toggleClass = (value ? 'add' : 'remove') + 'Class';
             this.$el[toggleClass]('chat-visible');
 
             toggleClass = (value ? 'remove' : 'add') + 'Class';
             this.$el[toggleClass]('chat-invisible');
+        },
+
+        updateWidth: function(value) {
+            var width = parseInt(value, 10),
+                height = this.model.get('height'),
+                padding = this.model.get('padding');
+
+            this.updateDimensions(width, height, padding);
+
+        },
+
+        updateHeight: function(value) {
+            var height = parseInt(value, 10),
+                width = this.model.get('width'),
+                padding = this.model.get('padding');
+
+            this.updateDimensions(width, height, padding);
+        },
+
+        updatePadding: function(value) {
+            var padding = parseInt(value, 10),
+                width = this.model.get('width'),
+                height = this.model.get('height');
+            this.updateDimensions(width, height, padding);
+        },
+
+        updateDimensions: function(width, height, padding) {
+            width *=  visualHUD.scaleFactor;
+            height *=  visualHUD.scaleFactor;
+            padding *= visualHUD.scaleFactor;
+
+            var minHeight = 2 * padding + this.model.get('minHeight') * visualHUD.scaleFactor;
+            var minWidth = 2 * padding + this.model.get('minWidth') * visualHUD.scaleFactor;
+
+            var w = Math.max(minWidth, width);
+            var h = Math.max(minHeight, height);
+
+
+            w = this.model.get('maxWidth') ? Math.min(this.model.get('maxWidth') * visualHUD.scaleFactor, w) : w;
+            this.$el.width(w);
+
+            h = this.model.get('maxHeight') ? Math.min(this.model.get('maxHeight') * visualHUD.scaleFactor, h) : h;
+            this.$el.height(h);
+
+            this.getDOMRefs().chatList.css('margin', padding);
         }
     },
 
@@ -509,7 +572,7 @@ visualHUD.Libs.itemBuilderMixin = {
             var color = $.color('#' + this.model.get('color'));
             var opacity = this.model.get('opacity')/100 ;
 
-            var renderGradient = style > 0 || parseInt(this.model.get('borderRadius'), 10) == 0;
+            var renderGradient = style > 0 && parseInt(this.model.get('borderRadius'), 10) == 0;
 
             if(renderGradient) {
                 this.getDOMRefs().box.css('background', color.hex);
@@ -528,6 +591,66 @@ visualHUD.Libs.itemBuilderMixin = {
             }
         }
 
+    },
+
+    'obits': {
+        updateTextSize: function(value) {
+        },
+
+        updateTextStyle: function(value) {
+        },
+
+        updateTextOpacity: function(value) {
+
+        },
+
+        updateIconPosition: function(position, spacing) {
+        },
+
+        updateIconOpacity: function(value) {
+        },
+
+        updateIconSize: function(value) {
+        },
+
+        updateIconStyle: function(value) {
+        },
+
+        updateIconSpacing: function(value) {
+        },
+
+        updateTextColor: function(value) {
+        },
+
+        updateTeamColors: function(value) {
+        },
+
+        updateColorRanges: function(value) {
+        },
+
+        updateText: function(value) {
+        },
+
+        updateBorderRadius: function(value) {
+        },
+
+        updateBoxStyle: function(value) {
+        },
+
+        updateTemplate: function(value) {
+        },
+
+        updatePowerupView: function(value) {
+        },
+
+        updatePadding: function(value) {
+        },
+
+        updateToggleChat: function(value) {
+        },
+
+        updateScoreboxLayout: function(value) {
+        }
     }
 };
 

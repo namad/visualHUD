@@ -16,7 +16,8 @@ visualHUD.Models.ClientSettings = Backbone.Model.extend({
         'statusAccuracy': '47',
         'statusHealth': '200',
         'statusArmor': '100',
-        'statusAmmo': '25'
+        'statusAmmo': '25',
+        'customBackground': null
     },
 
     initialize: function() {

@@ -141,10 +141,16 @@ body.draw .hud-item,
 .item-counter {
     display: inline-block;
     font-family: Aero;
-    letter-spacing: -0.05;
+    letter-spacing: 0;
     font-size: 3.9em;
+    line-height: 1em;
     vertical-align: middle;
     text-align: center;
+
+    .counter,
+    .text {
+        display: block;
+    }
 }
 
 .item-counter span.textstyle-2 {
@@ -298,6 +304,13 @@ body.draw .hud-item,
 .skill-item .item-counter {
     letter-spacing: 0.025em;
     word-spacing: -0.06em;
+
+    .text {
+        float: left;
+    }
+    .counter {
+        float: left;
+    }
 }
 
 .chat-area {

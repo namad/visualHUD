@@ -1,16 +1,16 @@
 visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstract.extend({
     getData: function() {
 
-        var getGeneralitemTemplate = function() {
+        var getGeneralItemTemplate = function() {
             return [
-                '<div class="item-icon"><img src="<%= icon.url %>" /></div>',
-                '<div class="item-counter"><span class="counter"><%= text %></a></span></div>'
+                '<div class="item-icon"><img src="<%= icon.url %>"/></div>',
+                '<div class="item-counter"><span class="counter"><%= text %></span></div>'
             ]
         }
 
         var getIconItemTemplate = function() {
             return [
-                '<div class="item-icon"><img src="<%= icon.url %>" /></div>'
+                '<div class="item-icon"><img src="<%= icon.url %>"/></div>'
             ]
         }
 
@@ -26,7 +26,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'id': 'healthIndicator',
                 'itemType': 'general',
                 'cssClass': '',
-                'template': getGeneralitemTemplate()
+                'template': getGeneralItemTemplate()
             },
             {
                 'id': 'healthBar',
@@ -38,7 +38,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'id': 'armorIndicator',
                 'itemType': 'general',
                 'cssClass': '',
-                'template': getGeneralitemTemplate()
+                'template': getGeneralItemTemplate()
             },
             {
                 'id': 'armorBar',
@@ -51,13 +51,13 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'id': 'ammoIndicator',
                 'itemType': 'general',
                 'cssClass': '',
-                'template': getGeneralitemTemplate()
+                'template': getGeneralItemTemplate()
             },
             {
                 'id': 'timer',
                 'itemType': 'general',
                 'cssClass': '',
-                'template': getGeneralitemTemplate()
+                'template': getGeneralItemTemplate()
             },
             {
                 'id': 'powerupIndicator',
@@ -66,11 +66,11 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'template': [
                     '<div class="powerups-wrapper">',
                         '<div class="powerup-item">',
-                            '<div class="item-icon"><img src="<%= icon[0].url %>" /></div> ',
+                            '<div class="item-icon"><img src="<%= icon[0].url %>"/></div> ',
                             '<div class="item-counter"><span class="counter"><%= text %></a></span></div>',
                         '</div>',
                         '<div class="powerup-item">',
-                            '<div class="item-icon"><img src="<%= icon[1].url %>" /></div> ',
+                            '<div class="item-icon"><img src="<%= icon[1].url %>"/></div> ',
                             '<div class="item-counter"><span class="counter"><%= text %></a></span></div>',
                         '</div>',
                     '</div>'
@@ -102,7 +102,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'cssClass': 'obit-item',
                 'template': [
                     '<div class="item-counter"><span class="counter"><%= text[0] %></span></div>',
-                    '<div class="item-icon"><img src="<%= icon.url %>" /></div>',
+                    '<div class="item-icon"><img src="<%= icon.url %>"/></div>',
                     '<div class="item-counter"><span class="counter"><%= text[1] %></span></div>'
                 ]
             },
@@ -125,7 +125,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'id': 'accuracyIndicator',
                 'itemType': 'general',
                 'cssClass': 'accuracy',
-                'template': getGeneralitemTemplate()
+                'template': getGeneralItemTemplate()
             },
             {
                 'id': 'skillIndicator',
@@ -144,27 +144,27 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'cssClass': 'chat-area',
                 template: [
                     '<div class="hud-item-box">',
-                    '<ul class="chat-messages" style="padding: 3px; ">',
-                    '<li class="message-0">',
-                    '<span class="name"><span style="color: Cyan">n</span><span style="color: Red">a</span><span style="color: Cyan">mad</span>:</span><span class="message">quad in 30 seconds, team</span>',
-                    '</li>',
-                    '<li class="message-1">',
-                    '<span class="name"><span style="color: #3266fe">kN</span><span style="color: Red">a</span><span style="color: #3a63e9">kHstR</span>:</span><span class="message">WTF???</span>',
-                    '</li>',
-                    '<li class="message-2">',
-                    '&lt;QUAKE LIVE&gt; <span style="color: Cyan">Ancest0R</span> has gone offline' +
+                    '<ul class="chat-messages">',
+                        '<li class="message-0">',
+                            '<span class="name"><span style="color: Red" class="mr-5">bwt</span><span style="color: white">namad</span>:</span><span class="message">quad in 30 seconds, team</span>',
                         '</li>',
-                    '<li class="message-3">',
-                    '<span class="name">fatal<span style="color: Red">1</span>ty:</span><span class="message">pwned ;)</span></li>',
-                    '<li class="message-4">',
-                    'fatal<span style="color: Red">1</span>ty connected' +
+                        '<li class="message-1">',
+                            '<span class="name"><span style="color: Red" class="mr-5">bwt</span><span style="color: #3266fe">kN</span><span style="color: Red">a</span><span style="color: #3a63e9">kHstR</span>:</span><span class="message">WTF???</span>',
                         '</li>',
-                    '<li class="message-5">',
-                    'fatal<span style="color: Red">1</span>ty entered the game' +
+                        '<li class="message-2">',
+                            '&lt;QUAKE LIVE&gt; <span style="color: Cyan">Ancest0R</span> has gone offline' +
                         '</li>',
-                    '<li class="message-6">',
-                    '<span class="name"><span style="color: Cyan">n</span><span style="color: Red">a</span><span style="color: Cyan">mad</span>:</span><span class="message">byte my shiny metal ass!</span>',
-                    '</li>',
+                        '<li class="message-4">',
+                            'fatal<span style="color: Red">1</span>ty connected' +
+                        '</li>',
+                        '<li class="message-5">',
+                            'fatal<span style="color: Red">1</span>ty entered the game' +
+                        '</li>',
+                        '<li class="message-3">',
+                            '<span class="name">fatal<span style="color: Red">1</span>ty:</span><span class="message">ready to get pwned? ;)</span></li>',
+                        '<li class="message-6">',
+                            '<span class="name"><span style="color: Red" class="mr-5">bwt</span><span style="color: white">namad</span>:</span><span class="message">byte my shiny metal ass!</span>',
+                        '</li>',
                     '</ul>',
                     '</div>'
                 ]
