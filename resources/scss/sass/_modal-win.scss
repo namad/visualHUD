@@ -58,21 +58,25 @@
 }
 
 .xpk-win-head .xpk-close-button {
+    display: block;
     border: 0 none;
     background: transparent;
-    font: 10px/10px Tahoma;
+    font: 26px/32px Arial;
     width: 32px;
-    height: 32px;
-    background: url(../images/modal_window/close_win_icon.png) no-repeat 0px -32px;
-    text-indent: -10000px;
+    height: 32px;    
     cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
+    text-decoration: none;
+    text-align: center;
+    color: $silver;
+    @include text-shadow(0 2px #222);
 }
 
 .xpk-win-head .xpk-close-button:hover {
     background-position: 0px 0px;
+    color: $white;
 }
 
 .xpk-win-content {

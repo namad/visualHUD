@@ -183,7 +183,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
             return;
         }
 
-        this.$sidebarWrapper.animate({
+        this.$sidebarWrapper.stop().animate({
             'right': amount
         }, {
             duration: 200,

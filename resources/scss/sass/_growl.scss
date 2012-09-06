@@ -5,9 +5,15 @@ $growlErrorBg: #870808;
 $growlWarnBg: #b27c08;
 $growlSuccessBg: #54810d;
 
-$growlBgBevelLight: lighten($growlBgColor, 8%);
-$growlBgBevelAccent: darken($growlBgColor, 1%);
-$growlBgBevelDark: darken($growlBgColor, 5%);
+@mixin growl-box-style($color, $scale) {
+    $growlBgBevelLight: lighten($color, 8%);
+    $growlBgBevelAccent: darken($color, 1%);
+    $growlBgBevelDark: darken($color, 5%);
+    
+    background: rgba($color, 0.9);
+    border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
+    color: lighten($color, $scale);
+}
 
 .growl-message-container {
     position: absolute;
@@ -24,26 +30,32 @@ $growlBgBevelDark: darken($growlBgColor, 5%);
 }
 
 .growl-message {
-    background: rgba($growlBgColor, 0.9);
     margin: 3px;
     border: 1px solid;
-    border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
-    color: lighten($growlBgColor, 50%);
+    width: 100%;
+    
     @include box-sizing(border-box);
     @include box-shadow(rgba(0, 0, 0, 0.9) 0px 1px 5px);
-    width: 100%;
+    @include growl-box-style($growlBgColor, 50%);
 
     a.close-message {
+        border: 0 none;
+        background: transparent;
+        cursor: pointer;
         display: block;
-        width: 32px;
-        height: 32px;
-        background: url(../images/modal_window/close_win_icon.png) no-repeat 0px -32px;
+        font: 26px/32px Arial;
         float: right;
+        height: 32px;        
+        text-decoration: none;
+        text-align: center;
+        color: $white;
+        @include opacity(0.6);
+        @include text-shadow(0 1px darken($growlBgColor, 20%));
+        width: 32px;        
     }
 
     a.close-message:hover {
         opacity: 1;
-        background-position: 0px 0px;
     }
 
     .message {
@@ -67,42 +79,31 @@ $growlBgBevelDark: darken($growlBgColor, 5%);
     }
 }
 
-$growlBgBevelLight: lighten($growlErrorBg, 5%);
-$growlBgBevelAccent: darken($growlErrorBg, 1%);
-$growlBgBevelDark: darken($growlErrorBg, 5%);
-
 .error {
     .growl-message {
-        background: rgba($growlErrorBg, 0.9);
-        border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
-        color: lighten($growlErrorBg, 55%);
+        @include growl-box-style($growlErrorBg, 55%)
     }
+    a.close-message {
+        @include text-shadow(0 1px darken($growlErrorBg, 20%));
+    }    
 }
-
-$growlBgBevelLight: lighten($growlWarnBg, 5%);
-$growlBgBevelAccent: darken($growlWarnBg, 1%);
-$growlBgBevelDark: darken($growlWarnBg, 5%);
 
 .warning {
     .growl-message {
-        background-color: rgba($growlWarnBg, 0.9);
-        border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
-        color: lighten($growlWarnBg, 55%);
+        @include growl-box-style($growlWarnBg, 55%)
     }
-
+    a.close-message {
+        @include text-shadow(0 1px darken($growlWarnBg, 20%));
+    }
 }
-
-$growlBgBevelLight: lighten($growlSuccessBg, 5%);
-$growlBgBevelAccent: darken($growlSuccessBg, 1%);
-$growlBgBevelDark: darken($growlSuccessBg, 5%);
 
 .success {
     .growl-message {
-        background-color: rgba($growlSuccessBg, 0.9);
-        border-color: $growlBgBevelLight $growlBgBevelAccent $growlBgBevelDark;
-        color: lighten($growlBgBevelLight, 55%);
+        @include growl-box-style($growlSuccessBg, 55%)        
     }
-
+    a.close-message {
+        @include text-shadow(0 1px darken($growlSuccessBg, 20%));
+    }
 }
 
 .top-left {

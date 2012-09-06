@@ -74,34 +74,26 @@ visualHUD.Libs.layersManager = {
         var hudElementsWrap = canvasView.$canvas;
 
         var actions = {
-            'bring-front': function(){
-                return {
-                    element: hudElementsWrap,
-                    fn: 'appendTo'
-                };
+            'bring-front': {
+                element: hudElementsWrap,
+                fn: 'appendTo'
             },
-            'send-back': function(){
-                return {
-                    element: hudElementsWrap,
-                    fn: 'prependTo'
-                }
+            'send-back': {
+                element: hudElementsWrap,
+                fn: 'prependTo'
             },
-            'bring-forward': function(){
-                return {
-                    element: targetElement.next(),
-                    fn: 'insertAfter'
-                }
+            'bring-forward': {
+                element: targetElement.next(),
+                fn: 'insertAfter'
             },
-            'send-backward': function(){
-                return {
-                    element: targetElement.prev(),
-                    fn: 'insertBefore'
-                }
+            'send-backward': {
+                element: targetElement.prev(),
+                fn: 'insertBefore'
             }
         };
 
         var _direction;
-        var fnData = actions[arrangeAction]();
+        var fnData = actions[arrangeAction];
 
         if(fnData.element.length && fnData.element[0] != targetElement[0]){
             targetElement[fnData.fn](fnData.element)

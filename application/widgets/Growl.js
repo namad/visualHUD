@@ -5,7 +5,7 @@ visualHUD.Widgets.Growl = Backbone.View.extend({
     msgTpl: [
         '<div class="growl-message-wrapper clearfloat">',
             '<div class="growl-message">',
-                '<a class="close-message"><!-- --></a>',
+                '<a class="close-message">&times;</a>',
                 '<div class="message">',
                     '<% if(title) { %>',
                         '<h4><%= title %></h4>',

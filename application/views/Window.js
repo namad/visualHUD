@@ -18,7 +18,7 @@ visualHUD.Views.Window = Backbone.View.extend({
             '<div class="xpk-mwindow-content">',
                 '<div class="xpk-win-head clearfloat">',
                     '<div class="xpk-win-title"><%= title %></div>',
-                    '<a href="#" class="xpk-close-button"><span class="hidden">x</span></a>',
+                    '<a href="#" class="xpk-close-button">&times;</a>',
                 '</div>',
                 '<div class="xpk-win-content clearfloat">',
                     '<%= html %>',

@@ -1,5 +1,6 @@
 visualHUD.Models.HUDItem = Backbone.Model.extend({
     defaults: {
+        'index': 0,
         'itemType': null,
         'iconPosition': null,
         'iconSpacing': null,

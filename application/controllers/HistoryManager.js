@@ -7,6 +7,8 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
 
     HISTORY_LENGTH: 50,
 
+    EXCLUDE_FIELDS: /index|group/gi,
+
     initialize: function(options) {
         this.undoHistrory = [];
         this.redoHistrory = [];
@@ -31,12 +33,18 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
     },
 
     pushUpdateState: function(model, event) {
-        if(model.wasDropped !== true) {
+        var fields = _.keys(event.changes);
+
+        fields = _.filter(fields, function(key) {
+            return key.match(this.EXCLUDE_FIELDS) == null;
+        }, this);
+
+        if(model.wasDropped !== true && fields.length > 0) {
             this.pushHistoryState({
                 event: 'update',
                 cid: model.cid,
                 model: model,
-                fields: event.changes,
+                fields: fields,
                 state: model.previousAttributes()
             });
         }
@@ -102,8 +110,8 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
             HUDItem = record._HUDItem,
             updateObject = {};
 
-        _.each(historyRecord.fields, function(value, key) {
-            updateObject[key] = historyRecord.state[key];
+        _.each(historyRecord.fields, function(field) {
+            updateObject[field] = historyRecord.state[field];
         });
 
         HUDItem.update(updateObject);

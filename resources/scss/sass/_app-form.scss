@@ -93,8 +93,10 @@ $appFormControlHeight: 23px;
     fieldset.collapsed {
         padding-top: 0.5em;
 
-        legend {
-            background-position: 0 0 !important;
+        legend:before {
+            border-color: transparent transparent transparent $silver;
+            top: -1px;
+            margin: 0 6px 0 2px;
         }
 
         .f-row {
@@ -107,14 +109,25 @@ $appFormControlHeight: 23px;
         text-transform: uppercase;
         font-weight: bold;
         padding: 1px 5px;
-        padding-left: 20px;
-        margin: 0 0 0 -15px;
-        background: $grayDark url(../images/legend_arrow.gif) no-repeat 0 -18px;
+        padding: 0 10px;
+        margin: 0 0 0 -21px;
+        background: $grayDark;
         color: darken($textColor, 5%);
         cursor: pointer;
-        -moz-border-radius: 3px;
     }
 
+    legend:before {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border: 4px solid;
+        border-color: $silver transparent transparent;
+        margin-right: 8px;
+        position: relative;
+        vertical-align: baseline;
+        top: 2px;        
+    }
     legend:hover {
         color: lighten($textColor, 10%);
     }

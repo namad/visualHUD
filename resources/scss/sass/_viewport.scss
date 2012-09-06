@@ -45,7 +45,7 @@
     left: $basePostionOffset;
     bottom: $basePostionOffset;
     right: $sidebarWidth + 20px;
-    height: 38px;
+    height: $bottomBarHeight - 2px;
     overflow: visible;
 }
 

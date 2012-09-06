@@ -156,7 +156,7 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         {
             text: 'Weapon bar',
             title: '',
-            cls: '',
+            cls: 'weapong-bar',
             counter: 'visible',
             options: [
                 {
@@ -195,7 +195,7 @@ visualHUD.Views.CanvasToolbar = Backbone.View.extend({
         {
             text: 'Team overlay',
             title: '',
-            cls: '',
+            cls: 'tm-overlay',
             counter: 'visible',
             options: [
                 {

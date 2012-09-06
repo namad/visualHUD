@@ -6,18 +6,20 @@ $legacy-support-for-ie: false;
 
 // Viewport UI
 // --------------------------------------------------
-$sidebarWidth: 350px;
+$sidebarWidth: 315px;
 $canvasWidth: 640px;
 $canvasHeight: 480px;
-
-$canvasMarginTop: -1 * $canvasHeight/2;
-$canvasMarginLeft: -1 * $canvasWidth/2 - $sidebarWidth/2;
 
 $basePostionOffset: 10px;
 $bottomBarRight: $sidebarWidth + $basePostionOffset * 2;
 
 $topbarHeight: 60px;
 $sidebarTop: $topbarHeight + $basePostionOffset * 2;
+
+$bottomBarHeight: 40px;
+
+$canvasMarginTop: -1 * $canvasHeight/2 + $topbarHeight / 2 - $bottomBarHeight / 2;
+$canvasMarginLeft: -1 * $canvasWidth/2 - $sidebarWidth/2 - $basePostionOffset / 2;
 
 
 // Grays

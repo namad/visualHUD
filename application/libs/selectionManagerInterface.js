@@ -1,7 +1,8 @@
 visualHUD.Libs.selectionManagerInterface = {
     selection: [],
 
-    deselectBinded: false,
+    _deselectBinded: false,
+    _selectionDisabled: false,
 
     select: function(element, multiple) {
         var view;
@@ -25,9 +26,9 @@ visualHUD.Libs.selectionManagerInterface = {
 
             (inGroup == null) && this.fireEvent('selectionchange', [this, this.getSelection()]);
 
-            if(this.deselectBinded == false) {
+            if(this._deselectBinded == false) {
                 $('body').bind('click.deselect', visualHUD.Function.bind(this.clickDeselect, this));
-                this.deselectBinded = true;
+                this._deselectBinded = true;
             }
         }
 
@@ -48,9 +49,9 @@ visualHUD.Libs.selectionManagerInterface = {
         this.selection.length = 0;
         this.fireEvent('selectionchange', [this, this.getSelection()]);
 
-        if(this.deselectBinded == true) {
+        if(this._deselectBinded == true) {
             $('body').unbind('click.deselect');
-            this.deselectBinded = false;
+            this._deselectBinded = false;
         }
     },
 

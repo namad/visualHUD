@@ -283,6 +283,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     arrangeItems: function(value){
         var canvasView = this.application.getController('Viewport').getView('Canvas');
         visualHUD.Libs.layersManager.arrangeLayers(canvasView, value);
+        canvasView.updateIndexes();
+        this.getCollection('HUDItems').sort();
     },
     /**
      * Triggered by TopBar view when HUD action buttons are clicked
@@ -307,6 +309,14 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
                 break;
             }
         }
+    },
+    /**
+     * Function to select all HUD items
+     * @param event
+     */
+    selectAllHUDItems: function(event) {
+        var canvas = this.application.getController('Viewport').getView('Canvas');
+        canvas.selectAll();
     },
 
     /**
@@ -335,15 +345,6 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         _.each(selection, function(view) {
             view.move(direction, offset);
         });
-    },
-
-    /**
-     * Function to select all HUD items
-     * @param event
-     */
-    selectAllHUDItems: function(event) {
-        var canvas = this.application.getController('Viewport').getView('Canvas');
-        canvas.selectAll();
     },
 
     /**

@@ -7,6 +7,8 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
      * Setup autosave when window unload event is fired
      */
     initialize: function() {
+        this.on('add', this.setIndex, this);
+        this.on('load', this.updateIndexes, this);
         $(window).unload(visualHUD.Function.bind(this.save, this, []));
     },
 
@@ -47,6 +49,20 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
         }
 
         this.trigger('load', success);
+    },
+
+    setIndex: function(model) {
+        model.set('index', this.length, {silent: true});
+    },
+
+    updateIndexes: function() {
+        this.each(function(model, i) {
+            model.set('index', i, {silent: true});
+        });
+    },
+
+    comparator: function(model) {
+        return model.get('index');
     },
 
     cleanDefaultChat: function() {

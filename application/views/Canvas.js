@@ -235,6 +235,13 @@ visualHUD.Views.Canvas = Backbone.View.extend({
             }, 10, this, ['canvasShot', prev])();
         }
 
+    },
+
+    updateIndexes: function() {
+        this.$canvas.children().each(function(i) {
+            var view = $(this).data('HUDItem');
+            view.model.set('index', i);
+        });
     }
 });
 

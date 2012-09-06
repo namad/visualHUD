@@ -1,0 +1,28 @@
+@media (max-width: 1060px) {
+    .app-topbar button {
+        margin-right: 0;
+        padding: 0 10px 0 15px;
+    }
+    
+    .app-topbar button span.w-icon {
+        padding-left: 22px;
+    }
+    
+    .app-toolbar .root-item {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .app-toolbar .tm-overlay,
+    .app-toolbar .draw-gun,    
+    {
+        display: none;
+    }
+}
+
+@media (min-width: 1280px) {
+    .app-topbar button {
+        padding-right: 20px;
+    }
+}
