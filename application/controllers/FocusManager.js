@@ -9,7 +9,7 @@ visualHUD.Controllers.FocusManager = Backbone.Controller.extend({
     },
 
     onLaunch: function() {
-        var viewportView = this.application.getController('Viewport').getView('Viewport');
+        var viewportView = this.getApplicationView('Viewport');
 
         $(document).on('focus', 'form', $.proxy(this, 'focusListener'));
     },

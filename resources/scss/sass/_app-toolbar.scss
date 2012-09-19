@@ -23,6 +23,7 @@
     list-style: none;
     font-size: 10px;
     text-transform: uppercase;
+    margin: 0;
 
     .root-item {
         display: block;
@@ -100,6 +101,8 @@
 
 .app-toolbar li {
     ul {
+        list-style: none;
+        margin: 0;
         @include toolbar-submenu;
     }
     form {

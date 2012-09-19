@@ -14,13 +14,14 @@
 
 .library-items {
     list-style: none;
+    margin: 0;
 }
 
 .library-items li {
     cursor: move;
     display: block;
     float: left;
-    margin: 0 10px 10px 0;
+    margin: 0 5px 5px 0;
     border: 1px solid;
     
     @include default-item-state;
@@ -231,30 +232,6 @@
     z-index: 2;
 }
 
-.align-popover {
-    .popover-title {
-        display: none;
-    }
-    .popover-content {
-        padding: 9px;
-    }
-    .align-controls li{
-        @include box-shadow(none);
-        float: none;
-        border: 0 none;
-        padding: 3px 0;
-    }
-    .align-controls .item-name {
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 8px;
-        padding-right: 8px;
-    }
-    .align-controls .icon {
-        margin-left: 5px;
-    }    
-}
-
 
 /*
 Icons
@@ -262,65 +239,73 @@ Icons
 
 
 .lib-element-health {
-    background-image: url(../images/icons/create_health.png);
+    background-image: url(../images/icons/item_icon_health.png);
 }
 
 .lib-element-armor {
-    background-image: url(../images/icons/create_armor.png);
+    background-image: url(../images/icons/item_icon_armor.png);
 }
 
 .lib-element-ammo {
-    background-image: url(../images/icons/create_ammo.png);
+    background-image: url(../images/icons/item_icon_ammo.png);
 }
 
 .lib-element-ctf-powerup {
-    background-image: url(../images/icons/create_ctf_powerup.png);
+    background-image: url(../images/icons/item_icon_ctf_powerup.png);
 }
 
 .lib-element-obit {
-    background-image: url(../images/icons/create_obit.png);
+    background-image: url(../images/icons/item_icon_obit.png);
 }
 
 .lib-element-player-item {
-    background-image: url(../images/icons/create_player_item.png);
+    background-image: url(../images/icons/item_icon_player_item.png);
 }
 
 .lib-element-powerup {
-    background-image: url(../images/icons/create_powerup.png);
+    background-image: url(../images/icons/item_icon_powerup.png);
 }
 
 .lib-element-scorebox {
-    background-image: url(../images/icons/create_scorebox.png);
+    background-image: url(../images/icons/item_icon_scorebox.png);
 }
 
 .lib-element-timer {
-    background-image: url(../images/icons/create_timer.png);
+    background-image: url(../images/icons/item_icon_timer.png);
 }
 
 .lib-element-flag {
-    background-image: url(../images/icons/create_flag.png);
+    background-image: url(../images/icons/item_icon_flag.png);
 }
 
 .lib-element-rect {
-    background-image: url(../images/icons/create_rect.png);
+    background-image: url(../images/icons/item_icon_rect.png);
 }
 
 .lib-element-hbar {
-    background-image: url(../images/icons/create_healthbar.png);
+    background-image: url(../images/icons/item_icon_healthbar.png);
 }
 
 .lib-element-abar {
-    background-image: url(../images/icons/create_armorbar.png);
+    background-image: url(../images/icons/item_icon_armorbar.png);
 }
 
 .lib-element-acc {
-    background-image: url(../images/icons/create_accuracy.png);
+    background-image: url(../images/icons/item_icon_accuracy.png);
+}
+
+.lib-element-medal {
+    background-image: url(../images/icons/item_icon_medal.png);
+}
+
+.lib-element-definition {
+    background-image: url(../images/icons/item_icon_custom_definition.png);
 }
 
 .lib-element-skill {
-    background-image: url(../images/icons/create_skill.png);
+    background-image: url(../images/icons/item_icon_skill.png);
 }
 
 .lib-element-chat {
-    background-image: url(../images/icons/create_chat.png);
+    background-image: url(../images/icons/item_icon_chat.png);
 }

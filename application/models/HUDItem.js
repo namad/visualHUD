@@ -35,7 +35,8 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'scoreboxMode': null,
         'barDirection': null,
         'resizable': false,
-        'group': null
+        'group': null,
+        'ownerDrawFlag': ''
     },
 
     /**
@@ -111,11 +112,15 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             ownerDraw: '0',
             textOpacity: 100
         },
-        'accuracyIndicator': {
-            text: '36',
-            colorRanges: []
+        'medal': {
+            text: '27',
+            colorRanges: [],
+            ownerDrawFlag: 0,
+            textStyle: 0,
+            textSize: 50
         },
         'powerupIndicator': {
+            colorRanges: [],
             layout: 'vertical',
             iconStyle: null,
             iconSize: 24,
@@ -169,8 +174,6 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             iconOpacity: 100
         },
         'scoreBox': {
-            scoreboxStyle: 0,
-            layout: 'horizontal',
             mode: 'ffa',
             spacing: 1,
             iconSpacing: 10//  horisontal || vertical

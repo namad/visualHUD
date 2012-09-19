@@ -14,6 +14,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
         opacity: 1,
         maxWidth: 500,
         offset: 10,
+        cancelEventBubbling: true,
         html: 'This is popover content',
         title: 'Pop Over',
         position: 'top-left', // tr | tc |
@@ -23,7 +24,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
     currentPosition: null,
 
     events: {
-        'click .popover-body': 'cancelEventBubbling'
+        'click': 'cancelEventBubbling'
     },
 
     disabled: false,
@@ -123,6 +124,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
         this.trigger('show', this);
 
         $(document).bind('mousewheel.hidePopover', visualHUD.Function.bind(this.hide, this));
+        $(window).bind('resize.hidePopover', visualHUD.Function.bind(this.hide, this));
     },
 
     hide: function(){
@@ -141,6 +143,7 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
         this.trigger('hide', this);
 
         $(document).unbind('mousewheel.hidePopover');
+        $(window).unbind('resize.hidePopover', visualHUD.Function.bind(this.hide, this));
     },
 
     positionsMaps: {
@@ -284,7 +287,9 @@ visualHUD.Widgets.PopOver = Backbone.View.extend({
     },
 
     cancelEventBubbling: function(event) {
-        event.stopPropagation();
+        if(this.options.cancelEventBubbling == true) {
+            event.stopPropagation();
+        }
     }
 });
 

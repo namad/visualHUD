@@ -148,21 +148,38 @@ visualHUD.Libs.itemBuilderMixin = {
 
     'timer': {
         updateTextSize: function(value) {
-            var size = parseInt(value, 10) * visualHUD.scaleFactor,
-                textboxSize = visualHUD.Libs.utility.fontToBoxSize(size/100);
+            visualHUD.Libs.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
+            this.getDOMRefs().textBlock.width('auto');
+        }
+    },
 
-            this.getDOMRefs().textBlock.height(textboxSize.height).css('line-height', textboxSize.height + 'px');
+    'medal': {
+        updateIconStyle: function(value) {
+            visualHUD.Libs.itemBuilderMixin.getByType('general').updateIconStyle.apply(this, arguments);
+            var iconStyle = parseInt(this.model.get('iconStyle'), 10);
+            var text = this.model.get('text');
+            this.updateText(text);
+        },
 
-            this.getDOMRefs().counter.css({
-                'font-size': size + '%'
-            });
+        updateText: function(value) {
+            var iconStyle = parseInt(this.model.get('iconStyle'), 10);
+            if(iconStyle == 0 && value.match(/\%$/) == null) {
+                value += '%'
+            }
+            if(iconStyle > 0) {
+                value = value.replace('%', '');
+            }
+
+            this.getDOMRefs().counter.text(value);
+        },
+        updateTextSize: function(value) {
+            visualHUD.Libs.itemBuilderMixin.getByType('timer').updateTextSize.apply(this, arguments);
         }
     },
 
     'powerupIndicator': {
         updateTextSize: function(value) {
-            visualHUD.Libs.itemBuilderMixin.getByType('general').updateTextSize.call(this, value);
-            this.getDOMRefs().textBlock.width('auto');
+            visualHUD.Libs.itemBuilderMixin.getByType('timer').updateTextSize.apply(this, arguments);
         },
 
         updateIconSpacing: function(value) {

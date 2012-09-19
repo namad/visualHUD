@@ -80,11 +80,11 @@ visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.Dictionary
 
 
             {
-                'id': 'accuracyIndicator',
-                'name': 'accuracyIndicator',
+                'id': 'medal',
+                'name': 'medal',
                 'itemType': 'general',
-                'label': 'Accuracy Indicator',
-                'cssClass': 'lib-element-acc'
+                'label': 'Medal',
+                'cssClass': 'lib-element-medal'
             },
             {
                 'id': 'skillIndicator',
@@ -107,6 +107,13 @@ visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.Dictionary
                 'itemType': 'rect',
                 'label': 'Rectangle box',
                 'cssClass': 'lib-element-rect'
+            },
+            {
+                'id': 'customDefinition',
+                'name': 'customDefinition',
+                'itemType': 'customDefinition',
+                'label': 'Custom Definition',
+                'cssClass': 'lib-element-definition'
             }
         ];
     }

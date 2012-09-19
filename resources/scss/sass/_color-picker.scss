@@ -1,11 +1,14 @@
+.color-input {
+    width: 80px;
+    padding-right: 20px;
+}
 
 .color-picker-box {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #FFF;
+    width: 15px;
+    height: 15px;
     vertical-align: top;
-    margin-left: 5px;
+    margin: 4px 0 0 -19px;
 }
 
 .color-picker-hint {

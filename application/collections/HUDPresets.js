@@ -3,8 +3,8 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
         return [
             {
                 'id':'largeHUD',
-                'name':'Large HUD',
-                'preset':[
+                'name':'Large_HUD',
+                'items':[
                     {
                         "itemType":"general",
                         "cssClass":"lib-element-armor",
@@ -337,8 +337,8 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
             },
             {
                 'id':'smallHUD',
-                'name':'Small HUD',
-                'preset':[
+                'name':'Small_HUD',
+                'items':[
                     {
                         "itemType":"rect",
                         "name":"rectangleBox",
@@ -672,8 +672,8 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
             },
             {
                 'id':'defaultHUD',
-                'name':'Normal HUD',
-                'preset':[
+                'name':'Normal_HUD',
+                'items':[
                     {
                         "itemType":"general",
                         "cssClass":"lib-element-health",

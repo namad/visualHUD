@@ -30,6 +30,7 @@ visualHUD.Libs.colorHelper = (function() {
 
                 $(area).on('click', 'div.color-picker-box', visualHUD.Function.bind(this.showColorPicker, this));
                 $(area).on('click', 'input.color-input', visualHUD.Function.bind(this.showColorPicker, this));
+                $(area).on('change', 'input.color-input', visualHUD.Function.bind(this.updateColor, this));
 
                 colorpicker = new visualHUD.Widgets.PopOver({
                     scope: this,
@@ -116,6 +117,20 @@ visualHUD.Libs.colorHelper = (function() {
                 });
                 colorpicker.setTitle('#' + currentColor);
                 colorpicker.show(colorInput, event);
+
+            }
+        },
+
+        updateColor: function(event) {
+            var input = $(event.currentTarget);
+            var color = '';
+
+            try{
+                color = $.color('#' + input.val());
+                colorpicker.hide();
+                activeElement.css('backgroundColor', color.hex);
+            }
+            catch(e) {
 
             }
         }

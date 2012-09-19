@@ -1,6 +1,6 @@
 visualHUD.Collections.HUDItems = Backbone.Collection.extend({
     name: 'HUDItems',
-
+    LOCAL_STORAGE_KEY: 'HUDItems',
     model: visualHUD.Models.HUDItem,
 
     /**
@@ -17,7 +17,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
      */
     save: function() {
         var data = this.toJSON();
-        window.localStorage.setItem('HUDItems', JSON.stringify(data));
+        window.localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
     },
 
     /**
@@ -25,7 +25,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
      * Triggers 'load' event
      */
     load: function(data) {
-        var data = data || window.localStorage.getItem('HUDItems'),
+        var data = data || window.localStorage.getItem(this.LOCAL_STORAGE_KEY),
             success = false;
 
         if(_.isString(data)) {

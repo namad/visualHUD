@@ -12,6 +12,8 @@ new Backbone.Application({
         collection: 'Collections',
         controller: 'Controllers',
         view: 'Views',
+        viewportViews: 'Views.viewport',
+        modalViews: 'Views.windows',
         lib: 'Libs',
         utility: 'Utils',
         widgets: 'Widgets'
@@ -34,8 +36,13 @@ new Backbone.Application({
         editRangesTitle: 'Edit {0} color ranges',
         invalidPresetData: 'Application was unable to parse custom HUD data',
         slowPerformanceProperty: 'Depending on your hardware configuration, using {0} may impact your in-game performance and significally lower your FPS.',
-        largeImageWarning: 'Image you are trying to import, are too large (<%= imageSize %>). Please, try another image that is less than <%= maxSize %>',
-        unsupportedImageFormat: 'Image type you are trying to import is not supported (<%= imageType %>). Try to import images in PNG, JPG or GIF format'
+        EMPTY_HUD_WARNING: 'Nothing to download, mate. Try to add new items or import custom HUD first.',
+        HUD_ELEMENTS_PARSE_ERROR: 'visualHUD was unable to parse <%= count %> HUD element<%= count==1 ? \'\' : \'s\' %> because the data is incorrect or currupted',
+        HUD_PARSE_ERROR: 'visualHUD was unable to parse custom HUD because the data is incorrect or corrupted',
+        LARGE_IMAGE_WARNING: 'Image you are trying to import, are too large (<%= imageSize %>). Please, try another image that is less than <%= maxSize %>',
+        UNSUPPORTED_IMAGE_FORMAT: 'Image type you are trying to import is not supported (<%= imageType %>). Try to import images in PNG, JPG or GIF format',
+        CONFIRM_APPLICATION_RESET: 'Are you sure to reset visualHUD?\nAll settings and stored data will be cleared!',
+        CONFIRM_HUD_OVERWRITE: 'Are you sure to overwrite current HUD? All changes will be lost!'
     },
 
     initialize: function() {
@@ -61,6 +68,38 @@ new Backbone.Application({
 
         $('#preloader').fadeOut(400, function() {
             $(this).remove();
+        });
+        
+        window.onerror = this.applicationErrorHandler;
+    },
+    
+    applicationErrorHandler: function(errorMsg, url, lineNumber) {    
+        if(visualHUD.growl == undefined) {
+            return true;
+        }
+        
+        console.trace();
+        
+        var messageTemplate = ([
+                '<p><%= errorMsg %><br />',
+                '<%= url %> (line: <%= lineNumber %>)</p>',
+                '<div><a href="#" class="report">Send Report</a></div>'
+            ]).join('');
+        
+        $alert = visualHUD.growl.alert({
+            status: 'error',
+            title: 'Oops.. Something goes wrong ;(',
+            message: _.template(messageTemplate, {
+                errorMsg: errorMsg,
+                url: url,
+                lineNumber: lineNumber
+            })
+        });
+
+        $alert.find('a.report').click(function() {
+            visualHUD.getController('Viewport').reportBug(errorMsg, url, lineNumber);
+            visualHUD.growl.hide($alert);
+            return false;
         });
     }
 });

@@ -33,9 +33,9 @@
     _.extend(Application.prototype, {
         name: 'Backbone.Application',
         
-        models: {},
-        collections: {},
-        controllers: {},
+        models: [],
+        collections: [],
+        controllers: [],
         
         allocationMap: {
             model: 'Models',
@@ -61,7 +61,13 @@
             nameSpace[this.nameSpace] = this
             
             _.each(this.allocationMap, function(name, key) {
-                this[name] = this[name] || {};
+                var parts = name.split('.'),
+                    current = this;
+
+                for(var a = 0, b = parts.length; a < b; a++) {
+                    current[parts[a]] = current[parts[a]] || {};
+                    current = current[parts[a]];
+                }
             }, this);
         },
         /**
@@ -75,8 +81,11 @@
          * Called on documentReady
          */
         onReady: function() {
+
             // initialize controllers
             this.initializeControllers(this.controllers || {});
+            this.collectApplicationModelsAndCollections();
+            this.buildCollections();
             // call to controller.onLauch callback
             this.launchControllers();
             // call application.lauch callback
@@ -92,9 +101,7 @@
                 root = this[allocationMap];
 
             _.each(classes, function(cls) {
-                var classReference = resolveNamespace(cls, root),
-                    id = cls.split('.').pop();
-
+                var classReference = resolveNamespace(cls, root);
                 hashMap[cls] = classReference;
             }, this);
 
@@ -110,8 +117,7 @@
 
             _.each(controllers, function(ctrl) {
                 var root =  this[this.allocationMap.controller],
-                    classReference = resolveNamespace(ctrl, root),
-                    id = ctrl.split('.').pop();
+                    classReference = resolveNamespace(ctrl, root);
 
                 var controller = new classReference({
                     id: ctrl,
@@ -120,10 +126,12 @@
 
                 controller.views = this.getClasseRefs('view', controller.views || []);
 
-                _.extend(this.models, this.getClasseRefs('model', controller.models || []));
-                _.extend(this.collections, this.getClasseRefs('collection', controller.collections || {}));
+                this.models = this.models.concat(controller.models || []);
+                this.collections = this.collections.concat(controller.collections || []);
 
-                this.buildCollections();
+//                _.extend(this.models, this.getClasseRefs('model', controller.models || []));
+//                _.extend(this.collections, this.getClasseRefs('collection', controller.collections || {}));
+
                 this.controllers[ctrl] = controller;
             }, this);
         },
@@ -234,8 +242,16 @@
             return collection;
         },
 
+        collectApplicationModelsAndCollections: function() {
+            var collections = _.extend({}, this.getClasseRefs('collection', _.uniq(this.collections || [])));
+            var models = _.extend({}, this.getClasseRefs('model', _.uniq(this.models || [])));
+
+            this.collections = collections;
+            this.models = models;
+        },
+
         /**
-         * Function that will loop throught the list of collection constructors and create instances
+         * Function that will loop through the list of collection constructors and create instances
          */
         buildCollections: function() {
             _.each(this.collections, function(collection, alias) {
@@ -260,9 +276,9 @@
 
     _.extend(Controller.prototype, {
         name: null,
-        views: {},
-        models: {},
-        collections: {},
+        views: [],
+        models: [],
+        collections: [],
 
         initialize: function(options) {
         },
@@ -290,8 +306,8 @@
         /**
          * Getter that will return the reference to the view instance
          */
-        getView: function(name) {
-            return this._viewsCache[name];
+        getApplicationView: function(name) {
+            return this.application._viewsCache[name];
         },
 
         /**
@@ -305,15 +321,15 @@
          * Function to create a new view instance
          * All views are cached within _viewsCache hash map
          */
-        createView: function(name, options) {
+        createApplicationView: function(name, options) {
             var view = this.getViewConstructor(name),
                 options = _.extend(options || {}, {
                     alias: name
                 });
 
-            this._viewsCache = this._viewsCache || {};
-            this._viewsCache[name] = new view(options);
-            return this._viewsCache[name];
+            this.application._viewsCache = this.application._viewsCache || {};
+            this.application._viewsCache[name] = new view(options);
+            return this.application._viewsCache[name];
         },
 
         /**

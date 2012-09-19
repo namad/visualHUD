@@ -15,6 +15,8 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
         width: 200
     },
 
+    VERTICAL_OFFSET: 5,
+
     rendered: false,
 
     initialize: function(options) {
@@ -41,7 +43,6 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
     getDOMRefs: function() {
         this.$content = this.$el.find('div.hint-content');
         this.$body = this.$el.find('div.hint-body');
-        this.$corner = this.$el.find('div.hint-corner');
     },
 
     mover: function(event){
@@ -80,16 +81,17 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
         }
 
         this.$content.css('visibility', 'hidden').html(tooltipText);
-        this.$el.css({'width': ''});
+        this.$el.css({'width': '', top:0, left: 0});
         this.$body.css({'width': '', 'height': ''});
-
 
         var width = this.$body.width(); // we'll use it later to properly position tooltip
         var height = this.$body.height(); // we'll use it later to properly position tooltip
 
         if(width > this.options.width) {
+            this.$body.css({'width': this.options.width});
+
             width = this.options.width;
-            this.$body.css({'width': width});
+            height = this.$body.height();
         }
 
         this.setTipPosition();
@@ -99,8 +101,6 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
             'height': 0,
             'opacity': 0
         });
-
-        this.$corner.css('visibility', 'hidden');
 
         this.$el.css({
             'width': this.options.width,
@@ -116,10 +116,9 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
             'height': height + 2,
             'opacity': this.options.opacity
         }, {
-            duration: 150,
+            duration: 100,
             complete: visualHUD.Function.createDelayed(function(){
                 this.$content.css('visibility', '');
-                this.$corner.css('visibility', '');
             }, 20, this)
         });
     },
@@ -129,7 +128,6 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
             return;
         }
 
-        this.$corner.css('visibility', 'hidden');
         this.$content.css('visibility', 'hidden');
 
         this.$el.css({
@@ -159,11 +157,23 @@ visualHUD.Widgets.ToolTip = Backbone.View.extend({
     setTipPosition: function(){
         var position = this.getElementPosition();
         var _winHeight = $(document.body).innerHeight();
+        var top = position.top - this.$el.height() - this.VERTICAL_OFFSET;
+        var bottom = _winHeight - position.top + this.VERTICAL_OFFSET;
+
+        if(top < 0) {
+            bottom = 'auto';
+            top = position.bottom + this.VERTICAL_OFFSET;
+            this.$el.addClass('hint-carret-top').removeClass('hint-carret-bottom');
+        }
+        else {
+            top = 'auto';
+            this.$el.addClass('hint-carret-bottom').removeClass('hint-carret-top');
+        }
 
         this.$el.css({
-            top: 'auto',
+            top: top,
             left: 'auto',
-            bottom:  _winHeight - position.top + 3,
+            bottom:  bottom,
             left: position.left - this.options.width / 2 + position.width / 2
         });
     },

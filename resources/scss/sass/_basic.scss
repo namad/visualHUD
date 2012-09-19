@@ -1,5 +1,43 @@
-@import "compass/reset";
-@import "compass/css3";
-@import "compass/utilities/general/min";
-@import "compass/css3/text-shadow";
-@import "compass/support";
+/* Main custom rules
+------------------------------ */
+@font-face {
+    font-family: Aero;
+    src: url('../fonts/Aero.ttf');
+}
+
+body, html {
+    background: #1f1f1f url('../images/app_bg_transparent.png');
+    position: relative;
+    height: 100%;
+    color: #ccc;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-size: $baseFontSize;
+    line-height: $baseLineHeight;
+    font-family: $sansFontFamily;
+}
+
+body.draw *,
+body.drag-select * {
+    cursor: crosshair !important;
+}
+
+body.drag * {
+    cursor: move !important;
+}
+
+a {
+    color: $linkColor;
+    cursor: pointer;
+}
+
+a span {
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: none;
+}

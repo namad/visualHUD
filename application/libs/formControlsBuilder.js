@@ -12,8 +12,45 @@ visualHUD.Libs.formControlsBuilder = {
     getTemplateByType: function(type) {
         return this.controlTemplates[type].join('');
     },
+    buildForm: function(markups) {
+        var fragment = document.createDocumentFragment();
+
+        if(_.isArray(markups) == false) {
+            markups = [markups];
+        }
+
+        _.each(markups, function(m) {
+            var element = this.createElementByType(m);
+            fragment.appendChild(element.get(0));
+
+            if(m.items != undefined) {
+                var f = this.buildForm(m.items);
+                element.get(0).appendChild(f);
+            }
+        }, this);
+
+        return fragment;
+    },
+
+    createElementByType: function(options) {
+        var fnName = 'create' + options.type.charAt(0).toUpperCase() + options.type.substring(1);
+        var fn = this[fnName];
+
+        if(_.isFunction(fn)) {
+            return fn.apply(this, arguments);
+        }
+        else {
+            return this.createFormControl(options);
+        }
+    },
 
     controlDefaults: {
+        container: {
+            cssClass: '',
+            id: '',
+            wrap: false,
+            hint: null
+        },
         form: {
             cssClass: '',
             id: '',
@@ -28,6 +65,7 @@ visualHUD.Libs.formControlsBuilder = {
             hint: null
         },
         toolbar: {
+            cssClass: '',
             wrap: false
         },
         textbox: {
@@ -37,8 +75,10 @@ visualHUD.Libs.formControlsBuilder = {
             inputType: 'text',
             value: '',
             maxlength: '',
+            placeholder: '',
             hint: null,
-            wrap: true
+            wrap: true,
+            required: false
         },
         fileInput: {
             size: '',
@@ -57,6 +97,7 @@ visualHUD.Libs.formControlsBuilder = {
             value: '',
             wrap: true,
             hint: null,
+            required: false,
             name: 'textarea'
         },
         rangeInput: {
@@ -69,6 +110,7 @@ visualHUD.Libs.formControlsBuilder = {
             type: 'checkbox',
             hint: null,
             label: null,
+            tooltip: null,
             checked: false,
             name: 'checkbox',
             value: 'on',
@@ -83,6 +125,7 @@ visualHUD.Libs.formControlsBuilder = {
             type: 'radiobutton',
             hint: null,
             label: null,
+            tooltip: null,
             checked: false,
             name: 'radiobutton',
             value: 'on',
@@ -139,17 +182,20 @@ visualHUD.Libs.formControlsBuilder = {
     },
 
     controlTemplates: {
+        container: [
+            '<div></div>'
+        ],
         form: [
             '<form class="<%= cssClass %>" id="<%= id %>" action="<%= action %>" method="<%= method %>">'
         ],
         toolbar: [
-            '<div class="form-toolbar clearfloat"></div>'
+            '<div class="form-toolbar <%= cssClass %> clearfloat"></div>'
         ],
         textbox: [
-            '<input type="<%= inputType %>" size="<%= size %>" name="<%= name %>" value="<%= value %>" maxlength="<%= maxlength %>"  />'
+            '<input type="<%= inputType %>" size="<%= size %>" name="<%= name %>" value="<%= value %>" placeholder="<%= placeholder %>" maxlength="<%= maxlength %>" <%= required ? \'required="required"\' : \'\' %>  />'
         ],
         textarea: [
-            '<textarea name="<%= name %>" rows="<%= rows %>" cols="<%= cols %>"><%= value %></textarea>'
+            '<textarea name="<%= name %>" rows="<%= rows %>" cols="<%= cols %>" <%= required ? \'required="required"\' : \'\' %>><%= value %></textarea>'
         ],
         fieldset: [
             '<fieldset>',
@@ -167,13 +213,13 @@ visualHUD.Libs.formControlsBuilder = {
             '<input type="text" size="8" maxlength="3" value="<%= value %>" class="range range-input" name="<%= name %>"  />'
         ],
         checkbox: [
-            '<label class="check-label"><input type="checkbox" name="<%= name %>" value="<%= value %>" <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label"><%= boxLabel %></span></label>'
+            '<label class="check-label"><input type="checkbox" name="<%= name %>" value="<%= value %>" <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label" data-tooltip="<%= tooltip %>"><%= boxLabel %></span></label>'
         ],
         radiobutton: [
-            '<label class="check-label"><input type="radio" name="<%= name %>" value="<%= value %>"  <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label"><%= boxLabel %></span></label>'
+            '<label class="check-label"><input type="radio" name="<%= name %>" value="<%= value %>"  <%= checked ? \'checked="checked"\' : \'\' %>"><span class="box-label" data-tooltip="<%= tooltip %>"><%= boxLabel %></span></label>'
         ],
         select: [
-            '<select type="text" name="<%= name %>" value="<%= value %>" <% if(width) { %>style="width:<%= width %>"<% }; %>><%= options %></select>'
+            '<span class="styled-select w-carret" <% if(width) { %>style="width:<%= width %>"<% }; %>><span class="select-value"></span><select type="text" name="<%= name %>" value="<%= value %>"><%= options %></select></span>'
         ],
         button: [
             '<button name="<%= name %>" type="<%= action %>" value="<%= value %>" class="<%= cssClass %>" data-tooltip="<%= tooltip %>"><span class="<%= icon %>"><%= text %></span></button>'
@@ -217,7 +263,13 @@ visualHUD.Libs.formControlsBuilder = {
     ],
 
     getBaseElement: function(attributes) {
-        return $('<div class="f-row" />').addClass(attributes.cssClass || '').attr('id', attributes.id || '');
+        var element = $('<div class="f-row" />');
+        element
+            .addClass(attributes.cssClass || '')
+            .attr('id', attributes.id || '')
+            .addClass(attributes.required ? 'reqired-field' : '');
+        
+        return element;
     },
 
     getBaseMarkup: function(markup) {
@@ -232,6 +284,37 @@ visualHUD.Libs.formControlsBuilder = {
         var template = attributes.wrap ? this.getBaseMarkup(markup) : markup;
         var html = _.template(template, attributes);
         var element = attributes.wrap ? this.getBaseElement(attributes).html(html) : $(html);
+
+        return element;
+    },
+
+    createContainer: function(attributes) {
+        var element = $('<div />');
+        
+        var ignoreAttributes = ['type', 'items'];
+        var mapAttributes = {'cssClass': 'class'};
+
+        var elementAttributes = _.extend({}, attributes);
+
+        _.each(ignoreAttributes, function(attr) {
+            delete elementAttributes[attr];
+        });
+        _.each(mapAttributes, function(value, key) {
+            elementAttributes[value] = elementAttributes[key];
+            delete elementAttributes[key];
+        });
+        
+        element.attr(elementAttributes);
+
+        return element;
+    },
+
+    createComponent: function(attributes) {
+        var constructor = Backbone.resolveNamespace(attributes['constructorName']),
+            instance = new constructor(attributes),
+            element = instance.$el;
+
+        element.data('component', instance);
 
         return element;
     },
@@ -318,23 +401,48 @@ visualHUD.Libs.formControlsBuilder = {
 
         attributes.options = this.generateSelectOptionsFromMap(attributes.options, []);
 
-        var element = this.createFormControl(attributes);
+        var element = this.createFormControl(attributes),
+            select = element.find('select'),
+            valueElement = select.parent().find('.select-value');
 
         if (attributes.value) {
-            element.find('select').val(attributes.value);
+            select.val(attributes.value);
         }
         else {
-            element.find('select').attr('selectedIndex', 0);
+            select.attr('selectedIndex', 0);
+        }
+
+        var selectDOM = select.get(0);
+
+        valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+
+        select.on('change', function() {
+            valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+        });
+
+        select.on('focus', function() {
+            select.parent().addClass('focused');
+        });
+
+        select.on('blur', function() {
+            select.parent().removeClass('focused');
+        });
+
+        if(attributes.collection) {
+            attributes.collection.on('all', function() {
+                var options = this.createSelectOptionsMapFromCollection(attributes.collection, attributes);
+                options = this.generateSelectOptionsFromMap(options, []);
+                select.html(options);
+            }, this)
         }
 
         return element;
     },
 
     createButton:function (attributes) {
+        attributes.cssClass = attributes.cssClass || '';
         attributes.cssClass += attributes.role ? ' button-' + attributes.role : '';
-        attributes.icon = attributes.icon ? 'w-icon ' + attributes.icon : '';
-
-
+        attributes.icon = attributes.icon ? 'w-icon icon-' + attributes.icon : '';
 
         return this.createFormControl(attributes);
     },

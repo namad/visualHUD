@@ -1,0 +1,136 @@
+.site-wrapper {
+    position: relative;
+    margin: auto;
+    padding: 10px 0;
+    min-height: 100%;
+    @include site-dimensions;
+    @include box-sizing(border-box);
+}
+
+.site-wrapper > div {
+    background: $grayDark;
+    @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 8px);
+    @include bevel-and-emboss;
+    min-height: 100%;
+    padding-top: $headerHeight;
+    @include box-sizing(border-box);
+}
+
+.site-header {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    & > div {
+        background: $grayDark;
+        @include box-bevel-and-accent;
+        border-width: 1px 0;
+        line-height: $headerHeight - 2;
+        height: $headerHeight - 2;
+        @include site-dimensions;
+        margin: auto;
+    }
+
+    .nav {
+        float: left;
+        margin: 23px 0;
+    }
+
+    .nav-pills > li {
+
+    }
+
+    .nav-pills > li > a {
+        font-size: 18px;
+        line-height: 38px;
+        padding: 0 25px;
+        @include border-radius(19px);
+    }
+}
+
+.site-header-fixed {
+    position: fixed;
+    top: 0;
+
+    & > div {
+        background: rgba($grayDark, 0.95);
+        @include box-shadow(0 2px 5px -1px rgba(0, 0, 0, 0.75));
+    }
+}
+
+.app-logo {
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 245px;
+    height: 100%;
+    background: url(../images/logo_full.png) no-repeat 50% 50%;
+
+    span {
+        display: none;
+    }
+}
+
+.site-wrapper > .app-footer {
+    margin-top: 5px;
+    padding: 20px;
+}
+
+.keyboard-key {
+    display: inline-block;
+    min-width: 30px;
+    height: 36px;
+    background: $grayLight;
+    @include border-radius(3px);
+    @include box-shadow(0 1px 3px rgba(#000, 0.75));
+    cursor: pointer;
+    vertical-align: top;
+
+    &:active {
+        height: 32px;
+        margin-top: 4px;
+    }
+    & > span {
+        display: block;
+        color: #333;
+        font-size: 11px;
+        text-transform: uppercase;
+        @include background(linear-gradient(top, $white, $silver));
+        min-width: 10px;
+        line-height: 30px;
+        text-align: center;
+        padding: 0 10px;
+        @include border-radius(3px);
+        @include text-shadow(0 1px #FFF);
+        @include box-shadow(0 1px 0 rgba(#FFF, 0.75));
+    }
+}
+
+.keyboard-shortcuts-map {
+    h3 {
+        padding-left: 0px;
+        border-bottom: 1px solid #111;
+        padding-bottom: 10px;
+        @include box-shadow(0 1px 0 rgba(#FFF, 0.1));
+    }
+
+    .keyboard-shortcut {
+        display: inline-block;
+        width: 130px;
+        text-align: right;
+        float: left;
+        clear: left;
+    }
+
+    .keyboard-shortcut-legend {
+        display: block;
+        overflow: hidden;
+        padding: 6px 10px 0;
+    }
+
+    p {
+        @include clearfix;
+    }
+}

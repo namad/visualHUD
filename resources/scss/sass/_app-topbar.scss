@@ -6,14 +6,20 @@
 }
 
 .app-logo {
+    cursor: pointer;
     display: block;
     float: left;
     width: 90px;
     height: 100%;
-    background: url(../images/logo.png) no-repeat 50% 50%;
+    background: url(../images/logo.png) no-repeat 50% -2px;
 
     span {
         display: none;
+    }
+
+    &:hover,
+    &.active {
+      background-position: 50% -62px;
     }
 }
 
@@ -35,7 +41,6 @@
 
     button {
         margin: 14px 2px 0 0;
-        padding-right: 15px;
     }
 }
 
@@ -64,14 +69,38 @@
 
 .hud-actions {
     margin-left: 20px;
+
+    button {
+        padding: 0 20px;
+        margin-left: -10px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:hover {
+            position: relative;
+        }
+    }
+    button span.w-icon {
+        width: 0;
+        font-size: 0;
+        padding-left: 15px;
+        margin: 0;
+    }
+    button span.w-carret {
+        width: 16px;
+        &:after {
+            top: 5px;
+        }
+    }
 }
 
 .app-stats {
-    display: none;
     position: absolute;
     top: 14px;
-    left: 750px;
-    right: 140px;
+    left: 695px;
+    right: 155px;
     text-align: center;
 
     .counter {
@@ -91,4 +120,43 @@
         color: #999999;
     }
 
+}
+
+.feedback-popover,
+.align-popover {
+    .popover-title {
+        display: none;
+    }
+    .popover-content {
+        padding: 9px;
+    }
+    .align-controls li{
+        @include box-shadow(none);
+        float: none;
+        border: 0 none;
+        padding: 3px 0;
+    }
+    .align-controls .item-name {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 8px;
+        padding-right: 8px;
+    }
+    .align-controls .icon {
+        margin-left: 5px;
+    }
+}
+
+.logo-popover {
+    width: 500px;
+
+    .popover-title {
+        font-size: 2em;
+        color: $white;
+        padding: 19px;
+        padding-bottom: 0;
+    }
+    .popover-content {
+        padding: 19px;
+    }
 }

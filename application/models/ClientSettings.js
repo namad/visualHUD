@@ -1,5 +1,6 @@
 visualHUD.Models.ClientSettings = Backbone.Model.extend({
     defaults: {
+        'HUDName': null,
         'scaleFactor': 1,
         'fullScreenView': false,
         'pinSidebar': true,
@@ -69,6 +70,8 @@ visualHUD.Models.ClientSettings = Backbone.Model.extend({
                 break;
             }
         }
+
+        return null;
     }
 });
 

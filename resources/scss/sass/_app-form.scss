@@ -4,8 +4,8 @@
 $appFormLabelWidth: 65px;
 $appFormControlHeight: 23px;
 
-@mixin appFormInputStyle {
-    padding: 2px;
+@mixin app-form-input-style {
+    padding: 0 5px;
     height: $appFormControlHeight;
 }
 
@@ -26,22 +26,23 @@ $appFormControlHeight: 23px;
 
         .header-wrap {
             padding: 20px;
-            padding-left: 75px;
+            padding-left: 80px;
             padding-top: 17px;
-            background-position: 25px 50%;
+            background-position: 28px 50%;
             background-repeat: no-repeat;
         }
 
         .item-type {
-            font-size: 0.8em;
+            font-size: 10px;
             text-transform: uppercase;
             color: darken($textColor, 20%);
+            line-height: 14px;
         }
 
         .item-name {
-            font-size: 1.5em;
+            font-size: 18px;
             color: lighten($textColor, 20%);
-            line-height: 0.75em;
+            line-height: 18px;
         }
     }
 
@@ -148,7 +149,7 @@ $appFormControlHeight: 23px;
 
 .app-form .f-inputs {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     width: 100%
 }
 
@@ -195,10 +196,23 @@ $appFormControlHeight: 23px;
 }
 
 .app-form {
-    input[type=text] {
-        @include appFormInputStyle;
-    }
+    input[type=text],
     select {
-        @include appFormInputStyle;
+        @include app-form-input-style;
+    }
+
+    .styled-select {
+        height: $appFormControlHeight;
+
+        .select-value {
+            height: 100%;
+            line-height: $appFormControlHeight;
+            padding: 0 5px;
+        }
+
+        &.w-carret:after {
+            top: 10px;
+            right: 8px;
+        }
     }
 }

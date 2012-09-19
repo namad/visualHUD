@@ -17,27 +17,36 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     collections: [
         'HUDItemTemplates',
         'HUDItemIconEnums',
-        'HUDItems'
+        'HUDItems',
+        'CustomHUDPresets'
     ],
 
     AUTOSAVE_TIMEOUT: 300000,
 
     initialize: function(options) {
         this.addListeners({
-            'TopBar': {
+            'Viewport': {
+                'import.image': this.importImage,
+                'import.text': this.importHUDPresets
+            },        
+            'viewport.TopBar': {
                 'align.action': this.alignItems,
                 'toolbar.hud:action': this.groupActions
             },        
-            'StageControls': {
+            'viewport.StageControls': {
                 'item.drop': this.dropNewHUDItem
             },
-            'Canvas': {
+            'viewport.Canvas': {
                 'drop.move': this.onItemMove
             },
-            'LoadWindow': {
-                'load': this.loadHUD
+            'windows.ImportHUD': {
+                'load': this.loadHUD,
+                'download.preset': this.downloadPreset
             },
-            'ImportImageWindow': {
+            'windows.Download': {
+                'download': this.downloadHUD
+            },
+            'windows.ImportImage': {
                 'import': this.importImage
             },
             'Form': {
@@ -54,7 +63,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
                 'delete': this.deleteSelectedItems,
                 'move': this.moveSelectedItems,
                 'group': this.groupSelectedItems,
-                'clone': this.cloneSelectedItems
+                'clone': this.cloneSelectedItems,
+                'arrange': this.arrangeItems
             }
         });
     },
@@ -66,6 +76,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         clientSettingsModel.on('change', this.updateHUDItemStatus, this);
 
         HUDItemsCollection.on('add', this.addNewHUDItem, this);
+        // HUDItemsCollection.on('change', this.syncPresets, this);
         HUDItemsCollection.on('load', this.loadDraft, this);
 
         // Load saved HUD Items
@@ -77,11 +88,18 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Restore previously saved draft
      */
     loadDraft: function() {
-        var canvasView = this.application.getController('Viewport').getView('Canvas'),
+        var canvasView = this.getApplicationView('viewport.Canvas'),
             trash = [];
+
         canvasView.beginUpdate();
 
+        this.selectAllHUDItems();
+        this.deleteSelectedItems();
+
         this.getCollection('HUDItems').each(function(record) {
+            var statusText = this.getModel('ClientSettings').getStatusByName(record.get('name'));
+            (statusText) && record.set('text', statusText, {silent: true});
+
             // using try catch in order to skip damaged/incorrect hud items
             try {
                 this.createNewHUDItem(record);
@@ -92,7 +110,15 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }
         }, this);
         // remove damaged items from collection
-        this.getCollection('HUDItems').remove(trash);
+        // and show error message        
+        if(trash.length) {
+            this.application.growl.alert({
+                status: 'warning',
+                title: 'Some Items Were Not Imported',
+                message: _.template(visualHUD.messages.HUD_ELEMENTS_PARSE_ERROR, {count: trash.length})
+            });
+            this.getCollection('HUDItems').remove(trash);
+        }
         canvasView.completeUpdate();
     },
 
@@ -131,8 +157,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      */
     createNewHUDItem: function(record) {
         var HUDItemTemplates = this.getCollection('HUDItemTemplates');
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
-        var viewportView = this.application.getController('Viewport').getView('Viewport');
+        var canvasView = this.getApplicationView('viewport.Canvas');
+        var viewportView = this.getApplicationView('Viewport');
         var stageControlsView = viewportView.getStageControlsView();
 
         var HUDItemViewClass = this.getViewConstructor('HUDItem');
@@ -170,7 +196,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param record
      */
     addNewHUDItem: function(record) {
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
+        var canvasView = this.getApplicationView('viewport.Canvas');
         var HUDItem = this.createNewHUDItem(record);
         canvasView.select(HUDItem, false);
     },
@@ -180,7 +206,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param HUDElementView
      */
     onItemMove: function(HUDElementView) {
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
+        var canvasView = this.getApplicationView('viewport.Canvas');
 
         _.each(canvasView.getSelection(), function(view) {
             view.refreshCoordinates();
@@ -196,7 +222,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param event
      */
     onHUDItemClick: function(HUDItem, event) {
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
+        var canvasView = this.getApplicationView('viewport.Canvas');
         this.application.getController('FocusManager').blur();
         canvasView.select(HUDItem, event.shiftKey || event.ctrlKey);
         canvasView.enableSelection();
@@ -208,7 +234,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param record
      */
     onHUDItemDestroy: function(record) {
-        var viewportView = this.application.getController('Viewport').getView('Viewport'),
+        var viewportView = this.getApplicationView('Viewport'),
             stageControlsView = viewportView.getStageControlsView();
 
         stageControlsView.updateControlsStatus('destroy', record.get('name'));
@@ -267,7 +293,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param value
      */
     alignItems: function(value){
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
+        var canvasView = this.getApplicationView('viewport.Canvas');
         visualHUD.Libs.layersManager.alignEdges(canvasView, value);
 
         _.each(canvasView.getSelection(), function(view) {
@@ -281,7 +307,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param value
      */
     arrangeItems: function(value){
-        var canvasView = this.application.getController('Viewport').getView('Canvas');
+        var canvasView = this.getApplicationView('viewport.Canvas');
         visualHUD.Libs.layersManager.arrangeLayers(canvasView, value);
         canvasView.updateIndexes();
         this.getCollection('HUDItems').sort();
@@ -315,7 +341,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param event
      */
     selectAllHUDItems: function(event) {
-        var canvas = this.application.getController('Viewport').getView('Canvas');
+        var canvas = this.getApplicationView('viewport.Canvas');
         canvas.selectAll();
     },
 
@@ -323,8 +349,13 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Event triggered by KeyboardManager controller when pressing DEL button
      */
     deleteSelectedItems: function() {
-        var canvas = this.application.getController('Viewport').getView('Canvas'),
+        var canvas = this.getApplicationView('viewport.Canvas'),
             selection = canvas.getSelection();
+
+        // reset HUDName if all HUD items are deleted
+        if(this.getCollection('HUDItems').length == selection.length) {
+            this.getModel('ClientSettings').set('HUDName', null);
+        }
 
         _.each(selection, function(view) {
             view.model.destroy();
@@ -339,7 +370,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param offset
      */
     moveSelectedItems: function(direction, offset) {
-        var canvas = this.application.getController('Viewport').getView('Canvas'),
+        var canvas = this.getApplicationView('viewport.Canvas'),
             selection = canvas.getSelection();
 
         _.each(selection, function(view) {
@@ -352,7 +383,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param event
      */
     groupSelectedItems: function() {
-        var canvas = this.application.getController('Viewport').getView('Canvas'),
+        var canvas = this.getApplicationView('viewport.Canvas'),
             selection = canvas.getSelection(),
             masterElement = selection[0];
             isUngroup = false,
@@ -379,7 +410,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * @param event
      */
     cloneSelectedItems: function(event) {
-        var canvasView = this.application.getController('Viewport').getView('Canvas'),
+        var canvasView = this.getApplicationView('viewport.Canvas'),
             selection = Array.prototype.slice.call(canvasView.getSelection()),
             HUDItemModelClass = this.getModelConstructor('HUDItem');
 
@@ -409,11 +440,80 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Triggered by visualHUD.Views.LoadWindow when new HUD preset is being loaded
      * @param data
      */
-    loadHUD: function(data) {
-        this.selectAllHUDItems();
-        this.deleteSelectedItems();
+    loadHUD: function(data, name, suppressLoad) {
+        var name = data.name || name;
 
-        this.getCollection('HUDItems').load(data);
+        if(_.isArray(data)) {
+            data = {
+                name: name,
+                items: data
+            }
+        }
+
+        if(name) {
+            this.addCustomHUDPreset(data);
+        }
+        else {
+            this.getModel('ClientSettings').set('HUDName', null);
+        }
+
+        var action = this.getCollection('HUDItems').length && suppressLoad !== true ?
+                        window.confirm(visualHUD.messages.CONFIRM_HUD_OVERWRITE) : true;
+
+        if(suppressLoad !== true && action) {
+            this.getCollection('HUDItems').load(data.items);
+        }
+
+    },
+
+    downloadHUD: function(view, data) {
+        var values = view.serializeForm();
+
+        if(values['save_preset']) {
+            this.addCustomHUDPreset({
+                name: data.name,
+                items: view.collection.toJSON()
+            });
+        }
+        else {
+            this.getModel('ClientSettings').set('HUDName', null);
+        }
+    },
+
+    downloadPreset: function(data) {
+        var dlWindow = this.getApplicationView('windows.Download');
+
+        dlWindow.setHUDData(data);
+        dlWindow.getForm().submit();
+    },
+
+    syncPresets: function() {
+        var HUDName = this.getModel('ClientSettings').get('HUDName');
+
+        if(HUDName) {
+            this.addCustomHUDPreset({
+                name: HUDName,
+                items: this.getCollection('HUDItems').toJSON()
+            });
+        }
+    },
+
+    addCustomHUDPreset: function(data) {
+        var items = data.items,
+            name = data.name;
+        
+        var presetRecord = this.getCollection('CustomHUDPresets').find(function(record) {
+                return record.get('name') == name;
+            });
+            
+        if(presetRecord) {
+            presetRecord.set('items', items);
+        }
+        else {
+            this.getCollection('CustomHUDPresets').add(data);
+        }
+        
+        this.getModel('ClientSettings').set('HUDName', name);
     },
 
     /**
@@ -426,9 +526,56 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             'customBackground': src,
             'canvasShot': 3
         });
-        this.application.getController('Viewport').getView('CanvasToolbar').setClientSettings({
+        this.getApplicationView('viewport.CanvasToolbar').setClientSettings({
             'canvasShot': 3
         });
+    },
+    
+    importHUDPresets: function(presets) {
+        var data = [],
+            success = true,
+            loadWindow = this.getApplicationView('windows.ImportHUD'),
+            openLoadWindow = loadWindow ? loadWindow.opened == false : true,
+            length = this.getCollection('HUDItems').length;
+
+        _.each(presets, function(preset, idx) {
+            try {
+                var suppress = idx == 0 ? length > 0 : true
+                this.loadHUD(JSON.parse(preset.json), preset.name || null,  suppress);
+            }
+            catch(e) {
+                success = false;
+                console.error('Failed to import HUD', preset.json);
+            }
+        }, this);
+
+        if(success) {
+            var message = '<%= count %> HUD<%= count==1 ? \' has\' : \'s have\' %> been successfuly imported! ';
+
+            if(openLoadWindow == true) {
+                message = [
+                    '<p>', message, 'Would you like to review the new items?', '</p>',
+                    '<a href="#" class="import">Open import manager</a>'
+                ];
+            }
+            else {
+                message = [message];
+            }
+
+            var $alert = this.application.growl.alert({
+                title: 'Hooray! ',
+                status: 'success',
+                message: _.template(message.join(''), {count: presets.length})
+            });
+
+            $alert.find('a.import').click(visualHUD.Function.bind(function() {
+                this.application.getController('Viewport').loadPreset();
+                this.application.growl.hide($alert);
+                return false;
+            }, this));
+        }
+
     }
+
 });
 

@@ -137,6 +137,39 @@ visualHUD.Collections.HUDItemIconEnums = visualHUD.Collections.DictionaryAbstrac
             {
                 id: 'skillIndicator',
                 options: []
+            },
+            {
+                id: 'medal',
+                options: [
+                    {
+                        name: 'Accuracy medal',
+                        url:'resources/images/icons/medal_accuracy.png'
+                    },
+                    {
+                        name: 'Gauntlet medal',
+                        url:'resources/images/icons/medal_gauntlet.png'
+                    },
+                    {
+                        name: 'Excellent medal',
+                        url:'resources/images/icons/medal_excellent.png'
+                    },
+                    {
+                        name: 'Impressive medal',
+                        url:'resources/images/icons/medal_impressive.png'
+                    },
+                    {
+                        name: 'Captures medal',
+                        url:'resources/images/icons/medal_capture.png'
+                    },
+                    {
+                        name: 'Assist medal',
+                        url:'resources/images/icons/medal_assist.png'
+                    },
+                    {
+                        name: 'Defend medal',
+                        url:'resources/images/icons/medal_defend.png'
+                    }
+                ]
             }
         ];
     }

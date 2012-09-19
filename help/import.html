@@ -1,0 +1,55 @@
+		<div class="text-content p-20">
+			<h2>How to import and edit your HUD</h2>
+			<p>Right now it's possible to import and edit HUD that was created with Visual HUD application. All HUD data stored in JSON format and saved in in .vhud file.</p>
+			<p>You can't import code from .menu file simply because there are no single standart for HUD markup/code. There are no strict rules that define name convention, blocks description and so on. It means, that processing/parsing existing HUDs to complicated task and I don't think that anyone should even bother with it.</p>
+			<p>If you want your old HUD to be editable with VH, you have to rebuild it with VH, download and re-use code, that was generated with application itself. And believe me, it's not that hard, I was able to reproduce standard QL HUDs really quick. </p>
+			<p>Here is step-by-step instructions on how to import and edit your HUD:</p>
+			
+			<ul id="importHUD">
+				<li id="importHUDStep1">
+					<h3>Step 1</h3>
+					<ul>
+						<li>
+							<span class="arrow-long" style="width:200px;"><span class="a1"></span><span class="a2"></span></span>
+							<span>Locate .vhud file provided within downloaded archive, open it with any text editor and copy the code</span>						</li>
+					</ul>
+				</li>
+				<li id="importHUDStep2">
+					<h3>Step 2</h3>
+					<ul>
+						<li>
+							<span class="arrow-long" style="width:70px;"><span class="a1"></span><span class="a2"></span></span>
+							<span>Click “Load HUD” icon located bottom left</span>						</li>
+					</ul>
+				</li>
+				<li id="importHUDStep3">
+					<h3>Step 3</h3>
+					<ul>
+						<li style="margin-bottom:22px;">
+							<span class="arrow-long" style="width:180px;"><span class="a1"></span><span class="a2"></span></span>
+							<span>Select “Import custom HUD” from presets drop down</span>						</li>
+						<li style="margin-bottom:22px;">
+							<span class="arrow-long" style="width:20px;"><span class="a1"></span><span class="a2"></span></span>
+							<span>Paste the code from .vhud file</span>						</li>
+						<li>
+							<span class="arrow-long" style="width:255px;"><span class="a1"></span><span class="a2"></span></span>
+							<span>Click [Load] button</span>						</li>
+					</ul>
+				</li>					
+			</ul>
+		</div>
+        <style>
+
+            #importHUD { list-style:none; margin:0; }
+            #importHUD li { display:block; position:relative; padding-left: 395px; background-repeat:no-repeat;  color:#CCCCCC; margin-bottom:20px; }
+            #importHUD li span { color:#CCCCCC; }
+            #importHUD li ul { margin-left:0; }
+            #importHUD ul li { padding-left:0; }
+            #importHUDStep1 { background-image:url(../resources/images/faq/import_hud_s1.png); background-position:2px 0; min-height:72px; padding-top: 20px;}
+            #importHUDStep2 { background-image:url(../resources/images/faq/import_hud_s2.png); background-position:11px 0; min-height:60px; padding-top: 50px;}
+            #importHUDStep3 { background-image:url(../resources/images/faq/import_hud_s3.png); background-position:0 0%; min-height:155px; padding-top: 25px;}
+
+            .arrow-long { display:block; height:1px; width:100px; position:absolute; right:102%; top:9px; background:#66ccff; }
+            .arrow-long .a1 { display:block; height:3px; width:1px; float:left; margin:-1px 0 0 1px; background:#66ccff; }
+            .arrow-long .a2 { display:block; height:5px; width:1px; float:left; margin:-2px 0 0 0; background:#66ccff; }
+        </style>

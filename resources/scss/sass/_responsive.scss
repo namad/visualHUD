@@ -1,15 +1,28 @@
-@media (max-width: 1060px) {
-    .app-topbar button {
+@media (max-width: 1100px) {
+    .app-topbar .global-actions button,
+    .app-topbar .toolbar-aux button {
         margin-right: 0;
         padding: 0 10px 0 15px;
     }
-    
-    .app-topbar button span.w-icon {
-        padding-left: 22px;
+
+    .app-topbar .hud-actions button {
+        padding: 0 10px;
+        margin-left: -5px;
+        span.w-icon {
+            padding-left: 16px;
+        }
+    }
+
+    .app-topbar  button span.w-icon {
+        padding-left: 20px;
     }
     
     .app-toolbar .root-item {
         padding: 0 15px;
+    }
+    .app-stats {
+        left: 550px;
+        right: 135px;
     }
 }
 
@@ -23,6 +36,41 @@
 
 @media (min-width: 1280px) {
     .app-topbar button {
-        padding-right: 20px;
+
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .site-wrapper {
+        padding: 0;
+        min-width: 100%;
+        width: 100%;
+
+        & > .app-footer {
+            margin-top: 0;
+        }
+    }
+
+    .site-header {
+        top: 0;
+
+        & > div {
+            height: $headerHeight - 20px;
+            line-height: $headerHeight - 20px;
+            min-width: 100%;
+            width: 100%;
+        }
+
+        .nav-pills > li > a {
+            font-size: 13px;
+            line-height: 33px;
+            padding: 0 20px;
+            @include border-radius(15px);
+        }
+
+        .nav {
+            margin: 17px 0;
+        }
     }
 }

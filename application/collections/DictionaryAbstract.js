@@ -6,7 +6,7 @@ visualHUD.Collections.DictionaryAbstract = Backbone.Collection.extend({
     },
 
     load: function() {
-        this.add(this.getData(), {silent: true});
+        this.reset(this.getData(), {silent: true});
         return this;
     }
 });

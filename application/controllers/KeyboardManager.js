@@ -16,6 +16,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
         DOWN: 40,
         C: 67,
         D: 68,
+        I: 73,
         DEL: 46,
         R: 82,
         G: 71
@@ -29,7 +30,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
     },
 
     initialize: function(options) {
-        $('body').bind('keyup', $.proxy(this, 'keyboardListiner'));
+        $(document).bind('keydown', $.proxy(this, 'keyboardListiner'));
     },
 
     keyboardListiner: function(event) {
@@ -40,12 +41,32 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             return;
         }
 
+        if(event.keyCode == this.keyCodeMap.D) {
+            this.fireEvent('keyboard', 'download');
+            return false;
+        }
+
+        if(event.keyCode == this.keyCodeMap.I) {
+            this.fireEvent('keyboard', 'import');
+            return false;
+        }
+
+        if(event.keyCode == this.keyCodeMap.R && event.ctrlKey && event.shiftKey) {
+            var action = window.confirm(visualHUD.messages.CONFIRM_APPLICATION_RESET);
+
+            if(action == true) {
+                this.fireEvent('keyboard', 'reset');
+            }
+
+            return action;
+        }
+
         if(event.keyCode == this.keyCodeMap.DEL) {
             this.fireEvent('keyboard', 'delete');
             return false;
         }
 
-        if(event.keyCode == this.keyCodeMap.F){
+        if(event.keyCode == this.keyCodeMap.TAB){
             this.fireEvent('keyboard', 'fullscreen.toggle', [event]);
             return false;
         }
@@ -60,17 +81,17 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             return false;
         }
 
+        if(this.isArrangeKeyPressed(event) && event.ctrlKey) {
+            var arrangeAction = this.getArrangeAction(event);
+            this.fireEvent('keyboard', 'arrange', [arrangeAction]);
+            return false;
+        }
+
         if(this.isMoveKeyPressed(event.keyCode)) {
             var delta = this.getMoveDelta(event);
             var direction = this.getMoveDirection(event.keyCode);
 
             this.fireEvent('keyboard', 'move', [direction, delta]);
-            return false;
-        }
-
-        if(this.isArrangeKeyPressed(event) && event.ctrlKey) {
-            var arrangeAction = this.getArrangeAction(event);
-            this.fireEvent('keyboard', 'arrange', [arrangeAction]);
             return false;
         }
 
@@ -118,7 +139,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
     isArrangeKeyPressed: function(event) {
         return _.include([
             this.keyCodeMap.TOP,
-            this.keyCodeMap.DOWN,
+            this.keyCodeMap.DOWN
         ], event.keyCode);
     },
 

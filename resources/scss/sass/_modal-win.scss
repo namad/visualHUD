@@ -38,22 +38,23 @@
 .xpk-win-head {
     display: block;
     padding: 0;
+    margin: 0 0 -10px 0;
     width: 100%;
     zoom: 1;
     position: relative;
 
 }
 
-.xpk-win-head .xpk-win-title {
-    font-size: 2em;
+.xpk-win-head h3 {
+    font-size: 24px;
     margin: 0;
-    padding: 18px 25px 0;
+    padding: 16px 25px 0;
     color: #FFF;
     zoom: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 35px;
+    line-height: 31px;
     font-weight: normal;
 }
 
@@ -113,7 +114,9 @@
 
 .mwin-form {
     input[type=text],
+    input[type=search],
     input[type=password],
+    input[type=email],
     textarea,
     select {
         width: 100%;
@@ -139,4 +142,14 @@
             margin: 0
         }
     }
+}
+
+#customHUDPresets {
+    position: relative;
+}
+
+.download-presets-button {
+    margin: 10px 0 -50px 0;
+    position: absolute;
+    right: 0;
 }

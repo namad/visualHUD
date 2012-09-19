@@ -122,7 +122,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
             },
 
             {
-                'id': 'accuracyIndicator',
+                'id': 'medal',
                 'itemType': 'general',
                 'cssClass': 'accuracy',
                 'template': getGeneralItemTemplate()

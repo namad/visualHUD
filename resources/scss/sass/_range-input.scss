@@ -1,66 +1,73 @@
 @mixin handle-hover {
-    background-position: 0 -23px;
+    background-position: 0 -21px;
     outline: 0 none !important;
+    @include box-shadow(0 1px 3px rgba(#000, 0.75));
 }
 
 /* slider root element */
 .slider {
-    background: #DDD;
+    @include default-input-style;
+    
     display: inline-block;
-    height: 5px;
+    height: 11px;
     position: relative;
-    border: 1px solid #333;
-    border-color: #666 #FFF #FFF #666;
+    
     width: 160px;
-    margin: 8px 0;
+    margin: 7px 0;
     vertical-align: middle;
 
     .progress {
-        height: 100%;
-        background-color: #979797;
+        height: 9px;        
+        background-color: #666666;
+        @include border-radius(2px);
         cursor: default;
     }
 
     .handle {
-        background: url(../images/slider_knob.png) no-repeat;
-        height: 23px;
-        width: 12px;
-        top: -8px;
+        background: #111 url(../images/slider_knob.png) no-repeat;
+        height: 21px;
+        width: 21px;
+        top: -7px;
         position: absolute;
         display: block;
         cursor: default;
         border: 0 none;
         padding: 0;
-        margin: 0;
+        margin: 0 0 0 -5px;
+        @include border-radius(100%);
+        @include box-shadow(0 1px 2px rgba(#000, 0.25));
 
         &:focus {
             @include handle-hover;
         }
-        &:hover {
-            @include handle-hover;
-        }
-
     }
     &:hover {
-        border-color: #3d7bad #a4c9e3 #a4c9e3 #3d7bad;
-
         .progress {
-            background-color: #93c0de;
+            background-color: #0b81cd;
+        }
+        .handle {
+            cursor: pointer;
+            @include handle-hover;
+            
         }
     }
 }
 
 /* the input field */
-input.range {
+input[type="text"].range {
     border: 0 none;
     background: transparent;
     color: #FFF;
-    padding: 2px 0;
+    padding: 0!important;
     margin: 0 0 0 10px;
     text-align: center;
     width: 25px;
+    height: 21px;
+    line-height: 20px;
+    @include box-shadow(none);
 
     &:focus {
+        @include default-input-style-focused;
         background-color: darken($grayDark, 20%);
     }
 }

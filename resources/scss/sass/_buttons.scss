@@ -10,7 +10,9 @@
     }
 
     &:focus {
+        outline: 0 none;
         @include button-default-hover;
+        @include box-shadow(0 0 3px 1px rgba(#000, 0.75));    
     }
 
     &:active,
@@ -28,9 +30,10 @@ button,
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
+    margin: 0;
     padding: 0 20px;
     font-family: $sansFontFamily;
-    font-size: $baseFontSize;
+    font-size: $btnFontSize;
     @include border-radius(15px);
     @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 2px);
 
@@ -86,6 +89,9 @@ button,
     span {
         padding: 3px 0;
     }
+    span.w-icon {
+        padding-left: 20px;
+    }
 }
 
 .button-big {
@@ -119,6 +125,9 @@ button,
         }
     }
 
+    span.small-plus {
+        background-image: url(../images/btn_ico_plus_small.png);
+    }
     span.plus {
         background-image: url(../images/btn_ico_plus.png);
     }
@@ -145,6 +154,9 @@ button,
     }
     span.group {
         background-image: url(../images/btn_ico_group.png);
+    }
+    span.clone {
+        background-image: url(../images/btn_ico_clone.png);
     }
 }
 

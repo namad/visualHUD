@@ -21,8 +21,11 @@ visualHUD.Libs.selectionManagerInterface = {
             if(multiple == false) {
                 this.deselect();
             }
-            this.selection.push(view);
-            view.$el.addClass('selected');
+            
+            if(this.isSelected(view) == false) {
+                this.selection.push(view);
+                view.$el.addClass('selected');
+            }
 
             (inGroup == null) && this.fireEvent('selectionchange', [this, this.getSelection()]);
 

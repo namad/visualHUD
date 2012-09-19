@@ -34,6 +34,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
         this.getDOMRefs();
         this.initializeClientSettings();
         this.setupCanvasDrag();
+        this.bindDropImport();
     },
 
     render: function(nestedViews) {
@@ -47,7 +48,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
 
     setNestedViews: function(views) {
         _.each(views, function(view) {
-            var getterFn = 'get' + view.getAlias() + 'View';
+            var getterFn = 'get' + view.getAlias().split('.').pop() + 'View';
             this[getterFn] = function() {
                 return view;
             }
@@ -224,6 +225,62 @@ visualHUD.Views.Viewport = Backbone.View.extend({
 
     setSidebarState: function(model, state) {
         this.$pinSidebarIcon.toggleClass('sidebar-pinned', state);
+    },
+
+    bindDropImport: function() {
+        var batch = [],
+            files = [],
+            reader = new FileReader(),
+            imageProcessed = false;
+
+        var processFile = function(file) {
+            if(file.type.match('image.*') && visualHUD.Libs.importHelper.checkImageSize(file) == true && imageProcessed == false) {
+                reader.onload = visualHUD.Function.bind(processImage, this, [file], true);
+                reader.readAsDataURL(file);
+            }
+
+            if(file.type.match('text.*') || file.name.match('vhud$')) {
+                reader.onload = visualHUD.Function.bind(processText, this, [file], true);
+                reader.readAsText(file);
+            }
+        };
+
+        var processImage = function(event) {
+            imageProcessed = true;
+            this.fireEvent('import.image', [event.target.result]);
+        };
+
+        var processText = function(event, file) {
+            var fileName = file.name.split('.');
+            fileName.pop();
+
+            batch.push({
+                name: fileName.join('.'),
+                json: event.target.result
+            });
+
+            if(files.length > 0) {
+                processFile.call(this, files.shift());
+            }
+            else {
+                this.fireEvent('import.text', [batch]);
+            }
+        };
+
+        if(Modernizr.draganddrop == true) {
+            document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
+                event.preventDefault();
+
+                batch = [];
+                imageProcessed = false;
+
+                files = Array.prototype.slice.call(event.dataTransfer.files);
+                processFile.call(this, files.shift());
+
+                return false;
+
+            }, this), false);
+        }
     }
 });
 

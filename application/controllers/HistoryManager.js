@@ -120,7 +120,7 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
     },
 
     undoCreate: function(historyRecord){
-        var canvas = this.application.getController('Viewport').getView('Canvas');
+        var canvas = this.getApplicationView('viewport.Canvas');
 
         this.getCollection('HUDItems').off('remove', this.pushDestroyState, this);
         historyRecord.model.destroy();
@@ -129,7 +129,7 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
     },
 
     undoDestroy: function(historyRecord) {
-        var canvasView = this.application.getController('Viewport').getView('Canvas'),
+        var canvasView = this.getApplicationView('viewport.Canvas'),
             HUDItemModelClass = this.getModelConstructor('HUDItem'),
             newRecord = new HUDItemModelClass(historyRecord.model);
 

@@ -111,7 +111,7 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
             this.model.set(name, value);
         }
 
-        return false;
+        return;
     },
 
     /**

@@ -1,0 +1,113 @@
+$boundlistItemHeight: 36px;
+$boundlistActionIconSize: 24px;
+
+@mixin unstiled-list {
+    list-style: none;
+    margin: 0;
+
+    li {
+        list-style: none;
+        margin: 0;
+        display: block;
+        @include box-sizing(border-box);
+    }
+}
+
+.bound-list {
+    @include unstiled-list;
+    overflow: auto;
+    overflow-x: visible;
+}
+
+.bound-list-item {
+    display: block;
+    padding: 5px;
+}
+.empty-list-message {
+    text-align: center;
+}
+
+.custom-hud-list {
+    max-height: $boundlistItemHeight * 5;
+    background: darken($grayDark, 1%);
+    @include box-shadow(rgba(#FFF, 0.05) 0px 1px 0px);
+    border: 1px solid $grayDarker;
+
+    .bound-list-item {
+        height: $boundlistItemHeight;
+        border: 1px solid;
+        border-color: rgba(#FFF, 0.05) transparent rgba(#000, 0.17);
+        border-width: 1px 0;
+        padding: 0;
+        cursor: pointer;
+
+        &:last-child {
+            border-bottom-width: 0;
+        }
+
+        &:hover {
+            background: #106396 url(../images/button_normal.png) repeat-x 0 -2px;
+            border-color: rgba(#FFF, 0.2) transparent rgba(#000, 0.25);
+            border-bottom-width: 1px;
+            @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 2px);
+
+            position: relative;
+
+            .custom-hud-actions {
+                display: block;
+            }
+            .item-name {
+                color: $white;
+            }
+        }
+
+        .empty-list-message,
+        .bound-list-item-body {
+            margin: -1px 0 0;
+        }
+
+        .empty-list-message {
+            line-height: $boundlistItemHeight;
+            text-align: center;
+        }
+        
+        .item-name {
+            display: inline-block;
+            line-height: $boundlistItemHeight;
+            color: $silver;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+
+        .custom-hud-actions {
+            display: none;
+        }
+    }
+
+}
+
+.custom-hud-actions {
+    @include unstiled-list;
+
+    float: right;
+    margin: 0 14px;
+
+    .action {
+        display: inline-block;
+        width: $boundlistActionIconSize;
+        height: $boundlistItemHeight;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        cursor: pointer;
+        margin: 0 1px;
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 1
+        }
+
+        & > span {
+            display: none;
+        }
+    }
+}

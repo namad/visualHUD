@@ -8,37 +8,6 @@ visualHUD.Libs.formBuilderMixin = {
     },
 
     'base': {
-        buildForm: function(markups) {
-            var fragment = document.createDocumentFragment();
-
-            if(_.isArray(markups) == false) {
-                markups = [markups];
-            }
-
-            _.each(markups, function(m) {
-                var element = this.createElementByType(m);
-                fragment.appendChild(element.get(0));
-
-                if(m.items && m.items.length) {
-                    var f = this.buildForm(m.items);
-                    element.get(0).appendChild(f);
-                }
-            }, this);
-
-            return fragment;
-        },
-
-        createElementByType: function(options) {
-            var fnName = 'create' + options.type.charAt(0).toUpperCase() + options.type.substring(1);
-            var fn = this[fnName];
-
-            if(_.isFunction(fn)) {
-                return fn.apply(this, arguments);
-            }
-            else {
-                return this.createFormControl(options);
-            }
-        },
 
         getSelectBasic: function(options) {
             return _.extend({
@@ -108,6 +77,14 @@ visualHUD.Libs.formBuilderMixin = {
             }
         },
 
+        getOwnerDrawOptions: function() {
+            return {
+                '': 'Any game type',
+                'CG_SHOW_ANYNONTEAMGAME': 'Any non team game',
+                'CG_SHOW_ANYTEAMGAME': 'Any team game',
+                'CG_SHOW_CTF': 'CTF Only'
+            }
+        },
         getGradientOptions: function() {
             return {
                 '0': 'Solid',
@@ -244,11 +221,27 @@ visualHUD.Libs.formBuilderMixin = {
                 'top': 'Top to bottom',
                 'bottom': 'Bottom to top'
             }
+        },
+
+        getAvailabilityControls: function() {
+            return {
+                type: 'fieldset',
+                label: 'Availability',
+                items: [
+                    this.getSelectBasic({
+                        label: 'During',
+                        name: 'ownerDrawFlag',
+                        value: this.model.get('ownerDrawFlag'),
+                        options: this.getOwnerDrawOptions()
+                    })
+                ]
+            }
         }
     },
     'general': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Icon Properties',
@@ -308,9 +301,64 @@ visualHUD.Libs.formBuilderMixin = {
         }
     },
 
+    'ammoIndicator': {
+        createControls: function(form) {
+            var markup = [
+                this.getAvailabilityControls(),
+                {
+                    type: 'fieldset',
+                    label: 'Icon Properties',
+                    items: [
+                        this.getIconPositionSelect(),
+                        this.getIconSpacingInput(),
+                        this.getIconSizeInput(),
+                        this.getIconOpacityInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Text Properties',
+                    items: [
+                        this.getTextStyleSelect(),
+                        this.getTextSizeInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Color Range',
+                    items: [
+                        {
+                            'type': 'colorRange',
+                            'name': 'colorRanges',
+                            'ranges': this.model.get('colorRanges')
+                        }
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Actions',
+                    items: [
+                        {
+                            'type': 'arrangeControl',
+                            'label': 'Arrange'
+                        },
+                        {
+                            'type': 'alignControl',
+                            'label': 'Align'
+                        }
+                    ]
+                }
+            ];
+            var fragment = this.buildForm(markup);
+
+            // call this in the end
+            form.get(0).appendChild(fragment);
+        }
+    },
     'timer': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Icon Properties',
@@ -416,6 +464,7 @@ visualHUD.Libs.formBuilderMixin = {
     'accuracyIndicator': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Icon Properties',
@@ -462,6 +511,7 @@ visualHUD.Libs.formBuilderMixin = {
     'skillIndicator': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Text Properties',
@@ -644,6 +694,7 @@ visualHUD.Libs.formBuilderMixin = {
 
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Scorebox Properties',
@@ -692,6 +743,7 @@ visualHUD.Libs.formBuilderMixin = {
     'bar': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: this.model.get('label') + ' Properties',
@@ -751,6 +803,7 @@ visualHUD.Libs.formBuilderMixin = {
     'rect': {
         createControls: function(form) {
             var markup = [
+                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: this.model.get('label') + ' Properties',
@@ -873,6 +926,60 @@ visualHUD.Libs.formBuilderMixin = {
             form.get(0).appendChild(fragment);
         }
 
+    },
+
+    'medal': {
+        createControls: function(form) {
+            var markup = [
+                this.getAvailabilityControls(),
+                {
+                    type: 'fieldset',
+                    label: 'Icon Properties',
+                    items: [
+                        this.getIconStyleSelect(),
+                        this.getIconPositionSelect(),
+                        this.getIconSpacingInput(),
+                        this.getIconSizeInput(),
+                        this.getIconOpacityInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Text Properties',
+                    items: [
+                        {
+                            type: 'textbox',
+                            label: 'Text',
+                            name: 'text',
+                            size: 16,
+                            maxlength: 4,
+                            value: this.model.get('text')
+                        },
+                        this.getTextColorInput(),
+                        this.getTextSizeInput(),
+                        this.getTextOpacityInput()
+                    ]
+                },
+                {
+                    type: 'fieldset',
+                    label: 'Actions',
+                    items: [
+                        {
+                            'type': 'arrangeControl',
+                            'label': 'Arrange'
+                        },
+                        {
+                            'type': 'alignControl',
+                            'label': 'Align'
+                        }
+                    ]
+                }
+            ];
+            var fragment = this.buildForm(markup);
+
+            // call this in the end
+            form.get(0).appendChild(fragment);
+        }
     }
 };
 

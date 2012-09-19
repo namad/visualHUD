@@ -1,4 +1,14 @@
-//
+// Help Site Variables
+// --------------------------------------------------
+@mixin site-dimensions {
+    width: 90%;
+    max-width: 1300px;
+    min-width: 960px;
+}
+
+$headerHeight: 90px;
+
+
 // Variables
 // --------------------------------------------------
 $legacy-support-for-ie: false;
@@ -6,7 +16,7 @@ $legacy-support-for-ie: false;
 
 // Viewport UI
 // --------------------------------------------------
-$sidebarWidth: 315px;
+$sidebarWidth: 325px;
 $canvasWidth: 640px;
 $canvasHeight: 480px;
 
@@ -18,7 +28,7 @@ $sidebarTop: $topbarHeight + $basePostionOffset * 2;
 
 $bottomBarHeight: 40px;
 
-$canvasMarginTop: -1 * $canvasHeight/2 + $topbarHeight / 2 - $bottomBarHeight / 2;
+$canvasMarginTop: -1 * $canvasHeight/2 + $topbarHeight / 2 - $bottomBarHeight / 2 - $basePostionOffset;
 $canvasMarginLeft: -1 * $canvasWidth/2 - $sidebarWidth/2 - $basePostionOffset / 2;
 
 
@@ -99,11 +109,11 @@ $monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace;
 
 $baseFontSize:          12px;
 $baseFontFamily:        $sansFontFamily;
-$baseLineHeight:        16px;
+$baseLineHeight:        $baseFontSize * 1.5;
 $altFontFamily:         $serifFontFamily;
 
 $headingsFontFamily:    inherit; // empty to use BS default, $baseFontFamily
-$headingsFontWeight:    bold;    // instead of browser default, bold
+$headingsFontWeight:    normal;    // instead of browser default, bold
 $headingsColor:         $white; // empty to use BS default, $textColor
 
 
@@ -117,6 +127,7 @@ $tableBorder:                       #ddd; // table and cell border
 
 // Buttons
 // -------------------------
+$btnFontSize:                       12px;
 $btnBackground:                     $white;
 $btnBackgroundHighlight:            darken($white, 10%);
 $btnBorder:                         #bbb;
