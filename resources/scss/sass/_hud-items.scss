@@ -106,6 +106,7 @@ body.drag-select .resize-handle {
     position: absolute;
     vertical-align: baseline;
     cursor: move;
+    white-space: nowrap;
 }
 
 body.drag .hud-item,

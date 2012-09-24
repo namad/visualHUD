@@ -9,7 +9,7 @@
 }
 
 .xpk-mwindow-wrap {
-    margin: auto;
+    margin: 10px auto;
     background: #333;
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.9);
     -moz-box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.9);
@@ -152,4 +152,8 @@
     margin: 10px 0 -50px 0;
     position: absolute;
     right: 0;
+}
+
+.import-form-buttons .file-input .file-name {
+    display: none;
 }

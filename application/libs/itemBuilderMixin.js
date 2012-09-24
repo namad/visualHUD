@@ -194,8 +194,8 @@ visualHUD.Libs.itemBuilderMixin = {
 
         updateIconPosition: function(value) {
 
-            var originalClassName = this.$el.attr('class'),
-                patt = /textstyle-[0-9]/,
+            var originalClassName = this.$el.attr('class').toLowerCase(),
+                patt = /stack-[a-z]/,
                 iconSize = parseInt(this.model.get('iconSize'), 10),
                 iconSpacing = parseInt(this.model.get('iconSpacing'), 10),
                 textboxSize = visualHUD.Libs.utility.fontToBoxSize(iconSize/100);

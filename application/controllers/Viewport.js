@@ -81,6 +81,13 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             collection: this.getCollection('HUDItems')
         });
 
+        this.createApplicationView('windows.ImportHUD', {
+            width: 600,
+            title: 'Import HUD',
+            customPresetsCollection: this.getCollection('CustomHUDPresets'),
+            presetCollection: this.getCollection('HUDPresets')
+        });
+
         toolbar.render(viewport);
         canvas.render(viewport);
         topBar.render(viewport);
@@ -181,16 +188,7 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
      * Event Handler triggered by TopBar [Load Preset] button
      */
     loadPreset: function() {
-        var HUDPresetsCollection = this.getCollection('HUDPresets');
 
-        if(!this.getApplicationView('windows.ImportHUD')) {
-            this.createApplicationView('windows.ImportHUD', {
-                width: 600,
-                title: 'Import HUD',
-                customPresetsCollection: this.getCollection('CustomHUDPresets'),
-                presetCollection: HUDPresetsCollection
-            });
-        }
 
         this.getApplicationView('windows.ImportHUD').show();
     },
@@ -211,6 +209,12 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     },
 
     sendFeedback: function() {
+        if(!this.getApplicationView('windows.Feedback')) {
+            this.createApplicationView('windows.Feedback', {
+                width: 600
+            });
+        }
+
         this.getApplicationView('windows.Feedback').setTitle('Give a Feedback');
         this.getApplicationView('windows.Feedback').show();
     },

@@ -228,55 +228,20 @@ visualHUD.Views.Viewport = Backbone.View.extend({
     },
 
     bindDropImport: function() {
-        var batch = [],
-            files = [],
-            reader = new FileReader(),
-            imageProcessed = false;
-
-        var processFile = function(file) {
-            if(file.type.match('image.*') && visualHUD.Libs.importHelper.checkImageSize(file) == true && imageProcessed == false) {
-                reader.onload = visualHUD.Function.bind(processImage, this, [file], true);
-                reader.readAsDataURL(file);
-            }
-
-            if(file.type.match('text.*') || file.name.match('vhud$')) {
-                reader.onload = visualHUD.Function.bind(processText, this, [file], true);
-                reader.readAsText(file);
-            }
-        };
-
-        var processImage = function(event) {
-            imageProcessed = true;
-            this.fireEvent('import.image', [event.target.result]);
-        };
-
-        var processText = function(event, file) {
-            var fileName = file.name.split('.');
-            fileName.pop();
-
-            batch.push({
-                name: fileName.join('.'),
-                json: event.target.result
-            });
-
-            if(files.length > 0) {
-                processFile.call(this, files.shift());
-            }
-            else {
-                this.fireEvent('import.text', [batch]);
-            }
-        };
-
         if(Modernizr.draganddrop == true) {
             document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
                 event.preventDefault();
 
-                batch = [];
-                imageProcessed = false;
-
-                files = Array.prototype.slice.call(event.dataTransfer.files);
-                processFile.call(this, files.shift());
-
+                var files = Array.prototype.slice.call(event.dataTransfer.files);
+                visualHUD.Libs.importHelper.batchImport(files, {
+                    scope: this,
+                    files: function(output) {
+                        this.fireEvent('import.text', [output]);
+                    },
+                    image: function(output) {
+                        this.fireEvent('import.image', [output]);
+                    }
+                });
                 return false;
 
             }, this), false);

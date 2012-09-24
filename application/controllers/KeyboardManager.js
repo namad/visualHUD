@@ -100,7 +100,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             return false;
         }
 
-        if(event.keyCode == this.keyCodeMap.G && event.shiftKey) {
+        if(event.keyCode == this.keyCodeMap.G && event.ctrlKey) {
             event.stopPropagation();
             event.preventDefault();
 

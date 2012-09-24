@@ -10,22 +10,34 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         'keyup textarea[name=hud_json]': 'validateHUDJsonBuffered',
         'keyup input[name=preset_filter]': 'filterPresetsBuffered',
         'change input[name=preset_filter]': 'filterPresets',
-        'change form': 'updateFormStatus'
+        'change form': 'updateFormStatus',
+        'change input[name=myCustomPreset]': 'processFiles'
     },
     html: ([
         '<div class="mb-20">',
-        'You can load predefined HUD or import custom HUD previously build with Visual HUD application. In order to import custom HUD, select appropriate option from drop down below and click [Load] button.',
+        'You can import and load any custom HUD previously build with Visual HUD application. To add more HUDs, click [Browse...] button and choose *.vhud files to import or simply drag and drop these files right into the browser window. <a href="help/#import" target="help">Learn more</a>',
         '</div>'
     ]).join(''),
 
-    html: '',
-    
     init: function() {
         this.createDlPresetForm();
         this.createImportForm();
         this.bindExtraEvents();
+        this.setDlPresetButtonState();
 
         this.customHUDPresetsList = this.$('#customHUDList').data('component');
+    },
+
+    importPredefined: function() {
+        this.$el.find('[value=predefined]').attr('checked', true);
+        this.showPredefinedHUDPresets();
+        this.show();
+    },
+
+    importCustom: function() {
+        this.$el.find('[value=custom]').attr('checked', true);
+        this.showCustomHUDPresets();
+        this.show();
     },
 
     bindExtraEvents: function() {
@@ -49,8 +61,8 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
 
     importPredefinedHUD: function(boundList, element, model, event) {
         if(model == undefined) {
-            this.$content.find('[name=presetType][value=custom]').trigger('click', [true]);
-            return false;
+            //  this.$content.find('[name=presetType][value=custom]').trigger('click', [true]);
+            return true;
         }
 
         var actionElement = $(event.target).closest('li.action', element);
@@ -90,42 +102,42 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
     
     showCustomHUDControl: function() {
         var customHUDControl = this.$customHUDControl || this.$('#customHUDControl');
-        var predefinedHUDControl = this.$predefinedHUDControl || this.$('#predefinedHUDControl');
+        var predefinedHUDPresets = this.$predefinedHUDPresets || this.$('#predefinedHUDPresets');
         var customHUDPresets = this.$customHUDPresets || this.$('#customHUDPresets');
 
         this.$customHUDControl = customHUDControl.removeClass('hidden');
-        this.$predefinedHUDControl = predefinedHUDControl.addClass('hidden');
+        this.$predefinedHUDPresets = predefinedHUDPresets.addClass('hidden');
         this.$customHUDPresets = customHUDPresets.addClass('hidden');
+
 
         this.reposition();
 
         this.$el.find('[name=hud_json]').focus().select();
     },
 
-    showPredefinedHUDControl: function() {
+    showPredefinedHUDPresets: function() {
         var customHUDControl = this.$customHUDControl || this.$('#customHUDControl');
-        var predefinedHUDControl = this.$predefinedHUDControl || this.$('#predefinedHUDControl');
+        var predefinedHUDPresets = this.$predefinedHUDPresets || this.$('#predefinedHUDPresets');
         var customHUDPresets = this.$customHUDPresets || this.$('#customHUDPresets');
 
         this.$customHUDControl = customHUDControl.addClass('hidden');
-        this.$predefinedHUDControl = predefinedHUDControl.removeClass('hidden');
+        this.$predefinedHUDPresets = predefinedHUDPresets.removeClass('hidden');
         this.$customHUDPresets = customHUDPresets.addClass('hidden');
 
-        this.setDlPresetButtonState();
         this.reposition();
     },
 
     showCustomHUDPresets: function() {
         var customHUDControl = this.$customHUDControl || this.$('#customHUDControl');
-        var predefinedHUDControl = this.$predefinedHUDControl || this.$('#predefinedHUDControl');
+        var predefinedHUDPresets = this.$predefinedHUDPresets || this.$('#predefinedHUDPresets');
         var customHUDPresets = this.$customHUDPresets || this.$('#customHUDPresets');
 
         this.$customHUDControl = customHUDControl.addClass('hidden');
-        this.$predefinedHUDControl = predefinedHUDControl.addClass('hidden');
+        this.$predefinedHUDPresets = predefinedHUDPresets.addClass('hidden');
         this.$customHUDPresets = customHUDPresets.removeClass('hidden');
 
         this.$el.find('[name=preset_filter]').focus();
-       this.reposition();
+        this.reposition();
     },
 
     validateHUDJson: function() {
@@ -183,15 +195,11 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         var name = event.target.name;
         
         switch(values[name]) {
-            case 'custom': {
-                this.showCustomHUDControl();
-                break;
-            }
             case 'predefined': {
-                this.showPredefinedHUDControl();
+                this.showPredefinedHUDPresets();
                 break;
             }
-            case 'my': {
+            case 'custom': {
                 this.showCustomHUDPresets();
                 break;
             }
@@ -264,18 +272,13 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                     {
                         type: 'radiobuttonGroup',
                         layout: 'inline',
-                        label: null,
+                        label: 'Choose preset',
                         options: [
                             {
                                 name: 'presetType',
-                                value: 'my',
-                                boxLabel: 'From My HUDs collection',
-                                checked: true
-                            },
-                            {
-                                name: 'presetType',
                                 value: 'custom',
-                                boxLabel: 'Custom'
+                                boxLabel: 'Custom',
+                                checked: true
                             },
                             {
                                 name: 'presetType',
@@ -319,7 +322,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                     {
                         type: 'container',
                         cssClass: 'hidden mb-10',
-                        id: 'predefinedHUDControl',
+                        id: 'predefinedHUDPresets',
                         items: {
                             type: 'component',
                             constructorName: 'visualHUD.Views.SystemHUDPresetList',
@@ -357,13 +360,13 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                     },
                     {
                         type: 'toolbar',
+                        cssClass: 'import-form-buttons',
                         items: [
                             {
-                                type: 'button',
-                                text: 'Load HUD',
-                                icon: 'load',
-                                role: 'main',
-                                name: 'loadHUD'
+                                type: 'fileInput',
+                                text: 'Browse...',
+                                name: 'myCustomPreset',
+                                wrap: false
                             },
                             {
                                 type: 'button',
@@ -386,7 +389,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                 type: 'form',
                 cssClass: 'hidden',
                 id: 'downloadPresetsForm',
-                action: 'download_presets.php',
+                action: visualHUD.ACTION_DOWNLOAD_PRESETS,
                 method: 'post',
                 items: [
                     {
@@ -413,6 +416,22 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         var data = this.options.customPresetsCollection.toJSON();
         this.$('#downloadPresetsForm').find('[name=hud_data]').val(JSON.stringify(data));
         this.$('#downloadPresetsForm').submit();
+    },
+
+    processFiles: function(event) {
+        var files = Array.prototype.slice.call(event.target.files);
+
+        if(files.length) {
+            visualHUD.Libs.importHelper.batchImport(files, {
+                scope: this,
+                files: function(output) {
+                    this.fireEvent('import.text', [output]);
+                }
+            });
+            this.showCustomHUDPresets();
+        }
+
+        event.target.value = '';
     }
 });
 

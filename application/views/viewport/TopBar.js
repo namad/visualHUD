@@ -20,8 +20,8 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         '<span class="hint">custom HUDs <br />have been created so far</span>',
         '</div>',
 
-        '<div class="toolbar-aux">',
-        '<button value="feedback" class="button-aux popover-action" data-popover="feedback" id="reportBugButton"><span class="w-carret w-icon icon-feedback">Feedback</span></button>',
+        '<div class="toolbar-aux global-actions">',
+        '<button value="sendFeedback" class="button-aux" id="reportBugButton"><span class="w-icon icon-feedback">Feedback</span></button>',
         '</div>'
     ],
 
@@ -45,7 +45,7 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         
         this.updateToolbarButtonsState(0);
         this.setupAlignPopOver();
-        this.setupFeedbackPopOver();
+        //this.setupFeedbackPopOver();
         this.setupLogoPopOver();
         
     },

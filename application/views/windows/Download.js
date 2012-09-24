@@ -23,7 +23,7 @@ visualHUD.Views.windows.Download = visualHUD.Views.WindowBase.extend({
                 type: 'form',
                 cssClass: 'mwin-form',
                 id: 'downloadHUDForm',
-                action: 'download.php',
+                action: visualHUD.ACTION_DOWNLOAD_HUD,
                 method: 'post',
                 items: [
                     {

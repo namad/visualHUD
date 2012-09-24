@@ -22,7 +22,18 @@
     }
     .app-stats {
         left: 550px;
-        right: 135px;
+        right: 120px;
+        
+        .counter {
+            margin: 0;
+            display: block;
+            font-size: 14px;
+            line-height: 14px;
+        }
+        .hint {
+            display: block;
+            text-align: center;
+        }
     }
 }
 

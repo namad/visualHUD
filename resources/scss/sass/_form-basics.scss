@@ -236,7 +236,7 @@ input[type="checkbox"] {
 
     &:hover .box-label {
         &:before {
-            @include default-input-style-focused;
+            background-color: #1f1f1f;
         }
     }    
 }

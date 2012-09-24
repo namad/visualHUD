@@ -10,5 +10,12 @@ visualHUD.Views.CustomHUDPresetList = visualHUD.Views.BoundList.extend({
         '<li class="action icon-trash" data-tooltip="Delete" data-action="delete"><span>Delete this hud</span></li>',
         '</ul>',
         '</div>'
+    ]).join(''),
+
+    emptyTpl: ([
+        '<div class="empty-list-message">',
+            '<%= message %>',
+            '<input type="file" name="myCustomPreset" multiple="true" />',
+        '</div>'
     ]).join('')
 });

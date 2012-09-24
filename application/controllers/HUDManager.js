@@ -41,7 +41,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             },
             'windows.ImportHUD': {
                 'load': this.loadHUD,
-                'download.preset': this.downloadPreset
+                'download.preset': this.downloadPreset,
+                'import.text': this.importHUDPresets
             },
             'windows.Download': {
                 'download': this.downloadHUD
@@ -88,6 +89,12 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Restore previously saved draft
      */
     loadDraft: function() {
+        console.log('load draft triggered');
+
+        if(this.getCollection('HUDItems').length == 0) {
+            return this.showGetStartedMessage();
+        }
+
         var canvasView = this.getApplicationView('viewport.Canvas'),
             trash = [];
 
@@ -120,6 +127,32 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             this.getCollection('HUDItems').remove(trash);
         }
         canvasView.completeUpdate();
+    },
+
+    showGetStartedMessage: function() {
+        var $message = this.application.growl.alert({
+            status: 'info',
+            title: 'Get Started',
+            delay: 20000,
+            message: ([
+                '<p>Visual HUD is ready to rock, but there are no HUD items yet. Would you like to import something?</p>',
+                '<a href="#" class="import">Import HUD</a>'
+            ]).join('')
+        });
+
+        $message.find('a.import').click(visualHUD.Function.bind(function() {
+            var view = this.getApplicationView('windows.ImportHUD');
+
+            if(this.getCollection('CustomHUDPresets').length > 0) {
+                view.importCustom();
+            }
+            else {
+                view.importPredefined();
+            }
+
+            this.application.growl.hide($message);
+            return false;
+        }, this));
     },
 
     /**
@@ -540,6 +573,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
         _.each(presets, function(preset, idx) {
             try {
+                // set suppress boolean to true only for the fist item in the collection
                 var suppress = idx == 0 ? length > 0 : true
                 this.loadHUD(JSON.parse(preset.json), preset.name || null,  suppress);
             }
@@ -562,15 +596,18 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
                 message = [message];
             }
 
-            var $alert = this.application.growl.alert({
+            var growl = this.application.growl,
+                viewportController = this.application.getController('Viewport');
+
+            var $alert = growl.alert({
                 title: 'Hooray! ',
                 status: 'success',
                 message: _.template(message.join(''), {count: presets.length})
             });
 
             $alert.find('a.import').click(visualHUD.Function.bind(function() {
-                this.application.getController('Viewport').loadPreset();
-                this.application.growl.hide($alert);
+                viewportController.loadPreset();
+                growl.hide($alert);
                 return false;
             }, this));
         }

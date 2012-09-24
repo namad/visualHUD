@@ -27,6 +27,10 @@ new Backbone.Application({
         'HistoryManager'
     ],
 
+    ACTION_CONTACT: 'contact.php',
+    ACTION_DOWNLOAD_PRESETS: 'download_presets.php',
+    ACTION_DOWNLOAD_HUD: 'download.php',
+
     messages: {
         scriptError: 'There was an error on this page.',
         errorReportSuccess: 'Thanks, mate. Your report has been sent',
@@ -42,7 +46,8 @@ new Backbone.Application({
         LARGE_IMAGE_WARNING: 'Image you are trying to import, are too large (<%= imageSize %>). Please, try another image that is less than <%= maxSize %>',
         UNSUPPORTED_IMAGE_FORMAT: 'Image type you are trying to import is not supported (<%= imageType %>). Try to import images in PNG, JPG or GIF format',
         CONFIRM_APPLICATION_RESET: 'Are you sure to reset visualHUD?\nAll settings and stored data will be cleared!',
-        CONFIRM_HUD_OVERWRITE: 'Are you sure to overwrite current HUD? All changes will be lost!'
+        CONFIRM_HUD_OVERWRITE: 'Are you sure to overwrite current HUD? All changes will be lost!',
+        AJAX_ERROR: '<%= url %> request returned error:<br /><strong><%= error %></strong>'
     },
 
     initialize: function() {
@@ -70,36 +75,74 @@ new Backbone.Application({
             $(this).remove();
         });
         
-        window.onerror = this.applicationErrorHandler;
+        window.onerror = visualHUD.Function.createBuffered(this.applicationErrorHandler, 50, this);
+
+        $(document).ajaxError(visualHUD.Function.bind(function(event, jqXHR, ajaxSettings, thrownError) {
+            this.ajaxErrorAlert = this.growl.alert({
+                status: 'error',
+                title:  'Oops.. Something goes wrong ;(',
+                message: _.template(this.messages.AJAX_ERROR, {
+                    url: ajaxSettings.url,
+                    error: jqXHR.status + ' ' + thrownError
+                })
+            });
+        }, this));
     },
     
-    applicationErrorHandler: function(errorMsg, url, lineNumber) {    
-        if(visualHUD.growl == undefined) {
-            return true;
-        }
-        
-        console.trace();
-        
-        var messageTemplate = ([
-                '<p><%= errorMsg %><br />',
-                '<%= url %> (line: <%= lineNumber %>)</p>',
-                '<div><a href="#" class="report">Send Report</a></div>'
-            ]).join('');
-        
-        $alert = visualHUD.growl.alert({
-            status: 'error',
-            title: 'Oops.. Something goes wrong ;(',
-            message: _.template(messageTemplate, {
-                errorMsg: errorMsg,
-                url: url,
-                lineNumber: lineNumber
-            })
-        });
+    applicationErrorHandler: function(errorMsg, url, lineNumber) {
+        var browserVersion = $.browser.version;
+        var browserInfo = ['\n-----------------------\n'];
 
-        $alert.find('a.report').click(function() {
-            visualHUD.getController('Viewport').reportBug(errorMsg, url, lineNumber);
-            visualHUD.growl.hide($alert);
-            return false;
+        for(var k in $.browser){
+            if(k != 'version') browserInfo.push(k);
+        };
+
+        browserInfo = browserInfo.join('/') + ' ver.' + browserVersion + "\n";
+
+
+        $.ajax({
+            type: 'post',
+            url: visualHUD.ACTION_CONTACT,
+            data: [
+                {
+                    name: 'name',
+                    value: 'VisualHUD Automated Reported'
+                },
+                {
+                    name: 'email',
+                    value: 'vhud@pk69.com'
+                },
+                {
+                    name: 'message',
+                    value: _.template('Error: <%= errorMsg %>\nURL: <%= url %>\nLine: <%= lineNumber %><%= browserInfo %>', {
+                        errorMsg: errorMsg,
+                        url: url,
+                        lineNumber: lineNumber,
+                        browserInfo: browserInfo
+                    })
+                }
+            ],
+            success: visualHUD.Function.bind(function(){
+                if(this.growl == undefined) {
+                    return true;
+                }
+
+                var messageTemplate = ([
+                    '<p><%= errorMsg %><br />',
+                    '<%= url %> (line: <%= lineNumber %>)</p>',
+                    'But no worries, mate, this problem has been already reported.'
+                ]).join('');
+
+                $alert = this.growl.alert({
+                    status: 'error',
+                    title: 'Oops.. Something goes wrong ;(',
+                    message: _.template(messageTemplate, {
+                        errorMsg: errorMsg,
+                        url: url,
+                        lineNumber: lineNumber
+                    })
+                });
+            }, visualHUD)
         });
     }
 });

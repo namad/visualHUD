@@ -5,7 +5,7 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
     opened: false,
     rendered: false,
 
-    options: {
+    defaults: {
         width: 500,
         height: 'auto'
     },
@@ -27,8 +27,10 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         '</div>'
     ],
 
-    initialize: function() {
+    initialize: function(options) {
         var mixin = [this];
+
+        this.options = _.extend({}, this.defaults, options);
 
         _.each(this.mixin, function(className) {
             mixin.push(Backbone.resolveNamespace(className));
@@ -109,11 +111,11 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
             'height':height
         });
 
-        var heightBounds = [10, this.$contentWrapper.height()];
+        var heightBounds = [10, this.$el.height()];
 
         var topBounds = this.getTopPosition(heightBounds);
 
-        var animateToHeight = this.$contentWrapper.outerHeight();
+        var animateToHeight = this.$contentWrapper.height();
 
         this.$contentWrapper.addClass('xpk-win-show').css({'width': 10, 'height':10});
 
@@ -155,11 +157,11 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         _top[0] = Math.round(_winHeight / 2 - heightBounds[0] / 2);
         _top[0] +=  _topOffset;
 
-        _top[1] = heightBounds[1] > _winHeight ? 25 : Math.round(_winHeight/2 - heightBounds[1]/2);
+        _top[1] = Math.round(_winHeight/2 - heightBounds[1]/2);
         _top[1] += _topOffset;
 
-        if(_top[1] < 10){
-            _top[1] = 10;
+        if(_top[1] < 0){
+            _top[1] = 0;
         }
 
         return _top;
@@ -178,6 +180,7 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
 
 
         this.$el.css({
+            overflow: 'hidden',
             visibility: 'visible',
             height: 'auto',
             top: topBounds[0]
@@ -199,6 +202,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
 
                 $(window).bind('resize.windowReposition', reposition);
                 $(document).bind('keyup.windowKeyboardListiner', keyboardListener);
+
+                reposition();
             }
         });
 
@@ -212,15 +217,16 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
 
     reposition: function() {
         if(this.$el.is(':visible')) {
-            var _duration = 250;
-            var _top = this.getTopPosition([0, this.$el.height()]);
-            var _easing = jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing';
+            var _limit = $(document.body).height();
+            var _height = this.$el.height();
+            var _top = this.getTopPosition([0, _height]);
 
-            this.$el.animate({
+            _height = _height > _limit ? _limit : 'auto';
+
+            this.$el.css({
+                overflow: 'auto',
+                height: _height,
                 top: _top[1]
-            },{
-                easing: _easing,
-                duration: _duration
             });
         }
     },

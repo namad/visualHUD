@@ -694,7 +694,6 @@ visualHUD.Libs.formBuilderMixin = {
 
         createControls: function(form) {
             var markup = [
-                this.getAvailabilityControls(),
                 {
                     type: 'fieldset',
                     label: 'Scorebox Properties',
@@ -830,12 +829,6 @@ visualHUD.Libs.formBuilderMixin = {
                             'value': this.model.get('color')
                         },
                         this.getOpacityInput(),
-                        {
-                            'type': 'checkbox',
-                            'name': 'teamColors',
-                            'boxLabel': 'Use team colors',
-                            'checked': this.model.get('teamColors')
-                        },
                         {
                             'type': 'checkbox',
                             'name': 'teamColors',

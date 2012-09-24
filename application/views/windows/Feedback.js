@@ -9,7 +9,7 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
         'blur form': 'validate',
         'click button[name=cancel]': 'hide'
     },
-    html: ([
+    _html: ([
         '<div class="mb-20">',
         '<p>Want to help? Send as much details as you can, especially describing your actions. This way I can easely reproduce the problem and fix it. Here is an example of good bug report:</p>',
         '<blockquote>"I was clicking [Apply] button and get an error message."</blockquote>',
@@ -23,8 +23,8 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
                 type: 'form',
                 cssClass: 'mwin-form',
                 id: 'feedbackForm',
-                action: 'contact.php',
-                method: 'get',
+                action: visualHUD.ACTION_CONTACT,
+                method: 'post',
                 items: [
                     {
                         type: 'container',
@@ -132,11 +132,6 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
             }
             if(this.name == 'comments'){
                 this.value += '\n---------------\n\n';
-
-                var map = ['Error', 'URL', 'Line'];
-                for(var a=0, b = reportData.length; a<b; a++){
-                    this.value += map[a] + ': ' + reportData[a] + "\n";
-                };
             }
         });
 
@@ -145,9 +140,25 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
                 type: this.$form.get(0).method,
                 url: this.$form.get(0).action,
                 data: serial,
-                success: visualHUD.Function.bind(function(){
-                    this.hide();
+                complete: visualHUD.Function.bind(function(xhr, status, page, section){
+                    var code = xhr.status,
+                        html = xhr.responseText;
+
+                    if(code == 200) {
+                        this.hide();
+                        visualHUD.growl.alert({
+                            status: 'success',
+                            title: 'Thanks, mate!',
+                            message: 'Your message has been successfully sent.'
+                        });
+                    }
+                    else {
+                        this.trigger('update.error', xhr);
+                    }
+
                     submitButton.attr('disabled', false);
+
+
                 }, this)
             });
         }
