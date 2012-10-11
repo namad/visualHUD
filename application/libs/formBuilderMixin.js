@@ -79,10 +79,22 @@ visualHUD.Libs.formBuilderMixin = {
 
         getOwnerDrawOptions: function() {
             return {
-                '': 'Any game type',
-                'CG_SHOW_ANYNONTEAMGAME': 'Any non team game',
-                'CG_SHOW_ANYTEAMGAME': 'Any team game',
+                '0': 'Any Game Type',
+                'CG_SHOW_ANYNONTEAMGAME': 'Any Non Team Game',
+                'CG_SHOW_ANYTEAMGAME': 'Any Team Game',
+                'CG_SHOW_CLAN_ARENA': 'Clan Arenay Only',
+                'CG_SHOW_TOURNAMENT': 'Duel Only',
+                'CG_SHOW_IF_WARMUP': 'Warm-up Only',
+                'CG_SHOW_IF_NOT_WARMUP': 'Game Only (Not Warm-up)',
                 'CG_SHOW_CTF': 'CTF Only'
+/*
+ 'CG_SHOW_IF_PLYR_IS_FIRST_PLACE', 'CG_SHOW_IF_PLYR_IS_NOT_FIRST_PLACE', 'CG_SHOW_IF_RED_IS_FIRST_PLACE',
+ 'CG_SHOW_IF_BLUE_IS_FIRST_PLACE', 'CG_SHOW_IF_PLYR_IS_ON_RED', 'CG_SHOW_IF_PLYR_IS_ON_BLUE',
+ 'CG_SHOW_IF_PLAYER_HAS_FLAG', 'CG_SHOW_YOURTEAMHASENEMYFLAG', 'CG_SHOW_OTHERTEAMHASFLAG',
+ 'CG_SHOW_BLUE_TEAM_HAS_REDFLAG', 'CG_SHOW_RED_TEAM_HAS_BLUEFLAG',
+ 'CG_SHOW_ANYTEAMGAME', 'CG_SHOW_ANYNONTEAMGAME', 'CG_SHOW_CTF', 'CG_SHOW_CLAN_ARENA', 'CG_SHOW_TOURNAMENT',
+ 'CG_SHOW_HEALTHCRITICAL', 'CG_SHOW_HEALTHOK', 'CG_SHOW_IF_WARMUP', 'CG_SHOW_IF_NOT_WARMUP'
+                 */
             }
         },
         getGradientOptions: function() {
@@ -223,6 +235,13 @@ visualHUD.Libs.formBuilderMixin = {
             }
         },
 
+        getBarDirectionOptions: function() {
+            return {
+                '0': 'Left to right',
+                '1': 'Right to left'
+            }
+        },
+
         getAvailabilityControls: function() {
             return {
                 type: 'fieldset',
@@ -320,7 +339,8 @@ visualHUD.Libs.formBuilderMixin = {
                     label: 'Text Properties',
                     items: [
                         this.getTextStyleSelect(),
-                        this.getTextSizeInput()
+                        this.getTextSizeInput(),
+                        this.getTextOpacityInput()
                     ]
                 },
                 {
@@ -747,6 +767,12 @@ visualHUD.Libs.formBuilderMixin = {
                     type: 'fieldset',
                     label: this.model.get('label') + ' Properties',
                     items: [
+                        this.getSelectBasic({
+                            'name': 'barDirection',
+                            'label': 'Direction',
+                            'value': this.model.get('barDirection'),
+                            'options': this.getBarDirectionOptions()
+                        }),
                         this.getWidthInput(),
                         this.getHeightInput(),
                         this.getPaddingInput(),

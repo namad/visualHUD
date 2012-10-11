@@ -44,8 +44,8 @@ visualHUD.Views.windows.Download = visualHUD.Views.WindowBase.extend({
                     {
                         type: 'checkbox',
                         name: 'save_preset',
-                        tooltip: 'Check this option if you want to be able edit this HUD later without importing code from external file',
-                        boxLabel: 'Add to my HUDs collection',
+                        tooltip: 'All custom presets are available from the Import dialog',
+                        boxLabel: 'Save as custom preset',
                         checked: true
                     },
                     {

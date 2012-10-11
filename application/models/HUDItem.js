@@ -45,7 +45,7 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
     defaultsByName: {
         'chatArea':{
             coordinates: {
-                top: 285,
+                top: 245,
                 left: 0,
                 width: 640,
                 height: 160

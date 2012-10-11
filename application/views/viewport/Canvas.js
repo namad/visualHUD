@@ -70,6 +70,7 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
         this.$el.appendTo(viewport.$centerArea);
 
         var clientSettingsModel = this.options.clientSettingsModel;
+		clientSettingsModel.changed = clientSettingsModel.toJSON();
         this.setClientSettings(clientSettingsModel);
         clientSettingsModel.on('change', this.setClientSettings, this);
 
@@ -81,10 +82,10 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
     },
 
     setClientSettings: function(record) {
-        var data = record.toJSON();
         var settingsMap = this.clientSettingsMap;
 
-        _.each(data, function(value, key) {
+		
+        _.each(record.changed, function(value, key) {
 
             if(key == 'snapGrid'){
                 this.dragManager.setOptions({
@@ -94,12 +95,8 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
 
             if(key == 'canvasShot'){
                 var originalClassName = this.$el.parent().attr('class');
-                var patt = /canvas-[0-9]/;
-                if(patt.test(originalClassName)) {
-                    originalClassName = originalClassName.replace(patt, '');
-                    originalClassName = $.trim(originalClassName);
-                }
-                originalClassName += (' canvas-' + value);
+                originalClassName = originalClassName.replace(/canvas-[0-9]/, '');
+                originalClassName = $.trim(originalClassName) + ' canvas-' + value;
 
                 this.$el.parent().attr('class', originalClassName);
 
@@ -112,6 +109,13 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
                 return;
             }
 
+
+            if(key == 'ownerDrawFlag') {
+				var prevValue = record._previousAttributes[key] || '';
+                this.$el.parent()
+					.removeClass('gt-' + prevValue.toLowerCase())
+					.addClass('gt-' + value.toLowerCase());
+            }
 
             var extra = this.clientSettingsMap[key];
             if(extra) {
@@ -242,10 +246,15 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
             i = elements.length,
             view;
 
-        while(--i) {
+        elements.each(function(i) {
             view = elements.eq(i).data('HUDItem');
             view.model.set('index', i);
-        }
+        });
+
+        /*while(--i) {
+            view = elements.eq(i).data('HUDItem');
+            view.model.set('index', i);
+        }*/
     }
 });
 

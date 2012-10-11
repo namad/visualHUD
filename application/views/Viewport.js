@@ -187,10 +187,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
         this.$sidebarWrapper.stop().animate({
             'right': amount
         }, {
-            duration: 200,
-            complete: visualHUD.Function.createDelayed(function(){
-                console.log('sidebar out');
-            }, 20, this)
+            duration: 200
         });
     },
 

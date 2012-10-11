@@ -3,6 +3,7 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
         return [
             {
                 'id':'largeHUD',
+                'isBuiltIn': true,
                 'name':'Large_HUD',
                 'items':[
                     {
@@ -337,6 +338,7 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
             },
             {
                 'id':'smallHUD',
+                'isBuiltIn': true,
                 'name':'Small_HUD',
                 'items':[
                     {
@@ -672,6 +674,7 @@ visualHUD.Collections.HUDPresets = visualHUD.Collections.DictionaryAbstract.exte
             },
             {
                 'id':'defaultHUD',
+                'isBuiltIn': true,
                 'name':'Normal_HUD',
                 'items':[
                     {

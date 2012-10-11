@@ -398,7 +398,7 @@ visualHUD.Libs.itemBuilderMixin = {
             var direction = parseInt(value, 10);
             var directionMap = ['ltr-bar', 'rtl-bar']
 
-            _.each(function(val, idx) {
+            _.each(directionMap, function(val, idx) {
                 var fn = idx == direction ? 'addClass' : 'removeClass';
                 this.$el[fn](directionMap[idx]);
             }, this);
@@ -472,30 +472,29 @@ visualHUD.Libs.itemBuilderMixin = {
             this.updateTextColorByStatus(text, value)
         },
 
-        updateTextColorByStatus: visualHUD.Function.createBuffered(function(barValue, ranges) {
+        updateTextColorByStatus: function(barValue, ranges) {
             var opacity = parseInt(this.model.get('barsOpacity'), 10),
                 color = null;
 
-            if(barValue <= 100){
-                _.each(ranges, function(range) {
+            _.each(ranges, function(range) {
+                if(barValue <= 100 && barValue >= range.range[0] && barValue <= range.range[1]) {
+                    color = $.color('#' + range.color);
+                    this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+                }
+                else {
                     if(barValue >= range.range[0] && barValue <= range.range[1]){
                         color = $.color('#' + range.color);
-                        return {};
+                        (barValue > 100) && this.paintBarElement(this.getDOMRefs().h200, color, opacity);
                     }
-                }, this);
+                    if(100 >= range.range[0] && 100 <= range.range[1]) {
+                        color = $.color('#' + range.color);
+                        this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+                    }
+                }
 
-                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
 
-            }
-            else if(barValue > 100){
-                color = $.color('#' + ranges[1].color);
-                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
-
-                color = $.color('#' + ranges[2].color);
-                this.paintBarElement(this.getDOMRefs().h200, color, opacity);
-
-            }
-        }, 50),
+            }, this);
+        },
 
         updateBarsOpacity: function(value) {
             var ranges = this.model.get('colorRanges');

@@ -33,7 +33,6 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
             'viewport.CanvasToolbar': {
                 'toolbar.menu:show': this.onCanvasMenuShow,
                 'toolbar.menu:hide': this.onCanvasMenuHide,
-                'toolbar.menu:action': this.setCanvasOptions,
                 'import.image': this.importImage
             },
             'viewport.TopBar': {
@@ -98,15 +97,6 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
 
     onViewportRender: function(view) {
         //this.initializeClientSettings();
-    },
-
-    /**
-     * Event Handler triggered by visualHUD.Views.CanvasToolbar when used change Client Settings
-     */
-    setCanvasOptions: function(data) {
-        var clientSettings = this.getModel('ClientSettings');
-        var value = data.value;
-        clientSettings.set(data.name,  value);
     },
 
     importImage: function() {

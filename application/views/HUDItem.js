@@ -140,7 +140,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
     onModelUpdate: function(record, event) {
         var changes = event.changes;
 
-        console.info(' > HUD Item', record.get('name'), 'model has changed', JSON.stringify(changes));
+        /*console.info(' > HUD Item', record.get('name'), 'model has changed', JSON.stringify(changes));*/
 
         _.each(changes, function(set, field) {
             var refreshStatus = field.match(/coordinates|width|height|padding|textSize|iconSize|iconSpacing|iconPosition/gi) != null;
@@ -153,7 +153,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
             methodName = 'update' + field.charAt(0).toUpperCase() + field.substring(1),
             fn = this[methodName]; // these methods are from visualHUD.Libs.itemBuilderMixin
 
-        console.info(' > Updating HUD Item property', field, 'with new value:', value);
+        /*console.info(' > Updating HUD Item property', field, 'with new value:', value);*/
 
         if(_.isFunction(fn)) {
             fn.call(this, value);
@@ -164,7 +164,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
     refreshCoordinates: function(silent) {
         if(this.$el.is(':visible')) {
 
-            console.info(' > Updating HUD Item Coordinates. isSilent:', silent || false);
+            /*console.info(' > Updating HUD Item Coordinates. isSilent:', silent || false);*/
 
             var position = this.$el.position(),
                 coordinates = {
@@ -238,7 +238,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
     },
 
     update: function(data) {
-        console.info(' > Updating HUD Item', this.model.get('name'), JSON.stringify(data));
+        /*console.info(' > Updating HUD Item', this.model.get('name'), JSON.stringify(data));*/
 
         var form = this.getForm();
         this.model.set(data);
@@ -248,7 +248,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         Abstract methods, should be defined within visualHUD.Libs.itemBuilderMixin
     */
     updateCoordinates: function(values) {
-        console.info(' > Updating HUD Item coordinates', JSON.stringify(values));
+        /*console.info(' > Updating HUD Item coordinates', JSON.stringify(values));*/
         this.$el.css({
             top: values.top * visualHUD.scaleFactor,
             left: values.left * visualHUD.scaleFactor

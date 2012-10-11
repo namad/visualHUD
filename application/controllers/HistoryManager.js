@@ -72,7 +72,7 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
     },
 
     pushHistoryState: function(data) {
-        console.log('adding new state to history:', JSON.stringify(data));
+        /*console.log('adding new state to history:', JSON.stringify(data));*/
 
         this.undoHistrory.push(data);
 

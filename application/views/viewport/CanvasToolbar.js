@@ -2,7 +2,7 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
     tagName: 'ul',
     className: 'app-toolbar',
     baseCls: 'root-item',
-    menuStructire: [
+    menuStructure: [
         {
             text: 'Screenshot',
             title: 'Change location background',
@@ -231,26 +231,50 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
     initialize: function() {
         this.tpl = [
             '<% _.each(items, function(item) { %>',
-            '<li class="<%= baseCls %> <%= item.cls %>" data-tooltip="<%= item.title %>">',
-            '<span class="item-name"><%= item.text %></span>',
-            '<strong class="item-value <%= item.counter %>">0</strong>',
-            '<% if(item.options && item.options.length){ %>',
-            '<ul>',
-            '<% _.each(item.options, function(option) { %>',
-            '<li>',
-            '<label><input type="<%= option.control %>" name="<%= option.name %>" value="<%= option.value %>" /><span><%= option.label %></span></label>',
-            '</li>',
-            '<% }); %>',
-            '</ul>',
-            '<% }; %>',
-            '</li>',
+                '<li class="<%= baseCls %> <%= item.cls %>" data-tooltip="<%= item.title %>">',
+                    '<span class="item-name"><%= item.text %></span>',
+                    '<strong class="item-value <%= item.counter %>">0</strong>',
+                    '<% if(item.options && item.options.length){ %>',
+                        '<ul>',
+                        '<% _.each(item.options, function(option) { %>',
+                            '<li>',
+                                '<label><input type="<%= option.control %>" name="<%= option.name %>" value="<%= option.value %>" /><span><%= option.label %></span></label>',
+                            '</li>',
+                        '<% }); %>',
+                        '</ul>',
+                    '<% }; %>',
+                '</li>',
             '<% }); %>'
         ];
+
+        this.menuStructure.splice(0,0,{
+            text: 'View',
+            title: 'Filter Elements by Game Type',
+            cls: 'rtl-item gt-filter',
+            counter: 'hidden',
+            options: this.getGameTypeFilterOptions()
+        });
     },
+
+    getGameTypeFilterOptions: function() {
+        var options = [];
+
+        _.each(visualHUD.Libs.formBuilderMixin.getByName('base').getOwnerDrawOptions(), function(value, key) {
+            options.push({
+                name: 'ownerDrawFlag',
+                control: 'radio',
+                label: value,
+                value: key
+            });
+        });
+
+        return options;
+    },
+
     render: function(viewport) {
         var tpl = _.template(this.tpl.join(''), {
                 baseCls: this.baseCls,
-                items: this.menuStructire
+                items: this.menuStructure
             });
 
         this.$el.append(tpl);
@@ -404,10 +428,8 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
         var textElement = $formControl.closest('li.root-item').find('strong.item-value').text(formControl.value);
 
         if(formControl.name != '') {
-            this.fireEvent('toolbar.menu:action', [{
-                name: formControl.name,
-                value: isCheckbox ? formControl.checked : formControl.value
-            }]);
+			var clientSettingsModel = this.options.clientSettingsModel;
+			clientSettingsModel.set(formControl.name, isCheckbox ? formControl.checked : formControl.value)
         }
     },
 

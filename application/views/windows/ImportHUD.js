@@ -11,11 +11,11 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         'keyup input[name=preset_filter]': 'filterPresetsBuffered',
         'change input[name=preset_filter]': 'filterPresets',
         'change form': 'updateFormStatus',
-        'change input[name=myCustomPreset]': 'processFiles'
+        'change input[name=myCustomPreset]': 'processSelectedFiles'
     },
     html: ([
         '<div class="mb-20">',
-        'You can import and load any custom HUD previously build with Visual HUD application. To add more HUDs, click [Browse...] button and choose *.vhud files to import or simply drag and drop these files right into the browser window. <a href="help/#import" target="help">Learn more</a>',
+        'To add more presets, click [Browse For Presets...] button and choose *.vhud files to import. Also you can simply drag and drop these files right into the browser window.<a href="help/#import" target="help" class="ml-10">Learn more</a>',
         '</div>'
     ]).join(''),
 
@@ -218,7 +218,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
     reset: function() {
         this.$content.find('form').get(0).reset();
         this.showCustomHUDPresets();
-        this.toggleNameField(false);
+        this.$content.find('[name=presetType][value=custom]').attr('checked', true);
     },
 
     cancel: function() {
@@ -353,7 +353,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                             {
                                 type: 'button',
                                 cssClass: 'download-presets-button',
-                                text: 'Download Presets',
+                                text: 'Download All Presets',
                                 name: 'downloadPresets'
                             }
                         ]
@@ -364,7 +364,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                         items: [
                             {
                                 type: 'fileInput',
-                                text: 'Browse...',
+                                text: 'Browse For Presets...',
                                 name: 'myCustomPreset',
                                 wrap: false
                             },
@@ -418,7 +418,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         this.$('#downloadPresetsForm').submit();
     },
 
-    processFiles: function(event) {
+    processSelectedFiles: function(event) {
         var files = Array.prototype.slice.call(event.target.files);
 
         if(files.length) {

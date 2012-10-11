@@ -414,10 +414,11 @@ visualHUD.Libs.formControlsBuilder = {
 
         var selectDOM = select.get(0);
 
-        valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+        valueElement.text($(selectDOM[selectDOM.selectedIndex]).text());
 
         select.on('change', function() {
-            valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+            var text = $(this[this.selectedIndex]).text()
+            valueElement.text(text);
         });
 
         select.on('focus', function() {

@@ -101,12 +101,14 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
 
     validate: function(event) {
         var target = $(event.target);
-        var validClsFn = 'addClass';
+        if(target.get(0).validity) {
+            var validClsFn = 'addClass';
 
-        if(target.get(0).validity.valid == true) {
-            validClsFn = 'removeClass';
+            if(target.get(0).validity.valid == true) {
+                validClsFn = 'removeClass';
+            }
+            target[validClsFn]('invalid-field');
         }
-        target[validClsFn]('invalid-field');
     },
 
     suppressValidation: function(event) {

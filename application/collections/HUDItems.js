@@ -9,6 +9,9 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
     initialize: function() {
         this.on('add', this.setIndex, this);
         this.on('load', this.updateIndexes, this);
+		this.on('change:ownerDrawFlag', function(model, event) {
+			this.filter && this.filterItemsByOwnerDraw(this.filter);
+		}, this);
         $(window).unload(visualHUD.Function.bind(this.save, this, []));
     },
 
@@ -80,6 +83,8 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
      * @return {Array}
      */
     serialize: function() {
+        this.sort();
+
         var outputData = [],
             defaultChat = new this.model();
 
@@ -143,6 +148,23 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
         defaultChat = null;
 
         return outputData;
-    }
+    },
+	
+	filterItemsByOwnerDraw: function(value) {
+        this.each(function(record) {
+            var HUDItemView = record._HUDItem,
+                flagValue = record.get('ownerDrawFlag'),
+                refs = HUDItemView.getDOMRefs();
+			
+			if(value == '' || flagValue == value || flagValue == '') {
+				HUDItemView.show();
+			}
+			else {
+				HUDItemView.hide();
+			}
+		});
+		
+		this.filter = value;
+	}
 });
 

@@ -45,7 +45,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
                 'import.text': this.importHUDPresets
             },
             'windows.Download': {
-                'download': this.downloadHUD
+                'download': this.onDownload
             },
             'windows.ImportImage': {
                 'import': this.importImage
@@ -285,28 +285,32 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
         _.each(changes, function(set, field) {
             var value = model.get(field),
-                namePattern;
+                namePattern,
+				fieldToUpdate = 'text';
 
             switch(field) {
                 case 'statusHealth': {
-                    namePattern = /healthIndicator|healthBar/
+                    namePattern = /healthIndicator|healthBar/;
                     break;
                 }
                 case 'statusArmor': {
-                    namePattern = /armorIndicator|armorBar/
+                    namePattern = /armorIndicator|armorBar/;
                     break;
                 }
                 case 'statusAmmo': {
-                    namePattern = /ammoIndicator/
+                    namePattern = /ammoIndicator/;
                     break;
                 }
                 case 'statusAccuracy': {
-                    namePattern = /accuracyIndicator/
+                    namePattern = /accuracyIndicator/;
                     break;
                 }
                 case 'statusSkill': {
-                    namePattern = /skillIndicator/
+                    namePattern = /skillIndicator/;
                     break;
+                }
+                case 'ownerDrawFlag': {
+					return HUDItemsCollection.filterItemsByOwnerDraw(value);
                 }
             }
 
@@ -314,7 +318,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
                 var name = record.get('name');
 
                 if(namePattern && namePattern.test(name)) {
-                    record.set('text', value);
+                    record.set(fieldToUpdate, value);
                 }
             });
         }, this);
@@ -499,7 +503,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
     },
 
-    downloadHUD: function(view, data) {
+    onDownload: function(view, data) {
         var values = view.serializeForm();
 
         if(values['save_preset']) {
@@ -533,8 +537,13 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
     addCustomHUDPreset: function(data) {
         var items = data.items,
-            name = data.name;
-        
+            name = data.name,
+            builtIn = data.isBuiltIn;
+
+        if(builtIn === true) {
+            return;
+        }
+
         var presetRecord = this.getCollection('CustomHUDPresets').find(function(record) {
                 return record.get('name') == name;
             });
