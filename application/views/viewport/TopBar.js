@@ -6,7 +6,6 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         '<div class="toolbar-main global-actions">',
             '<button value="downloadHUD" class="button" id="downloadButton"><span class="w-icon download">Download</span></button>',
             '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load">Import</span></button>',
-            '<button value="restartApplication" class="button-aux" id="restartAppButton"><span class="w-icon restart">Restart</span></button>',
         '</div>',
         '<div class="toolbar-main hud-actions">',
             '<button value="undoUpdate" class="button-aux" data-tooltip="Undo"><span class="w-icon icon-undo">Undo</span></button>',

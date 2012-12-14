@@ -36,7 +36,7 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'barDirection': null,
         'resizable': false,
         'group': null,
-        'ownerDrawFlag': ''
+        'ownerDrawFlag': '0'
     },
 
     /**
@@ -307,6 +307,10 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
 
         if(data.name == 'powerupIndicator' && data.iconStyle != null) {
             this.set({'iconStyle': null}, {silent: true});
+        }
+
+        if(this.get('ownerDraw') == '') {
+            this.set({'ownerDraw': '0'}, {silent: true});
         }
 
         if(data.name == 'skillIndicator' && 'opacity' in data) {

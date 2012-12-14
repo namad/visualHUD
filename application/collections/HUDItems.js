@@ -156,7 +156,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
                 flagValue = record.get('ownerDrawFlag'),
                 refs = HUDItemView.getDOMRefs();
 			
-			if(value == '' || flagValue == value || flagValue == '') {
+			if(value == '0' || flagValue == value || flagValue == '0') {
 				HUDItemView.show();
 			}
 			else {

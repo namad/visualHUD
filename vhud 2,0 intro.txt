@@ -1,0 +1,29 @@
+New UI
+----------------------------------------------
+    - improved layout
+    - css3 driven design    
+    - top bar and actions
+    - working on low resolution displays
+        * responsive design
+        * compact layout mode
+        * sliding sidebar
+        * canvas reposition
+    - support for large displays
+    - keyboroard shortcuts
+
+
+New Features
+----------------------------------------------
+    - presets and import manager
+        * save as preset
+        * drag and drop files
+        * import previously saved
+        * download custom presets collection
+    - simple item groups
+    - undo
+    - ownerDrawFlag support
+
+    
+New HUD Items
+----------------------------------------------
+    - medals

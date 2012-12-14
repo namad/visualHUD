@@ -225,8 +225,30 @@ visualHUD.Views.Viewport = Backbone.View.extend({
     },
 
     bindDropImport: function() {
-        if(Modernizr.draganddrop == true) {
-            document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
+        $(document)
+            .on('dragenter dragleave dragover drop',visualHUD.Function.bind(function(event){
+
+                event.preventDefault();
+                if(event.type == 'drop') {
+                    var files = Array.prototype.slice.call(event.dataTransfer.files);
+                    visualHUD.Libs.importHelper.batchImport(files, {
+                        scope: this,
+                        files: function(output) {
+                            this.fireEvent('import.text', [output]);
+                        },
+                        image: function(output) {
+                            this.fireEvent('import.image', [output]);
+                        }
+                    });
+                    return false;
+                }
+                return false;
+
+            }, this));
+
+        if(Modernizr.draganddrop == true && false) {
+            //document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
+            $(document).on('drop', visualHUD.Function.bind(function(event) {
                 event.preventDefault();
 
                 var files = Array.prototype.slice.call(event.dataTransfer.files);
@@ -241,7 +263,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
                 });
                 return false;
 
-            }, this), false);
+            }, this));
         }
     }
 });
