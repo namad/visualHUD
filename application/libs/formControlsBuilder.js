@@ -3,7 +3,7 @@
  * @type {Object}
  */
 visualHUD.Libs.formControlsBuilder = {
-    cache:{},
+    cache: {},
 
     getDefaultsByType: function(type) {
         return this.controlDefaults[type];
@@ -87,6 +87,7 @@ visualHUD.Libs.formControlsBuilder = {
             text: 'Browse...',
             name: 'file',
             value: '',
+            multiple: false,
             maxlength: '',
             hint: null,
             wrap: true
@@ -204,8 +205,8 @@ visualHUD.Libs.formControlsBuilder = {
         ],
         fileInput: [
             '<span class="file-input">',
-                '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" /></span>',
-                '<span class="file-name"><%= noFileMessage %></span>',
+            '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" <%= multiple ? \'multiple\' : \'\' %> /></span>',
+            '<span class="file-name"><%= noFileMessage %></span>',
             '</span>'
         ],
         rangeInput: [
@@ -306,6 +307,10 @@ visualHUD.Libs.formControlsBuilder = {
         
         element.attr(elementAttributes);
 
+        if(attributes.html) {
+            element.html(attributes.html);
+        }
+
         return element;
     },
 
@@ -319,13 +324,13 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createRangeInput:function (attributes) {
+    createRangeInput: function(attributes) {
         var defaults = {
-            precision:false,
-            keyboard:false,
-            progress:true,
-            sliderSize:160,
-            handleSize:12
+            precision: false,
+            keyboard: false,
+            progress: true,
+            sliderSize: 160,
+            handleSize: 12
         };
         var element = this.createFormControl(attributes);
         var input = element.find('input.range-input').rangeinput(_.extend(defaults, attributes));
@@ -359,20 +364,20 @@ visualHUD.Libs.formControlsBuilder = {
     createSelectOptionsMapFromCollection: function(collection, attributes) {
         var selectOptionsMap = {};
 
-       collection.each(function(record) {
-           selectOptionsMap[record.get(attributes.valueField)] = record.get(attributes.displayField);
-       });
+        collection.each(function(record) {
+            selectOptionsMap[record.get(attributes.valueField)] = record.get(attributes.displayField);
+        });
 
-       return selectOptionsMap;
+        return selectOptionsMap;
     },
 
-    generateSelectOptionsFromMap: function (opts, selectHTML) {
+    generateSelectOptionsFromMap: function(opts, selectHTML) {
         var optionHTMLTemplate = '<option value="<%= value %>"><%= label %></option>';
         var optgroupHTMLTemplates = ['<optgroup label="<%= label %>">', '</optgroup>'];
 
-        _.each(opts, function (value, key) {
+        _.each(opts, function(value, key) {
 
-            if ($.isPlainObject(value)) {
+            if($.isPlainObject(value)) {
                 selectHTML.push(
                     _.template(optgroupHTMLTemplates[0], {
                         label: key
@@ -384,8 +389,8 @@ visualHUD.Libs.formControlsBuilder = {
             else {
                 selectHTML.push(
                     _.template(optionHTMLTemplate, {
-                        value:key,
-                        label:value
+                        value: key,
+                        label: value
                     })
                 );
             }
@@ -393,7 +398,7 @@ visualHUD.Libs.formControlsBuilder = {
         return selectHTML.join('')
     },
 
-    createSelect:function (attributes) {
+    createSelect: function(attributes) {
 
         if(attributes.collection) {
             attributes.options = this.createSelectOptionsMapFromCollection(attributes.collection, attributes);
@@ -405,7 +410,7 @@ visualHUD.Libs.formControlsBuilder = {
             select = element.find('select'),
             valueElement = select.parent().find('.select-value');
 
-        if (attributes.value) {
+        if(attributes.value) {
             select.val(attributes.value);
         }
         else {
@@ -440,7 +445,7 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createButton:function (attributes) {
+    createButton: function(attributes) {
         attributes.cssClass = attributes.cssClass || '';
         attributes.cssClass += attributes.role ? ' button-' + attributes.role : '';
         attributes.icon = attributes.icon ? 'w-icon icon-' + attributes.icon : '';
@@ -467,7 +472,7 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createColorRange:function (attributes) {
+    createColorRange: function(attributes) {
         var template = ([
             '<% _.each(ranges, function(range, idx) { %>',
             '<div class="f-row">',
@@ -489,7 +494,7 @@ visualHUD.Libs.formControlsBuilder = {
         var rangeValueInputs = element.find('input.color-range-input');
         var eventManuallyTriggered = false;
 
-        element.delegate('input[type=text]', 'change', function (event) {
+        element.delegate('input[type=text]', 'change', function(event) {
             if(eventManuallyTriggered) {
                 $(this).closest('form').trigger(event);
                 eventManuallyTriggered = false;
@@ -504,9 +509,9 @@ visualHUD.Libs.formControlsBuilder = {
             var $nextInput = rangeValueInputs.eq(index + 1),
                 $prevInput = rangeValueInputs.eq(index - 1);
 
-            if (odd) {
+            if(odd) {
                 value = parseInt(this.value);
-                if ($nextInput.length && !$nextInput.attr('readOnly')) {
+                if($nextInput.length && !$nextInput.attr('readOnly')) {
                     $nextInput.val(value + 1);
 
                     //event.stopPropagation();
@@ -515,7 +520,7 @@ visualHUD.Libs.formControlsBuilder = {
                 }
             } else {
                 value = parseInt(this.value);
-                if ($prevInput.length && !$prevInput.attr('readOnly')) {
+                if($prevInput.length && !$prevInput.attr('readOnly')) {
                     $prevInput.val(value - 1);
 
                     //event.stopPropagation();

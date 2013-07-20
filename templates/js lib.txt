@@ -1,0 +1,7 @@
+﻿if(iconStyle == 0) ownerdraw CG_PLAYER_AMMO_ICON2D
+
+convert HEX into QL RGB (1 1 1 0.8)
+
+healthIndicator.icon.iconStyle
+0: "CG_PLAYER_HEALTH"
+1: "CG_PLAYER_HEAD"

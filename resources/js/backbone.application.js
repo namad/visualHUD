@@ -149,7 +149,7 @@
                 this.models = this.models.concat(controller.models || []);
                 this.collections = this.collections.concat(controller.collections || []);
 
-                this.buildCollections();
+//                this.buildCollections();
 
                 this.controllers[ctrl] = controller;
             }, this);
@@ -460,7 +460,7 @@
      */     
     var EventBus = function(options) {
         var me = this;
-
+        var trigger = Backbone.Obse
         _.extend(this, options || {});
 
         _.extend(Backbone.View.prototype, {
@@ -473,9 +473,10 @@
              * Instead of calling View.trigger lets use custom function
              * It will notify the EventBus about new event
              */
-            fireEvent: function(event, args) {
-                this.trigger.apply(this, arguments);
+            trigger: function(event, args) {
+                var result = Backbone.Events.trigger.apply(this, arguments);
                 me.fireEvent(this.getAlias(), event, args);
+                return result;
             },
             hide: function() {
                 this.$el.hide();

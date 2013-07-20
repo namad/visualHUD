@@ -85,7 +85,7 @@ visualHUD.Views.windows.ImportImage = visualHUD.Views.WindowBase.extend({
 
     setImage: function () {
         if (this.src) {
-            this.fireEvent('import', [this.src]);
+            this.trigger('import', [this.src]);
             this.src = null;
             this.hide();
         }

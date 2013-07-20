@@ -1,4 +1,41 @@
+@mixin offset-utility($prop: margin, $count:4, $step:5) {
+    $namespace: p;
 
+    @if $prop == margin {
+        $namespace: m;
+    }
+
+    @while $count > 0 {
+        .#{$namespace}-#{$count*$step} {
+            #{$prop}: #{$count*$step}px;
+        }
+        .#{$namespace}t-#{$count*$step} {
+            #{$prop}-top: #{$count*$step}px;
+        }
+        .#{$namespace}b-#{$count*$step} {
+            #{$prop}-bottom: #{$count*$step}px;
+        }
+        .#{$namespace}r-#{$count*$step} {
+            #{$prop}-right: #{$count*$step}px;
+        }
+        .#{$namespace}l-#{$count*$step} {
+            #{$prop}-left: #{$count*$step}px;
+        }
+        $count: $count - 1;
+    }
+}
+
+@mixin width-utility() {
+    $count: 20;
+    $step: 5;
+
+    @while $count > 0 {
+        .w-#{$count*$step} {
+            width: percentage($count*$step/100);
+        }
+        $count: $count - 1;
+    }
+}
 .hidden {
     display: none !important;
 }
@@ -149,167 +186,12 @@
 
 /* Margins
 ------------------------------ */
-.m-5 {
-    margin: 5px;
-}
+@include offset-utility(margin, 4);
 
-.m-10 {
-    margin: 10px;
-}
-
-.m-15 {
-    margin: 15px;
-}
-
-.m-20 {
-    margin: 20px;
-}
-
-.mt-5 {
-    margin-top: 5px;
-}
-
-.mt-10 {
-    margin-top: 10px;
-}
-
-.mt-15 {
-    margin-top: 15px;
-}
-
-.mt-20 {
-    margin-top: 20px;
-}
-
-.mb-5 {
-    margin-bottom: 5px;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
-}
-
-.mb-15 {
-    margin-bottom: 15px;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-.mr-5 {
-    margin-right: 5px;
-}
-
-.mr-10 {
-    margin-right: 10px;
-}
-
-.mr-15 {
-    margin-right: 15px;
-}
-
-.mr-20 {
-    margin-right: 20px;
-}
-
-.ml-5 {
-    margin-left: 5px;
-}
-
-.ml-10 {
-    margin-left: 10px;
-}
-
-.ml-15 {
-    margin-left: 15px;
-}
-
-.ml-20 {
-    margin-left: 20px;
-}
 
 /* Paddings
 ------------------------------ */
-.p-5 {
-    padding: 5px;
-}
-
-.p-10 {
-    padding: 10px;
-}
-
-.p-15 {
-    padding: 15px;
-}
-
-.p-20 {
-    padding: 20px;
-}
-
-.pt-5 {
-    padding-top: 5px;
-}
-
-.pt-10 {
-    padding-top: 10px;
-}
-
-.pt-15 {
-    padding-top: 15px;
-}
-
-.pt-20 {
-    padding-top: 20px;
-}
-
-.pb-5 {
-    padding-bottom: 5px;
-}
-
-.pb-10 {
-    padding-bottom: 10px;
-}
-
-.pb-15 {
-    padding-bottom: 15px;
-}
-
-.pb-20 {
-    padding-bottom: 20px;
-}
-
-.pr-5 {
-    padding-right: 5px;
-}
-
-.pr-10 {
-    padding-right: 10px;
-}
-
-.pr-15 {
-    padding-right: 15px;
-}
-
-.pr-20 {
-    padding-right: 20px;
-}
-
-.pl-5 {
-    padding-left: 5px;
-}
-
-.pl-10 {
-    padding-left: 10px;
-}
-
-.pl-15 {
-    padding-left: 15px;
-}
-
-.pl-20 {
-    padding-left: 20px;
-}
+@include offset-utility(padding, 4);
 
 /* Display settings
 ------------------------------ */
@@ -366,3 +248,5 @@
 .rbox-10 {
     @include border-radius(10px);
 }
+
+@include  width-utility;

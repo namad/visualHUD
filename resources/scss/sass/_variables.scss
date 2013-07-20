@@ -62,9 +62,9 @@ $white:                 #fff;
 
 // Panel bevels
 // -------------------------
-$bevelLight: lighten($grayDark, 10%);
+$bevelLight: lighten($grayDark, 7%);
 $bevelAccent: darken($grayDark, 1%);
-$bevelDark:  darken($grayDark, 5%);
+$bevelDark:  darken($grayDark, 0);
 
 @mixin bevel-and-emboss {
     border: 1px solid;

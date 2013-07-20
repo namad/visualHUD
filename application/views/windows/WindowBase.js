@@ -62,7 +62,7 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
     render: function() {
         this.$el.css({display: 'none'}).appendTo(document.body);
         this.rendered = true;
-        this.fireEvent('render', this);
+        this.trigger('render', this);
     },
 
     getRefs: function() {
@@ -121,12 +121,14 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
 
         var animateWindow = visualHUD.Function.bind(this.animateWindow, this, [animateToWidth,animateToHeight, topBounds]);
 
-        if($.showModalOverlay) {
+        if(($.__overlay && $.__overlay.visible !== true) || (!$.__overlay) ) {
             $.showModalOverlay(200, 0.70, animateWindow);
         }
         else {
             animateWindow();
         }
+
+        return this;
     },
 
     hide: function(event) {
@@ -141,11 +143,13 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         $(window).unbind('resize.reposition');
         $(document).unbind('keyup.keyboardListiner');
 
-        this.fireEvent('hide', [this]);
+        this.trigger('hide', [this]);
 
         if(event instanceof jQuery.Event) {
             event.preventDefault();
         }
+
+        return this;
     },
 
     getTopPosition: function(heightBounds) {
@@ -198,7 +202,7 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
                 });
 
                 me.opened = true;
-                me.fireEvent('show', [me]);
+                me.trigger('show', [me]);
 
                 $(window).bind('resize.windowReposition', reposition);
                 $(document).bind('keyup.windowKeyboardListiner', keyboardListener);
@@ -213,6 +217,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
             easing: easing,
             duration: duration
         });
+
+        return this;
     },
 
     reposition: function() {
@@ -233,12 +239,12 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
 
     keyboardListiner: function(event) {
         if(event.keyCode == 27){
-            this.fireEvent('cancel', [this]);
+            this.trigger('cancel', [this]);
         }
     },
 
     cancel: function() {
-        this.fireEvent('cancel', [this]);
+        this.trigger('cancel', [this]);
     },
 
     cancelEventBubbling: function(event) {

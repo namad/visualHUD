@@ -39,8 +39,10 @@
         background: url(../images/canvas_toolbar_sprite.png) no-repeat;
     }
 
-    button {
+    & button,
+    & .file-input {
         margin: 14px 2px 0 0;
+        vertical-align: middle;
     }
 }
 
@@ -99,8 +101,8 @@
 .app-stats {
     position: absolute;
     top: 14px;
-    left: 695px;
-    right: 155px;
+    left: 690px;
+    right: 140px;
     text-align: center;
 
     .counter {

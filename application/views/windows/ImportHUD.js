@@ -75,13 +75,13 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                     break;
                 }
                 case 'download':{
-                    this.fireEvent('download.preset', [model.attributes]);
+                    this.trigger('download.preset', [model.attributes]);
                     break;
                 }
             }
         }
         else {
-            this.fireEvent('load', [model.attributes]);
+            this.trigger('load', [model.attributes]);
         }
     },
 
@@ -246,13 +246,13 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
         }
 
         if(_.isArray(data) && data.length) {
-            this.fireEvent('load', [{
+            this.trigger('load', [{
                 name: name,
                 items: data
             }]);
         }
         else if(_.isObject(data) && data.items.length) {
-            this.fireEvent('load', [data]);
+            this.trigger('load', [data]);
         }
     },
 
@@ -365,6 +365,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                             {
                                 type: 'fileInput',
                                 text: 'Browse For Presets...',
+                                multiple: true,
                                 name: 'myCustomPreset',
                                 wrap: false
                             },
@@ -425,7 +426,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
             visualHUD.Libs.importHelper.batchImport(files, {
                 scope: this,
                 files: function(output) {
-                    this.fireEvent('import.text', [output]);
+                    this.trigger('import.text', [output, true]);
                 }
             });
             this.showCustomHUDPresets();

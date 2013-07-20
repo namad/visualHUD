@@ -27,7 +27,7 @@ visualHUD.Libs.selectionManagerInterface = {
                 view.$el.addClass('selected');
             }
 
-            (inGroup == null) && this.fireEvent('selectionchange', [this, this.getSelection()]);
+            (inGroup == null) && this.trigger('selectionchange', [this, this.getSelection()]);
 
             if(this._deselectBinded == false) {
                 $('body').bind('click.deselect', visualHUD.Function.bind(this.clickDeselect, this));
@@ -50,7 +50,7 @@ visualHUD.Libs.selectionManagerInterface = {
         });
 
         this.selection.length = 0;
-        this.fireEvent('selectionchange', [this, this.getSelection()]);
+        this.trigger('selectionchange', [this, this.getSelection()]);
 
         if(this._deselectBinded == true) {
             $('body').unbind('click.deselect');
@@ -78,7 +78,7 @@ visualHUD.Libs.selectionManagerInterface = {
             }
         });
 
-        this.fireEvent('selectionchange', [this, this.getSelection()]);
+        this.trigger('selectionchange', [this, this.getSelection()]);
     },
 
     getSelection: function() {

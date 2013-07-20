@@ -46,7 +46,7 @@ visualHUD.Views.GroupActionsPanel = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('align.action', [action]);
+        this.trigger('align.action', [action]);
         return false;
     },
 
@@ -54,7 +54,7 @@ visualHUD.Views.GroupActionsPanel = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('group.action', [action]);
+        this.trigger('group.action', [action]);
         return false;
     }
 

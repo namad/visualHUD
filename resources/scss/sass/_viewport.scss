@@ -50,7 +50,6 @@ body,
     left: 50%;
     top: 50%;
     margin: $canvasMarginTop 0 0 $canvasMarginLeft;
-    @include strong-drop-shadow;
     background-color: darken($grayDark, 10%);
     border: 0 none;
     z-index: 0;

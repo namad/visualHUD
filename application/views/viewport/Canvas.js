@@ -226,7 +226,7 @@ visualHUD.Views.viewport.Canvas = Backbone.View.extend({
                 });
 
                 $alert.find('a.import').click(visualHUD.Function.bind(function() {
-                    this.fireEvent('import.image');
+                    this.trigger('import.image');
                     visualHUD.growl.hide($alert);
                     return false;
                 }, this));

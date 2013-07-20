@@ -1,0 +1,175 @@
+#include "ui/menudef.h"
+
+
+/* -------------------------------------
+{
+	"itemType":"general",
+	"cssClass":"lib-element-health",
+	"label":"Health indicator",
+	"name":"healthIndicator",
+	"iconPosition":"left",
+	"iconSpacing":10,
+	"iconOpacity":100,
+	"iconSize":32,
+	"iconStyle":"1",
+	"textSize":100,
+	"textOpacity":100,
+	"textStyle":3,
+	"teamColors":true,
+	"text":"200",
+	"textColor":"FFFFFF",
+	"colorRanges": [
+		{"name":"Low","range":[-999,25],"color":"FF0000"},
+		{"name":"Normal","range":[26,99],"color":"FFFFFF"},
+		{"name":"High","range":[100,999],"color":"FFFFFF"}
+	],
+	"coordinates": {
+		"top":126,
+		"left":188,
+		"width":146,
+		"height":35,
+		"right":334,
+		"bottom":161
+	},
+	"iconCoordinates": {
+		"top":126,
+		"left":188,
+		"width":146,
+		"height":35,
+		"right":334,
+		"bottom":161
+	},
+	"textCoordinates": {
+		"top":126,
+		"left":188,
+		"width":146,
+		"height":35,
+		"right":334,
+		"bottom":161
+	}
+}
+------------------------------------- */
+
+//	AMMO
+menuDef {
+	name "ammoIndicator"
+	fullScreen MENU_FALSE
+	visible MENU_TRUE
+	rect { ammoIndicator.position.left } { ammoIndicator.position.right } { ammoIndicator.width } { ammoIndicator.height } // output --> 295 419 49 26
+	
+	itemDef {
+		name "ammoIndicatorIcon"
+		rect { ammoIndicator.iconCoordinates.left } { ammoIndicator.iconCoordinates.right } { ammoIndicator.iconSize } { ammoIndicator.iconSize } // output --> 14 -12 21 21
+		visible 1
+		decoration
+		ownerdraw CG_PLAYER_AMMO_ICON2D
+	}
+	
+	itemDef {
+		name "ammoIndicatorText"
+		rect { ammoIndicator.textCoordinates.left } { ammoIndicator.textCoordinates.right } { ammoIndicator.textCoordinates.width } { ammoIndicator.textCoordinates.height } // output --> 0 6 49 22
+		visible 1
+		textalign 0
+		decoration
+		textstyle 3
+		forecolor 1 1 1 { ammoIndicator.textOpacity } // output --> 1 1 1 0.8
+		textscale { ammoIndicator.textSize } // output --> .33
+		ownerdraw CG_PLAYER_AMMO_VALUE
+		{for r in ammoIndicator.colorRanges }
+		addColorRange { r.range[0] } { r.range[1] } { r.color } { ammoIndicator.textOpacity } // output --> -999 5 1 0 0 
+	}
+}
+
+
+
+
+//	HEALTH
+menuDef {
+	name "healthIndicator"
+	fullScreen MENU_FALSE
+	visible MENU_TRUE
+	rect { healthIndicator.coordinates.left } { healthIndicator.coordinates.right } { healthIndicator.coordinates.width } { healthIndicator.coordinates.height } // output --> 295 419 49 26
+
+	itemDef {
+		name "healthIndicatorCritical"
+/*
+	how to calc Critical Icon size and position
+	width = Math.floor(healthIndicator.iconSize * 1.25);
+	height = width
+	left = healthIndicator.iconCoordinates.left - (healthIndicator.iconSize - width)/2
+	top = healthIndicator.iconCoordinates.top - (healthIndicator.iconSize - height)/2	
+*/		
+		rect { left } { top } { width } { width }
+		
+		visible 1
+		decoration
+		style 3
+		ownerdrawflag CG_SHOW_HEALTHCRITICAL
+		background "ui/assets/hud/healthalert"
+	}
+	
+	itemDef {
+		name "healthIndicatorIcon" 
+		rect { healthIndicator.iconCoordinates.left } { healthIndicator.iconCoordinates.right } { healthIndicator.iconSize } { healthIndicator.iconSize } // output --> 14 -12 21 21
+		visible { healthIndicator.iconSize == 0 } 0 {else} 1
+		decoration
+		style 1
+		backcolor 1 1 1 { healthIndicator.iconOpacity } // output --> 1 1 1 0.5
+		background "ui/assets/hud/health.tga"
+		{if healthIndicator.teamColors && healthIndicator.iconStyle == 0} ownerdraw CG_TEAM_COLORIZED
+		{if healthIndicator.iconStyle == 1 } ownerdraw CG_PLAYER_HEAD
+	}
+
+
+	
+	itemDef {
+		name "healthIndicatorCounter"
+		rect { healthIndicator.textCoordinates.left } { healthIndicator.textCoordinates.right } { healthIndicator.textCoordinates.width } { healthIndicator.textCoordinates.height } // output --> 14 -12 21 21
+		visible 1
+		textalign 0
+		decoration
+		textstyle 3
+		forecolor 1 1 1 { healthIndicator.textOpacity } // output --> -1 0 0 0.8
+		textscale 0.7
+		ownerdraw CG_PLAYER_HEALTH
+		{for r in healthIndicator.colorRanges }
+		addColorRange { r.range[0] } { r.range[1] } { r.color } { healthIndicator.textOpacity } // output --> -999 5 1 0 0 
+	}
+	
+}
+
+
+//	ARMOR
+menuDef {
+		name "armorIndicator"
+		fullScreen MENU_FALSE
+		visible MENU_TRUE	
+		rect { armorIndicator.position.left } { armorIndicator.position.right } { armorIndicator.width } { armorIndicator.height } // output --> 366 417 95 26 
+	
+	itemDef {
+		name "armorIndicatorIcon"
+		rect { armorIndicator.iconCoordinates.left } { armorIndicator.iconCoordinates.right } { armorIndicator.iconSize } { armorIndicator.iconSize } // output --> 83 1 21 21
+		visible 1
+		style 1
+		decoration
+		backcolor 1 1 1 { armorIndicator.icon.iconOpacity } // output --> 1 1 1 0.5
+		background "ui/assets/hud/armor.tga"
+		{if armorIndicator.teamColors && armorIndicator.icon.iconStyle == 0} ownerdraw CG_TEAM_COLORIZED
+		{if armorIndicator.icon.iconStyle == 1 } ownerdraw CG_PLAYER_ARMOR_ICON2D
+	}
+	
+	itemDef {
+		name "armorIndicatorText"
+		rect { armorIndicator.textCoordinates.left } { armorIndicator.textCoordinates.right } { armorIndicator..textCoordinates.width } { armorIndicator.textCoordinates.height } // output --> 83 1 21 21
+		visible 1
+		decoration
+		textstyle 3	
+		textscale { armorIndicator.textSize }
+		textalign 3
+		forecolor 1 1 1 { armorIndicator.textOpacity } // output --> -1 0 0 0.8
+		ownerdraw CG_PLAYER_ARMOR_VALUE 
+		{for r in armorIndicator.colorRanges }
+		addColorRange { r.range[0] } { r.range[1] } { r.color } { armorIndicator.textOpacity } // output --> -999 5 1 0 0 
+
+	}
+}

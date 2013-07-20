@@ -5,13 +5,14 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         '<div class="app-logo popover-action" data-popover="logo"><span>VisualHUD</span></div>',
         '<div class="toolbar-main global-actions">',
             '<button value="downloadHUD" class="button" id="downloadButton"><span class="w-icon download">Download</span></button>',
-            '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load">Import</span></button>',
+            '<span class="file-input" data-tooltip="Open *.vhud file"><span class="btn button-aux"><span class="w-icon open">Open</span><input type="file" name="customHUD"></span><span class="file-name hidden">No file selected</span></span>',
+            '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load" data-tooltip="Import Preset <small>(I)</small>">Import</span></button>',
         '</div>',
         '<div class="toolbar-main hud-actions">',
-            '<button value="undoUpdate" class="button-aux" data-tooltip="Undo"><span class="w-icon icon-undo">Undo</span></button>',
-            '<button value="deleteSelected" class="button-aux single-select-button" data-tooltip="Delete"><span class="w-icon icon-trash">Delete</span></button>',
-            '<button value="cloneSelected" class="button-aux single-select-button" data-tooltip="Clone"><span class="w-icon icon-clone">Clone</span></button>',
-            '<button value="groupSelected" class="button-aux multi-select-button" data-tooltip="Group"><span class="w-icon icon-group">Group</span></button>',
+            '<button value="undoUpdate" class="button-aux" data-tooltip="Undo <small>(CTRL+Z)</small>"><span class="w-icon icon-undo">Undo</span></button>',
+            '<button value="deleteSelected" class="button-aux single-select-button" data-tooltip="Delete <small>(DEL)</small>"><span class="w-icon icon-trash">Delete</span></button>',
+            '<button value="cloneSelected" class="button-aux single-select-button" data-tooltip="Clone <small>(CTRL+V)</small>"><span class="w-icon icon-clone">Clone</span></button>',
+            '<button value="groupSelected" class="button-aux multi-select-button" data-tooltip="Group <small>(CTRL+G)</small>"><span class="w-icon icon-group">Group</span></button>',
             '<button value="alignSelected" class="button-aux single-select-button popover-action"  data-tooltip="Align" data-popover="align"><span class="w-carret w-icon icon-align">Align</span></button>',
         '</div>',        
         '<div class="app-stats">',
@@ -27,7 +28,8 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
     events: {
         'click .popover-action': 'showPopover',
         'click .global-actions button': 'onGlobalActionButtonClick',
-        'click .hud-actions button': 'onHUDActionButtonClick'
+        'click .hud-actions button': 'onHUDActionButtonClick',
+        'change input[name=customHUD]': 'processSelectedFiles'
     },
     initialize: function() {
         this.$el.append(this.htmlTpl.join(''));
@@ -130,12 +132,12 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
 
     onGlobalActionButtonClick: function(event) {
         var action = event.currentTarget.value;
-        this.fireEvent('toolbar.global:action', [action]);
+        this.trigger('toolbar.global:action', [action]);
     },
     
     onHUDActionButtonClick: function(event) {
         var action = event.currentTarget.value;
-        this.fireEvent('toolbar.hud:action', [action]);
+        this.trigger('toolbar.hud:action', [action]);
         
         return false;
     },
@@ -154,7 +156,7 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('align.action', [action]);
+        this.trigger('align.action', [action]);
         //this.alignPopover.hide();
 
         return false;
@@ -164,12 +166,27 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('feedback.action', [action]);
+        this.trigger('feedback.action', [action]);
     },
 
     updateToolbarButtonsState: function(selectionLength) {
         this.buttons.singleSelectActions.attr('disabled', selectionLength == 0);
         this.buttons.multiSelectActions.attr('disabled', selectionLength <= 1);
+    },
+
+    processSelectedFiles: function(event) {
+        var files = Array.prototype.slice.call(event.target.files);
+
+        if(files.length) {
+            visualHUD.Libs.importHelper.batchImport(files, {
+                scope: this,
+                files: function(output) {
+                    this.trigger('load.text', [output, true]);
+                }
+            });
+        }
+
+        event.target.value = '';
     }
 });
 

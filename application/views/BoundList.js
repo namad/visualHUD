@@ -71,7 +71,7 @@ visualHUD.Views.BoundList = Backbone.View.extend({
         if(renderTo) {
             this.$el.appendTo(this.renderTo);
             this.rendered = true;
-            this.fireEvent('render', this);
+            this.trigger('render', this);
         }
     },
 
@@ -127,12 +127,12 @@ visualHUD.Views.BoundList = Backbone.View.extend({
         
         this.$el.append(html.join(''));
 
-        this.fireEvent('refresh', this);
+        this.trigger('refresh', this);
     },
 
     itemClick: function(event) {
         var model = this.getModelByElement(event.currentTarget);
-        this.fireEvent('itemclick', this, $(event.currentTarget), model, event);
+        this.trigger('itemclick', this, $(event.currentTarget), model, event);
     },
 
     getModelByElement: function(element) {

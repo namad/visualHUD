@@ -185,7 +185,7 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('align.action', [action]);
+        this.trigger('align.action', [action]);
         return false;
     },
 
@@ -193,7 +193,7 @@ visualHUD.Views.HUDItemForm = Backbone.View.extend({
         var control = $(event.currentTarget),
             action = control.data('action');
 
-        this.fireEvent('arrange.action', [action]);
+        this.trigger('arrange.action', [action]);
         return false;
     },
 

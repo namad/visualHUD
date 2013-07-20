@@ -11,7 +11,7 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
         '<div class="sidebar-block" id="getStartedTextarea">',
         '<h3>Get started</h3>',
         '<div class="mb-10">',
-        'Use icons below to start building yor HUD. You can use drag and drop or double click in order to create new HUD element',
+        'Use icons below to build your HUD. Drag and drop items or simple double click on icon to create new HUD element',
         '</div>',
         '<div>',
         '<a href="help/#videos" target="help" class="mr-20">View Video Tutorials</a>',
@@ -128,7 +128,7 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
                 hudCanvas.removeClass('new-item-drop-over');
 
                 if(hit){
-                    this.fireEvent('item.drop', [record, {
+                    this.trigger('item.drop', [record, {
                         top: Math.round(mouse.y - dropArea.top),
                         left: Math.round(mouse.x - dropArea.left)
                     }]);
@@ -161,7 +161,7 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
             return false;
         }
 
-        this.fireEvent('item.drop', [record, {
+        this.trigger('item.drop', [record, {
             top: Math.round(dropArea.height/2),
             left: Math.round(dropArea.width/2)
         }]);
@@ -171,7 +171,7 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
         var $target = $(event.currentTarget),
             scale = parseInt($target.data('viewportsize'), 10);
 
-        this.fireEvent('scalefactor.change', [scale]);
+        this.trigger('scalefactor.change', [scale]);
     },
 
     exposeEditor: function() {
@@ -188,7 +188,7 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
         var $target = $(event.currentTarget),
             layout = $target.data('layout');
             
-        this.fireEvent('layout.change', [layout]);
+        this.trigger('layout.change', [layout]);
     },
     
     updateControlsStatus: function(event, name) {

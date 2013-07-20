@@ -157,7 +157,7 @@
     };
 
     var resizeCheck = function(){
-        $.WMSOverlay.css({
+        $.__overlay.css({
             height: $(document).height()
         });
     };
@@ -204,43 +204,43 @@
             height: $(document).height()
         }];
 
-        if(!this.WMSOverlay) {
-            this.WMSOverlay = this('<div></div>').attr({
+        if(!this.__overlay) {
+            this.__overlay = this('<div></div>').attr({
                 id: 'dimScreen'
             }).css(_css[0]).appendTo(document.body);
-            $.data($.WMSOverlay[0], 'options', { fade_opacity: opacity, speed: speed});
+            $.data($.__overlay[0], 'options', { fade_opacity: opacity, speed: speed});
 
         } else {
-            this.WMSOverlay.css(_css[1]);
-            if(this.WMSOverlayFix){
-                this.WMSOverlayFix.css(_css[1]);
+            this.__overlay.css(_css[1]);
+            if(this.__overlayFix){
+                this.__overlayFix.css(_css[1]);
             }
         }
 
         $(window).bind('resize', resizeCheck);
 
 
-        this.WMSOverlay.fadeTo(speed, opacity, callback);
-        this.WMSOverlay.visible = 1;
-        return this.WMSOverlay;
+        this.__overlay.fadeTo(speed, opacity, callback);
+        this.__overlay.visible = true;
+        return this.__overlay;
     };
 
     //stops current dimming of the screen
     $.hideModalOverlay = function(callback) {
-        var x = this.WMSOverlay;
-        var opt = $.data($.WMSOverlay[0], 'options');
+        var x = this.__overlay;
+        var opt = $.data($.__overlay[0], 'options');
         var opacity = opt.fade_opacity;
         var speed = window.ie6 ? 0 : opt.speed;
         x.fadeOut(speed, function() {
-            if($.WMSOverlayFix){
-                $.WMSOverlayFix.css({
+            if($.__overlayFix){
+                $.__overlayFix.css({
                     display: 'none'
                 });
             };
             if(typeof callback == 'function') callback();
         });
         $(window).unbind('resize', resizeCheck);
-        this.WMSOverlay.visible = 0;
+        this.__overlay.visible = false;
     }
 
 })(jQuery);

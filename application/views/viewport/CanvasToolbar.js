@@ -366,7 +366,7 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
             importLink = menuItem.find('a.set-custom-bg');
 
         importLink.click(visualHUD.Function.bind(function(event) {
-            this.fireEvent('import.image');
+            this.trigger('import.image');
             event.preventDefault();
         }, this));
     },
@@ -382,7 +382,7 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
         listItem.toggleClass('active');
         activeItem = listItem.hasClass('active');
 
-        this.fireEvent('toolbar.menu:show', [this]);
+        this.trigger('toolbar.menu:show', [this]);
 
         var hideFn = visualHUD.Function.bind(this.hideMenu, this);
 
@@ -405,7 +405,7 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
         listItems.filter('.active').removeClass('active');
         $('body').unbind('click.hideMenu');
 
-        this.fireEvent('toolbar.menu:hide', [this]);
+        this.trigger('toolbar.menu:hide', [this]);
     },
 
 

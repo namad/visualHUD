@@ -1,0 +1,4 @@
+/* --- HealthBar --- */
+<?
+    include("barsHelper.php");
+?>

@@ -43,7 +43,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
         this.$el.appendTo(document.body);
         this.trackResize();
 
-        this.fireEvent('render', [this]);
+        this.trigger('render', [this]);
     },
 
     setNestedViews: function(views) {
@@ -234,10 +234,10 @@ visualHUD.Views.Viewport = Backbone.View.extend({
                     visualHUD.Libs.importHelper.batchImport(files, {
                         scope: this,
                         files: function(output) {
-                            this.fireEvent('import.text', [output]);
+                            this.trigger('load.text', [output]);
                         },
                         image: function(output) {
-                            this.fireEvent('import.image', [output]);
+                            this.trigger('import.image', [output]);
                         }
                     });
                     return false;
@@ -246,7 +246,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
 
             }, this));
 
-        if(Modernizr.draganddrop == true && false) {
+        /*if(Modernizr.draganddrop == true && false) {
             //document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
             $(document).on('drop', visualHUD.Function.bind(function(event) {
                 event.preventDefault();
@@ -264,7 +264,7 @@ visualHUD.Views.Viewport = Backbone.View.extend({
                 return false;
 
             }, this));
-        }
+        }*/
     }
 });
 

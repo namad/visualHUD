@@ -98,7 +98,7 @@ visualHUD.Views.windows.Download = visualHUD.Views.WindowBase.extend({
 
             this.setHUDData(output);
 
-            this.fireEvent('download', [this, output]);
+            this.on('download', [this, output]);
             this.hide();
         }
         catch(e) {
