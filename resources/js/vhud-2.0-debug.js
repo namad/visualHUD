@@ -147,6 +147,10 @@ new Backbone.Application({
                 });
             }, visualHUD)
         });
+    },
+
+    confirm: function(options) {
+        return new visualHUD.Views.windows.Confirm(options).show();
     }
 });
 
@@ -887,7 +891,7 @@ visualHUD.Libs.itemBuilderMixin = {
             var direction = parseInt(value, 10);
             var directionMap = ['ltr-bar', 'rtl-bar']
 
-            _.each(function(val, idx) {
+            _.each(directionMap, function(val, idx) {
                 var fn = idx == direction ? 'addClass' : 'removeClass';
                 this.$el[fn](directionMap[idx]);
             }, this);
@@ -965,25 +969,24 @@ visualHUD.Libs.itemBuilderMixin = {
             var opacity = parseInt(this.model.get('barsOpacity'), 10),
                 color = null;
 
-            if(barValue <= 100){
-                _.each(ranges, function(range) {
+            _.each(ranges, function(range) {
+                if(barValue <= 100 && barValue >= range.range[0] && barValue <= range.range[1]) {
+                    color = $.color('#' + range.color);
+                    this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+                }
+                else {
                     if(barValue >= range.range[0] && barValue <= range.range[1]){
                         color = $.color('#' + range.color);
-                        return {};
+                        (barValue > 100) && this.paintBarElement(this.getDOMRefs().h200, color, opacity);
                     }
-                }, this);
+                    if(100 >= range.range[0] && 100 <= range.range[1]) {
+                        color = $.color('#' + range.color);
+                        this.paintBarElement(this.getDOMRefs().h100, color, opacity);
+                    }
+                }
 
-                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
 
-            }
-            else if(barValue > 100){
-                color = $.color('#' + ranges[1].color);
-                this.paintBarElement(this.getDOMRefs().h100, color, opacity);
-
-                color = $.color('#' + ranges[2].color);
-                this.paintBarElement(this.getDOMRefs().h200, color, opacity);
-
-            }
+            }, this);
         },
 
         updateBarsOpacity: function(value) {
@@ -1747,7 +1750,7 @@ visualHUD.Libs.selectionManagerInterface = {
  * @type {Object}
  */
 visualHUD.Libs.formControlsBuilder = {
-    cache:{},
+    cache: {},
 
     getDefaultsByType: function(type) {
         return this.controlDefaults[type];
@@ -1831,6 +1834,7 @@ visualHUD.Libs.formControlsBuilder = {
             text: 'Browse...',
             name: 'file',
             value: '',
+            multiple: false,
             maxlength: '',
             hint: null,
             wrap: true
@@ -1948,8 +1952,8 @@ visualHUD.Libs.formControlsBuilder = {
         ],
         fileInput: [
             '<span class="file-input">',
-                '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" /></span>',
-                '<span class="file-name"><%= noFileMessage %></span>',
+            '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" <%= multiple ? \'multiple\' : \'\' %> /></span>',
+            '<span class="file-name"><%= noFileMessage %></span>',
             '</span>'
         ],
         rangeInput: [
@@ -2001,7 +2005,7 @@ visualHUD.Libs.formControlsBuilder = {
     baseTemplate: [
         '<span class="f-label <%= label ? \'\' : \'hidden\' %>"><%= label %></span>',
         '<span class="f-inputs">',
-            '{markup}',
+        '{markup}',
         '</span>',
         '<% if(hint) { %><div class="f-hint"><%= hint %></div><% }; %>'
     ],
@@ -2012,7 +2016,7 @@ visualHUD.Libs.formControlsBuilder = {
             .addClass(attributes.cssClass || '')
             .attr('id', attributes.id || '')
             .addClass(attributes.required ? 'reqired-field' : '');
-        
+
         return element;
     },
 
@@ -2034,7 +2038,7 @@ visualHUD.Libs.formControlsBuilder = {
 
     createContainer: function(attributes) {
         var element = $('<div />');
-        
+
         var ignoreAttributes = ['type', 'items'];
         var mapAttributes = {'cssClass': 'class'};
 
@@ -2047,8 +2051,12 @@ visualHUD.Libs.formControlsBuilder = {
             elementAttributes[value] = elementAttributes[key];
             delete elementAttributes[key];
         });
-        
+
         element.attr(elementAttributes);
+
+        if(attributes.html) {
+            element.html(attributes.html);
+        }
 
         return element;
     },
@@ -2063,13 +2071,13 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createRangeInput:function (attributes) {
+    createRangeInput: function(attributes) {
         var defaults = {
-            precision:false,
-            keyboard:false,
-            progress:true,
-            sliderSize:160,
-            handleSize:12
+            precision: false,
+            keyboard: false,
+            progress: true,
+            sliderSize: 160,
+            handleSize: 12
         };
         var element = this.createFormControl(attributes);
         var input = element.find('input.range-input').rangeinput(_.extend(defaults, attributes));
@@ -2103,20 +2111,20 @@ visualHUD.Libs.formControlsBuilder = {
     createSelectOptionsMapFromCollection: function(collection, attributes) {
         var selectOptionsMap = {};
 
-       collection.each(function(record) {
-           selectOptionsMap[record.get(attributes.valueField)] = record.get(attributes.displayField);
-       });
+        collection.each(function(record) {
+            selectOptionsMap[record.get(attributes.valueField)] = record.get(attributes.displayField);
+        });
 
-       return selectOptionsMap;
+        return selectOptionsMap;
     },
 
-    generateSelectOptionsFromMap: function (opts, selectHTML) {
+    generateSelectOptionsFromMap: function(opts, selectHTML) {
         var optionHTMLTemplate = '<option value="<%= value %>"><%= label %></option>';
         var optgroupHTMLTemplates = ['<optgroup label="<%= label %>">', '</optgroup>'];
 
-        _.each(opts, function (value, key) {
+        _.each(opts, function(value, key) {
 
-            if ($.isPlainObject(value)) {
+            if($.isPlainObject(value)) {
                 selectHTML.push(
                     _.template(optgroupHTMLTemplates[0], {
                         label: key
@@ -2128,8 +2136,8 @@ visualHUD.Libs.formControlsBuilder = {
             else {
                 selectHTML.push(
                     _.template(optionHTMLTemplate, {
-                        value:key,
-                        label:value
+                        value: key,
+                        label: value
                     })
                 );
             }
@@ -2137,7 +2145,7 @@ visualHUD.Libs.formControlsBuilder = {
         return selectHTML.join('')
     },
 
-    createSelect:function (attributes) {
+    createSelect: function(attributes) {
 
         if(attributes.collection) {
             attributes.options = this.createSelectOptionsMapFromCollection(attributes.collection, attributes);
@@ -2149,7 +2157,7 @@ visualHUD.Libs.formControlsBuilder = {
             select = element.find('select'),
             valueElement = select.parent().find('.select-value');
 
-        if (attributes.value) {
+        if(attributes.value) {
             select.val(attributes.value);
         }
         else {
@@ -2158,10 +2166,11 @@ visualHUD.Libs.formControlsBuilder = {
 
         var selectDOM = select.get(0);
 
-        valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+        valueElement.text($(selectDOM[selectDOM.selectedIndex]).text());
 
         select.on('change', function() {
-            valueElement.text(selectDOM[selectDOM.selectedIndex].label);
+            var text = $(this[this.selectedIndex]).text()
+            valueElement.text(text);
         });
 
         select.on('focus', function() {
@@ -2183,7 +2192,7 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createButton:function (attributes) {
+    createButton: function(attributes) {
         attributes.cssClass = attributes.cssClass || '';
         attributes.cssClass += attributes.role ? ' button-' + attributes.role : '';
         attributes.icon = attributes.icon ? 'w-icon icon-' + attributes.icon : '';
@@ -2210,7 +2219,7 @@ visualHUD.Libs.formControlsBuilder = {
         return element;
     },
 
-    createColorRange:function (attributes) {
+    createColorRange: function(attributes) {
         var template = ([
             '<% _.each(ranges, function(range, idx) { %>',
             '<div class="f-row">',
@@ -2232,7 +2241,7 @@ visualHUD.Libs.formControlsBuilder = {
         var rangeValueInputs = element.find('input.color-range-input');
         var eventManuallyTriggered = false;
 
-        element.delegate('input[type=text]', 'change', function (event) {
+        element.delegate('input[type=text]', 'change', function(event) {
             if(eventManuallyTriggered) {
                 $(this).closest('form').trigger(event);
                 eventManuallyTriggered = false;
@@ -2247,9 +2256,9 @@ visualHUD.Libs.formControlsBuilder = {
             var $nextInput = rangeValueInputs.eq(index + 1),
                 $prevInput = rangeValueInputs.eq(index - 1);
 
-            if (odd) {
+            if(odd) {
                 value = parseInt(this.value);
-                if ($nextInput.length && !$nextInput.attr('readOnly')) {
+                if($nextInput.length && !$nextInput.attr('readOnly')) {
                     $nextInput.val(value + 1);
 
                     //event.stopPropagation();
@@ -2258,7 +2267,7 @@ visualHUD.Libs.formControlsBuilder = {
                 }
             } else {
                 value = parseInt(this.value);
-                if ($prevInput.length && !$prevInput.attr('readOnly')) {
+                if($prevInput.length && !$prevInput.attr('readOnly')) {
                     $prevInput.val(value - 1);
 
                     //event.stopPropagation();
@@ -2510,6 +2519,13 @@ visualHUD.Libs.formBuilderMixin = {
                 'right': 'Right to left',
                 'top': 'Top to bottom',
                 'bottom': 'Bottom to top'
+            }
+        },
+
+        getBarDirectionOptions: function() {
+            return {
+                '0': 'Left to right',
+                '1': 'Right to left'
             }
         },
 
@@ -3038,6 +3054,12 @@ visualHUD.Libs.formBuilderMixin = {
                     type: 'fieldset',
                     label: this.model.get('label') + ' Properties',
                     items: [
+                        this.getSelectBasic({
+                            'name': 'barDirection',
+                            'label': 'Direction',
+                            'value': this.model.get('barDirection'),
+                            'options': this.getBarDirectionOptions()
+                        }),
                         this.getWidthInput(),
                         this.getHeightInput(),
                         this.getPaddingInput(),
@@ -4028,7 +4050,7 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
         'barDirection': null,
         'resizable': false,
         'group': null,
-        'ownerDrawFlag': ''
+        'ownerDrawFlag': '0'
     },
 
     /**
@@ -4299,6 +4321,10 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
 
         if(data.name == 'powerupIndicator' && data.iconStyle != null) {
             this.set({'iconStyle': null}, {silent: true});
+        }
+
+        if(this.get('ownerDraw') == '') {
+            this.set({'ownerDraw': '0'}, {silent: true});
         }
 
         if(data.name == 'skillIndicator' && 'opacity' in data) {
@@ -4668,7 +4694,7 @@ visualHUD.Collections.HUDItems = Backbone.Collection.extend({
                 flagValue = record.get('ownerDrawFlag'),
                 refs = HUDItemView.getDOMRefs();
 			
-			if(value == '' || flagValue == value || flagValue == '') {
+			if(value == '0' || flagValue == value || flagValue == '0') {
 				HUDItemView.show();
 			}
 			else {
@@ -6230,8 +6256,30 @@ visualHUD.Views.Viewport = Backbone.View.extend({
     },
 
     bindDropImport: function() {
-        if(Modernizr.draganddrop == true) {
-            document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
+        $(document)
+            .on('dragenter dragleave dragover drop',visualHUD.Function.bind(function(event){
+
+                event.preventDefault();
+                if(event.type == 'drop') {
+                    var files = Array.prototype.slice.call(event.dataTransfer.files);
+                    visualHUD.Libs.importHelper.batchImport(files, {
+                        scope: this,
+                        files: function(output) {
+                            this.fireEvent('load.text', [output]);
+                        },
+                        image: function(output) {
+                            this.fireEvent('import.image', [output]);
+                        }
+                    });
+                    return false;
+                }
+                return false;
+
+            }, this));
+
+        /*if(Modernizr.draganddrop == true && false) {
+            //document.body.addEventListener('drop', visualHUD.Function.bind(function(event) {
+            $(document).on('drop', visualHUD.Function.bind(function(event) {
                 event.preventDefault();
 
                 var files = Array.prototype.slice.call(event.dataTransfer.files);
@@ -6246,8 +6294,8 @@ visualHUD.Views.Viewport = Backbone.View.extend({
                 });
                 return false;
 
-            }, this), false);
-        }
+            }, this));
+        }*/
     }
 });
 
@@ -6258,14 +6306,14 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         '<div class="app-logo popover-action" data-popover="logo"><span>VisualHUD</span></div>',
         '<div class="toolbar-main global-actions">',
             '<button value="downloadHUD" class="button" id="downloadButton"><span class="w-icon download">Download</span></button>',
-            '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load">Import</span></button>',
-            '<button value="restartApplication" class="button-aux" id="restartAppButton"><span class="w-icon restart">Restart</span></button>',
+            '<span class="file-input" data-tooltip="Open *.vhud file"><span class="btn button-aux"><span class="w-icon open">Open</span><input type="file" name="customHUD"></span><span class="file-name hidden">No file selected</span></span>',
+            '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load" data-tooltip="Import Preset <small>(I)</small>">Import</span></button>',
         '</div>',
         '<div class="toolbar-main hud-actions">',
-            '<button value="undoUpdate" class="button-aux" data-tooltip="Undo"><span class="w-icon icon-undo">Undo</span></button>',
-            '<button value="deleteSelected" class="button-aux single-select-button" data-tooltip="Delete"><span class="w-icon icon-trash">Delete</span></button>',
-            '<button value="cloneSelected" class="button-aux single-select-button" data-tooltip="Clone"><span class="w-icon icon-clone">Clone</span></button>',
-            '<button value="groupSelected" class="button-aux multi-select-button" data-tooltip="Group"><span class="w-icon icon-group">Group</span></button>',
+            '<button value="undoUpdate" class="button-aux" data-tooltip="Undo <small>(CTRL+Z)</small>"><span class="w-icon icon-undo">Undo</span></button>',
+            '<button value="deleteSelected" class="button-aux single-select-button" data-tooltip="Delete <small>(DEL)</small>"><span class="w-icon icon-trash">Delete</span></button>',
+            '<button value="cloneSelected" class="button-aux single-select-button" data-tooltip="Clone <small>(CTRL+V)</small>"><span class="w-icon icon-clone">Clone</span></button>',
+            '<button value="groupSelected" class="button-aux multi-select-button" data-tooltip="Group <small>(CTRL+G)</small>"><span class="w-icon icon-group">Group</span></button>',
             '<button value="alignSelected" class="button-aux single-select-button popover-action"  data-tooltip="Align" data-popover="align"><span class="w-carret w-icon icon-align">Align</span></button>',
         '</div>',        
         '<div class="app-stats">',
@@ -6281,7 +6329,8 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
     events: {
         'click .popover-action': 'showPopover',
         'click .global-actions button': 'onGlobalActionButtonClick',
-        'click .hud-actions button': 'onHUDActionButtonClick'
+        'click .hud-actions button': 'onHUDActionButtonClick',
+        'change input[name=customHUD]': 'processSelectedFiles'
     },
     initialize: function() {
         this.$el.append(this.htmlTpl.join(''));
@@ -6424,6 +6473,21 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
     updateToolbarButtonsState: function(selectionLength) {
         this.buttons.singleSelectActions.attr('disabled', selectionLength == 0);
         this.buttons.multiSelectActions.attr('disabled', selectionLength <= 1);
+    },
+
+    processSelectedFiles: function(event) {
+        var files = Array.prototype.slice.call(event.target.files);
+
+        if(files.length) {
+            visualHUD.Libs.importHelper.batchImport(files, {
+                scope: this,
+                files: function(output) {
+                    this.fireEvent('load.text', [output, true]);
+                }
+            });
+        }
+
+        event.target.value = '';
     }
 });
 
@@ -7163,12 +7227,14 @@ visualHUD.Views.viewport.StageControls = Backbone.View.extend({
         '<div class="sidebar-block" id="getStartedTextarea">',
         '<h3>Get started</h3>',
         '<div class="mb-10">',
-        'Use icons below to start building yor HUD. You can use drag and drop or double click in order to create new HUD element',
+        'Use icons below to build your HUD. Drag and drop items or simple double click on icon to create new HUD element',
         '</div>',
         '<div>',
         '<a href="help/#videos" target="help" class="mr-20">View Video Tutorials</a>',
         '</div>',
         '</div>',
+
+
         '<div class="sidebar-block stage-controls" id="stageControlsArea">',
         '<h4>HUD Elements</h4>',
         '<ul class="library-items clearfloat">',
@@ -8018,6 +8084,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         else {
             animateWindow();
         }
+
+        return this;
     },
 
     hide: function(event) {
@@ -8037,6 +8105,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         if(event instanceof jQuery.Event) {
             event.preventDefault();
         }
+
+        return this;
     },
 
     getTopPosition: function(heightBounds) {
@@ -8104,6 +8174,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
             easing: easing,
             duration: duration
         });
+
+        return this;
     },
 
     reposition: function() {
@@ -8659,6 +8731,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                             {
                                 type: 'fileInput',
                                 text: 'Browse For Presets...',
+                                multiple: true,
                                 name: 'myCustomPreset',
                                 wrap: false
                             },
@@ -8719,7 +8792,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
             visualHUD.Libs.importHelper.batchImport(files, {
                 scope: this,
                 files: function(output) {
-                    this.fireEvent('import.text', [output]);
+                    this.fireEvent('import.text', [output, true]);
                 }
             });
             this.showCustomHUDPresets();
@@ -8933,12 +9006,14 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
 
     validate: function(event) {
         var target = $(event.target);
-        var validClsFn = 'addClass';
+        if(target.get(0).validity) {
+            var validClsFn = 'addClass';
 
-        if(target.get(0).validity.valid == true) {
-            validClsFn = 'removeClass';
+            if(target.get(0).validity.valid == true) {
+                validClsFn = 'removeClass';
+            }
+            target[validClsFn]('invalid-field');
         }
-        target[validClsFn]('invalid-field');
     },
 
     suppressValidation: function(event) {
@@ -9003,6 +9078,89 @@ visualHUD.Views.windows.Feedback = visualHUD.Views.WindowBase.extend({
 
     setFocus: function() {
         this.$el.find('input[name=name]').focus();
+    }
+});
+
+visualHUD.Views.windows.Confirm = visualHUD.Views.WindowBase.extend({
+    mixin: [
+        'visualHUD.Libs.formControlsBuilder',
+        'visualHUD.Libs.formBuilderMixin.base'
+    ],
+    events: {
+        'click button[name=confirm]': 'yes',
+        'click button[name=cancel]': 'no'
+    },
+    html: ([
+        '<div class="mb-20" id="messageContainer">',
+        '</div>'
+    ]).join(''),
+
+    defaults: {
+        width: 400,
+        height: 'auto',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+    },
+
+    init: function () {
+
+        var form = this.buildForm([
+            {
+                type: 'form',
+                cssClass: 'mwin-form',
+                id: 'importHUDForm',
+                items: [
+                    {
+                        type: 'container',
+                        name: 'customImage',
+                        label: null,
+                        text: 'Choose image'
+                    },
+                    {
+                        type: 'toolbar',
+                        items: [
+                            {
+                                type: 'button',
+                                text: this.options.confirmButtonText,
+                                role: 'main',
+                                name: 'confirm'
+                            },
+                            {
+                                type: 'button',
+                                text: this.options.cancelButtonText,
+                                role: 'aux',
+                                name: 'cancel'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]);
+
+        this.$content.get(0).appendChild(form);
+        var $messageContainer = this.$content.find('#messageContainer');
+
+        $messageContainer.html(this.options.confirm);
+
+        this.on('hide', this.destroy, this);
+
+        this.on('show', function() {
+            this.$content.find('button[name=confirm]').focus();
+        }, this);
+    },
+
+    yes: function () {
+        this.options.handler.apply(this.options.scope || this, [true]);
+        this.hide();
+    },
+
+    no: function () {
+        this.options.handler.apply(this.options.scope || this, [false]);
+        this.hide();
+    },
+
+    destroy: function() {
+        this.$el.remove();
     }
 });
 
@@ -9864,11 +10022,12 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         this.addListeners({
             'Viewport': {
                 'import.image': this.importImage,
-                'import.text': this.importHUDPresets
+                'load.text': this.loadHUDFile
             },        
             'viewport.TopBar': {
                 'align.action': this.alignItems,
-                'toolbar.hud:action': this.groupActions
+                'toolbar.hud:action': this.groupActions,
+                'load.text': this.loadHUDFile
             },        
             'viewport.StageControls': {
                 'item.drop': this.dropNewHUDItem
@@ -10114,7 +10273,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Event handler Triggered by visualHUD.Models.ClientSettings
      * Used to update status of the particular HUD Item
      * @param model
-     * @param options
+     * @param event
      */
     updateHUDItemStatus: function(model, event) {
         var changes = event.changes;
@@ -10254,7 +10413,6 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
     /**
      * Function to clone group/ungroup selected items
-     * @param event
      */
     groupSelectedItems: function() {
         var canvas = this.getApplicationView('viewport.Canvas'),
@@ -10313,6 +10471,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     /**
      * Triggered by visualHUD.Views.LoadWindow when new HUD preset is being loaded
      * @param data
+     * @param suppressLoad
+     * @param name
      */
     loadHUD: function(data, name, suppressLoad) {
         var name = data.name || name;
@@ -10331,13 +10491,23 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             this.getModel('ClientSettings').set('HUDName', null);
         }
 
-        var action = this.getCollection('HUDItems').length && suppressLoad !== true ?
-                        window.confirm(visualHUD.messages.CONFIRM_HUD_OVERWRITE) : true;
+        /*var action = this.getCollection('HUDItems').length && suppressLoad !== true ?
+                        window.confirm(visualHUD.messages.CONFIRM_HUD_OVERWRITE) : true;*/
 
-        if(suppressLoad !== true && action) {
+        if(this.getCollection('HUDItems').length && suppressLoad !== true) {
+            visualHUD.confirm({
+                title: 'Overwrite Current HUD?',
+                confirm: visualHUD.messages.CONFIRM_HUD_OVERWRITE,
+                confirmButtonText: 'Yes, overwrite',
+                scope: this,
+                handler: function(result) {
+                    this.getCollection('HUDItems').load(data.items);
+                }
+            });
+        }
+        else {
             this.getCollection('HUDItems').load(data.items);
         }
-
     },
 
     onDownload: function(view, data) {
@@ -10410,9 +10580,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         });
     },
     
-    importHUDPresets: function(presets) {
-        var data = [],
-            success = true,
+    importHUDPresets: function(presets, overwrite) {
+        var success = true,
             loadWindow = this.getApplicationView('windows.ImportHUD'),
             openLoadWindow = loadWindow ? loadWindow.opened == false : true,
             length = this.getCollection('HUDItems').length;
@@ -10420,7 +10589,14 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         _.each(presets, function(preset, idx) {
             try {
                 // set suppress boolean to true only for the fist item in the collection
-                var suppress = idx == 0 ? length > 0 : true
+                var suppress = true;
+
+                if(overwrite === true) {
+                    suppress = false;
+                }
+                else if(idx == 0) {
+                    suppress = length > 0;
+                }
                 this.loadHUD(JSON.parse(preset.json), preset.name || null,  suppress);
             }
             catch(e) {
@@ -10429,7 +10605,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }
         }, this);
 
-        if(success) {
+        if(success && !overwrite) {
             var message = '<%= count %> HUD<%= count==1 ? \' has\' : \'s have\' %> been successfuly imported! ';
 
             if(openLoadWindow == true) {
@@ -10458,6 +10634,18 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }, this));
         }
 
+    },
+
+    loadHUDFile: function(configs, overwrite) {
+        _.each(configs, function(preset, idx) {
+            try {
+                this.loadHUD(JSON.parse(preset.json), preset.name || null,  idx > 0);
+            }
+            catch(e) {
+                success = false;
+                console.error('Failed to import HUD', preset.json);
+            }
+        }, this);
     }
 
 });
@@ -10665,7 +10853,8 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'windows.Download',
         'windows.ImportHUD',
         'windows.ImportImage',
-        'windows.Feedback'
+        'windows.Feedback',
+        'windows.Confirm'
     ],
 
     models: [
