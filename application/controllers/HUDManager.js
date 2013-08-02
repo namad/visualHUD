@@ -27,11 +27,12 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         this.addListeners({
             'Viewport': {
                 'import.image': this.importImage,
-                'import.text': this.importHUDPresets
+                'load.text': this.loadHUDFile
             },        
             'viewport.TopBar': {
                 'align.action': this.alignItems,
-                'toolbar.hud:action': this.groupActions
+                'toolbar.hud:action': this.groupActions,
+                'load.text': this.loadHUDFile
             },        
             'viewport.StageControls': {
                 'item.drop': this.dropNewHUDItem
@@ -80,8 +81,23 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         // HUDItemsCollection.on('change', this.syncPresets, this);
         HUDItemsCollection.on('load', this.loadDraft, this);
 
+        var viewport = this.getApplicationView('Viewport');
         // Load saved HUD Items
-        $(window).load(visualHUD.Function.bind(HUDItemsCollection.load, HUDItemsCollection, []));
+        $(window).load(function() {
+
+            HUDItemsCollection.load();
+
+            $('body').addClass('loading');
+            viewport.$el.addClass('animate-viewport');
+            $('#preloader').fadeOut(400, function() {
+                $(this).remove();
+                $('body').removeClass('loading');
+                window.setTimeout(function(){
+                    viewport.$el.removeClass('animate-viewport');
+                }, 550);
+
+            });
+        });
     },
 
     /**
@@ -89,8 +105,6 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Restore previously saved draft
      */
     loadDraft: function() {
-        console.log('load draft triggered');
-
         if(this.getCollection('HUDItems').length == 0) {
             return this.showGetStartedMessage();
         }
@@ -119,17 +133,26 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         // remove damaged items from collection
         // and show error message        
         if(trash.length) {
-            this.application.growl.alert({
+            console.warn(_.template(visualHUD.messages.HUD_ELEMENTS_PARSE_ERROR, {count: trash.length}));
+            /*this.application.growl.alert({
                 status: 'warning',
                 title: 'Some Items Were Not Imported',
                 message: _.template(visualHUD.messages.HUD_ELEMENTS_PARSE_ERROR, {count: trash.length})
-            });
+            });*/
             this.getCollection('HUDItems').remove(trash);
         }
         canvasView.completeUpdate();
     },
 
     showGetStartedMessage: function() {
+        var isAlreadyShown = window.sessionStorage.getItem('_vhud_getStartedMessage_shown');
+        if(isAlreadyShown != null) {
+            return;
+        }
+        else {
+            window.sessionStorage.setItem('_vhud_getStartedMessage_shown', true);
+        }
+
         var $message = this.application.growl.alert({
             status: 'info',
             title: 'Get Started',
@@ -186,13 +209,20 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     /**
      * Create new visualHUD.Views.HUDItem instance based on visualHUD.Models.HUDItem data
      * @param record
-     * @return {Object} HUDItem visualHUD.Views.HUDItem instance
+     * @return HUDItem visualHUD.Views.HUDItem instance
      */
     createNewHUDItem: function(record) {
         var HUDItemTemplates = this.getCollection('HUDItemTemplates');
         var canvasView = this.getApplicationView('viewport.Canvas');
         var viewportView = this.getApplicationView('Viewport');
         var stageControlsView = viewportView.getStageControlsView();
+
+        var HUDTemplateRecord = HUDItemTemplates.get(record.get('name'));
+
+        if(!HUDTemplateRecord) {
+            // visualHUD.applicationErrorHandler('Could not find HUD item template. Item model: ' + JSON.stringify(record.toJSON()), 'visualHUD.controllers.HUDManager.createNewHUDItem', 223);
+            return null;
+        }
 
         var HUDItemViewClass = this.getViewConstructor('HUDItem');
         var formViewClass = this.getViewConstructor('HUDItemForm');
@@ -207,6 +237,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }
         });
 
+
         var HUDItem = new HUDItemViewClass({
             alias: 'HUDItem',
             HUDItemIconEnums: HUDItemIconEnums,
@@ -214,7 +245,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             model: record,
             wasDropped: record.wasDropped,
             formView: formView,
-            htmlTplRecord: HUDItemTemplates.get(record.get('name'))
+            htmlTplRecord:  HUDTemplateRecord
         });
 
         stageControlsView.updateControlsStatus('create', record.get('name'));
@@ -231,7 +262,13 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     addNewHUDItem: function(record) {
         var canvasView = this.getApplicationView('viewport.Canvas');
         var HUDItem = this.createNewHUDItem(record);
-        canvasView.select(HUDItem, false);
+
+        if(HUDItem == null) {
+            record.destroy();
+        }
+        else {
+            canvasView.select(HUDItem, false);
+        }
     },
 
     /**
@@ -277,7 +314,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
      * Event handler Triggered by visualHUD.Models.ClientSettings
      * Used to update status of the particular HUD Item
      * @param model
-     * @param options
+     * @param event
      */
     updateHUDItemStatus: function(model, event) {
         var changes = event.changes;
@@ -417,7 +454,6 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
 
     /**
      * Function to clone group/ungroup selected items
-     * @param event
      */
     groupSelectedItems: function() {
         var canvas = this.getApplicationView('viewport.Canvas'),
@@ -476,6 +512,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     /**
      * Triggered by visualHUD.Views.LoadWindow when new HUD preset is being loaded
      * @param data
+     * @param suppressLoad
+     * @param name
      */
     loadHUD: function(data, name, suppressLoad) {
         var name = data.name || name;
@@ -494,13 +532,23 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             this.getModel('ClientSettings').set('HUDName', null);
         }
 
-        var action = this.getCollection('HUDItems').length && suppressLoad !== true ?
-                        window.confirm(visualHUD.messages.CONFIRM_HUD_OVERWRITE) : true;
+        /*var action = this.getCollection('HUDItems').length && suppressLoad !== true ?
+                        window.confirm(visualHUD.messages.CONFIRM_HUD_OVERWRITE) : true;*/
 
-        if(suppressLoad !== true && action) {
+        if(this.getCollection('HUDItems').length && suppressLoad !== true) {
+            visualHUD.confirm({
+                title: 'Overwrite Current HUD?',
+                confirm: visualHUD.messages.CONFIRM_HUD_OVERWRITE,
+                confirmButtonText: 'Yes, overwrite',
+                scope: this,
+                handler: function(result) {
+                    this.getCollection('HUDItems').load(data.items);
+                }
+            });
+        }
+        else {
             this.getCollection('HUDItems').load(data.items);
         }
-
     },
 
     onDownload: function(view, data) {
@@ -573,9 +621,8 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         });
     },
     
-    importHUDPresets: function(presets) {
-        var data = [],
-            success = true,
+    importHUDPresets: function(presets, overwrite) {
+        var success = true,
             loadWindow = this.getApplicationView('windows.ImportHUD'),
             openLoadWindow = loadWindow ? loadWindow.opened == false : true,
             length = this.getCollection('HUDItems').length;
@@ -583,7 +630,14 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
         _.each(presets, function(preset, idx) {
             try {
                 // set suppress boolean to true only for the fist item in the collection
-                var suppress = idx == 0 ? length > 0 : true
+                var suppress = true;
+
+                if(overwrite === true) {
+                    suppress = false;
+                }
+                else if(idx == 0) {
+                    suppress = length > 0;
+                }
                 this.loadHUD(JSON.parse(preset.json), preset.name || null,  suppress);
             }
             catch(e) {
@@ -592,7 +646,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }
         }, this);
 
-        if(success) {
+        if(success && !overwrite) {
             var message = '<%= count %> HUD<%= count==1 ? \' has\' : \'s have\' %> been successfuly imported! ';
 
             if(openLoadWindow == true) {
@@ -621,6 +675,18 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
             }, this));
         }
 
+    },
+
+    loadHUDFile: function(configs, overwrite) {
+        _.each(configs, function(preset, idx) {
+            try {
+                this.loadHUD(JSON.parse(preset.json), preset.name || null,  idx > 0);
+            }
+            catch(e) {
+                success = false;
+                console.error('Failed to import HUD', preset.json);
+            }
+        }, this);
     }
 
 });

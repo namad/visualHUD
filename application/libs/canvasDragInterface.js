@@ -299,8 +299,8 @@ visualHUD.Libs.canvasDragInterface = {
                 width: Math.round(this.positionCache.width / visualHUD.scaleFactor),
                 height: Math.round(this.positionCache.height / visualHUD.scaleFactor)
             },
-            width: this.positionCache.width,
-            height: this.positionCache.height
+            width: this.positionCache.width / visualHUD.scaleFactor,
+            height: this.positionCache.height / visualHUD.scaleFactor
         });
 
         // set default state for drop manager
@@ -323,10 +323,11 @@ visualHUD.Libs.canvasDragInterface = {
         this.offsets = [];
         this.drawLine = false;
 
-        this.getView().select(this.currentElement, true);
+        var view = this.getView();
 
-        var masterElement = null,
-            selection = this.getView().getSelection(),
+        view.select(this.currentElement, view.isMultilect());
+
+        var selection = view.getSelection(),
             isMatch = false;
 
         if(selection.length > 1){
@@ -357,7 +358,7 @@ visualHUD.Libs.canvasDragInterface = {
 
         var pos;
 
-        for(a = 0, b = this.slaveElements.length; a < b; a++){
+        for(var a = 0, b = this.slaveElements.length; a < b; a++){
             pos = this.slaveElements[a].checkPosition({
                 top: newPosition.top - this.offsets[a].top,
                 left: newPosition.left - this.offsets[a].left
@@ -367,7 +368,7 @@ visualHUD.Libs.canvasDragInterface = {
     },
     moveElementDrop: function(drag, event, target){
         this.currentElement.$el.removeClass('drag-start');
-        this.getView().fireEvent('drop.move', [this.currentElement]);
+        this.getView().trigger('drop.move', [this.currentElement]);
     }
 };
 

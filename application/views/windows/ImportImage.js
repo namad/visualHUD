@@ -24,6 +24,7 @@ visualHUD.Views.windows.ImportImage = visualHUD.Views.WindowBase.extend({
                         type: 'fileInput',
                         name: 'customImage',
                         label: null,
+                        accept: '.gif, .png, .jpg, .jpeg',
                         text: 'Choose image'
                     },
                     {

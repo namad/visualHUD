@@ -4,7 +4,7 @@
     position: absolute;
     z-index: 1;
     @include box-shadow(rgba(0, 0, 0, 0.75) 0px 1px 4px);
-    @include bevel-and-emboss;
+    @include top-bevel;
 }
 
 @mixin text-overflow {

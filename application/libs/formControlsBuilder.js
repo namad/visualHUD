@@ -87,6 +87,7 @@ visualHUD.Libs.formControlsBuilder = {
             text: 'Browse...',
             name: 'file',
             value: '',
+            accept: '*',
             multiple: false,
             maxlength: '',
             hint: null,
@@ -205,7 +206,7 @@ visualHUD.Libs.formControlsBuilder = {
         ],
         fileInput: [
             '<span class="file-input">',
-            '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" <%= multiple ? \'multiple\' : \'\' %> /></span>',
+            '<span class="btn <%= cssClass %>"><span><%= text %></span><input type="file" name="<%= name %>" accept="<%= accept %>" <%= multiple ? \'multiple\' : \'\' %> /></span>',
             '<span class="file-name"><%= noFileMessage %></span>',
             '</span>'
         ],

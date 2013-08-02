@@ -45,14 +45,28 @@ visualHUD.Libs.importHelper = {
             scope = callback.scope;
 
         var processFile = function(file) {
-            if(file.type.match('image.*') && visualHUD.Libs.importHelper.checkImageSize(file) == true && imageProcessed == false) {
-                reader.onload = visualHUD.Function.bind(processImage, this, [file], true);
-                reader.readAsDataURL(file);
-            }
+            var isImage = file.type.match('image.*') && this.checkImageSize(file) == true && imageProcessed == false;
+            var isVhudFile = file.type.match('text.*') || file.name.match('vhud$');
 
-            if(file.type.match('text.*') || file.name.match('vhud$')) {
-                reader.onload = visualHUD.Function.bind(processText, this, [file], true);
-                reader.readAsText(file);
+            switch(true) {
+                case isImage: {
+                    reader.onload = visualHUD.Function.bind(processImage, this, [file], true);
+                    reader.readAsDataURL(file);
+                    break;
+                }
+                case isVhudFile: {
+                    reader.onload = visualHUD.Function.bind(processText, this, [file], true);
+                    reader.readAsText(file);
+                    break;
+                }
+                default: {
+                    visualHUD.growl.alert({
+                        status: 'warning',
+                        title: 'Could not process ' + file.name,
+                        message: _.template(visualHUD.messages.UNSUPPORTED_FILE_FORMAT, {count: files.length})
+                     });
+                    break;
+                }
             }
         };
 

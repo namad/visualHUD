@@ -99,34 +99,44 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
         var animateToWidth = this.options.width;
         var height = this.options.height;
 
+
+
+        this.$contentWrapper.css({
+            'width': animateToWidth
+        });
+
         this.$el.css({
             visibility: 'hidden',
-            top: 0,
-            left: 0,
             display: 'block'
         });
 
-        this.$contentWrapper.css({
-            'width': animateToWidth,
-            'height':height
+
+        // var heightBounds = [10, this.$el.height()];
+
+        // var topBounds = this.getTopPosition(heightBounds);
+
+        var contentWrapperHeight = this.$contentWrapper.height();
+        this.$contentWrapper.addClass('xpk-win-show');
+
+        this.$el.css({
+            marginTop: -1 * contentWrapperHeight / 2 + 'px',
+            visibility: 'visible'
         });
 
-        var heightBounds = [10, this.$el.height()];
 
-        var topBounds = this.getTopPosition(heightBounds);
 
-        var animateToHeight = this.$contentWrapper.height();
+        var animateWindow = visualHUD.Function.createDelayed(this.animateWindow, 10, this);
 
-        this.$contentWrapper.addClass('xpk-win-show').css({'width': 10, 'height':10});
+        animateWindow();
+        $.showModalOverlay(200, 0.70);
 
-        var animateWindow = visualHUD.Function.bind(this.animateWindow, this, [animateToWidth,animateToHeight, topBounds]);
-
-        if(($.__overlay && $.__overlay.visible !== true) || (!$.__overlay) ) {
+        /*if(($.__overlay && $.__overlay.visible !== true) || (!$.__overlay) ) {
             $.showModalOverlay(200, 0.70, animateWindow);
         }
         else {
             animateWindow();
-        }
+        }*/
+
 
         return this;
     },
@@ -172,12 +182,27 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
     },
 
     animateWindow: function(aninameToWidth, animateToHeight, topBounds) {
+
+
+        this.$contentWrapper.removeClass('xpk-win-show');
+
+        this.opened = true;
+        this.trigger('show', [this]);
+
+        var reposition = visualHUD.Function.createBuffered(this.reposition, 200, this);
+        var keyboardListener = visualHUD.Function.bind(this.keyboardListiner, this);
+
+        $(window).bind('resize.windowReposition', reposition);
+        $(document).bind('keyup.windowKeyboardListiner', keyboardListener);
+
+
+        return;
+
         var me = this;
         var duration = 250;
         var easing = jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing';
         var contentWrapper = this.$contentWrapper;
         var options = this.options;
-        var element = this.$el;
 
         var reposition = visualHUD.Function.createBuffered(this.reposition, 200, this);
         var keyboardListener = visualHUD.Function.bind(this.keyboardListiner, this);
@@ -222,6 +247,8 @@ visualHUD.Views.WindowBase = Backbone.View.extend({
     },
 
     reposition: function() {
+        return;
+
         if(this.$el.is(':visible')) {
             var _limit = $(document.body).height();
             var _height = this.$el.height();

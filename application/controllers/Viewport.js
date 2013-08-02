@@ -9,7 +9,8 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
         'windows.Download',
         'windows.ImportHUD',
         'windows.ImportImage',
-        'windows.Feedback'
+        'windows.Feedback',
+        'windows.Confirm'
     ],
 
     models: [
@@ -250,8 +251,15 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     },
 
     switchScaleFactor: function(scale) {
-        var path = window.location.pathname;
-        window.location.href = path + (scale == 2 ? '?large' : '');
+        $('body').removeClass('scale-factor-' + this.application.scaleFactor);
+
+        this.getCollection('HUDItems').save();
+        this.application.scaleFactor = scale;
+        this.getModel('ClientSettings').set('scaleFactor', scale);
+        this.getCollection('HUDItems').reset();
+        $('body').addClass('scale-factor-' + scale);
+        this.getCollection('HUDItems').load();
+
     },
 
     resetApplication: function() {

@@ -220,7 +220,7 @@
         $(window).bind('resize', resizeCheck);
 
 
-        this.__overlay.fadeTo(speed, opacity, callback);
+        this.__overlay.stop().fadeTo(speed, opacity, callback);
         this.__overlay.visible = true;
         return this.__overlay;
     };

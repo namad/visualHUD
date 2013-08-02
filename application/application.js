@@ -45,6 +45,7 @@ new Backbone.Application({
         HUD_PARSE_ERROR: 'visualHUD was unable to parse custom HUD because the data is incorrect or corrupted',
         LARGE_IMAGE_WARNING: 'Image you are trying to import, are too large (<%= imageSize %>). Please, try another image that is less than <%= maxSize %>',
         UNSUPPORTED_IMAGE_FORMAT: 'Image type you are trying to import is not supported (<%= imageType %>). Try to import images in PNG, JPG or GIF format',
+        UNSUPPORTED_FILE_FORMAT: 'File<%= count>1 ? \'s\' : \'\' %> you are trying to load <%= count>1 ? \'are\' : \'is\' %> not supported. To load previously downloaded HUD use *.vhud files.',
         CONFIRM_APPLICATION_RESET: 'Are you sure to reset visualHUD?\nAll settings and stored data will be cleared!',
         CONFIRM_HUD_OVERWRITE: 'Are you sure to overwrite current HUD? All changes will be lost!',
         AJAX_ERROR: '<%= url %> request returned error:<br /><strong><%= error %></strong>'
@@ -57,9 +58,7 @@ new Backbone.Application({
         var host = window.location.hostname,
             queryString = window.location.search;
 
-        if (queryString.match('(\\?|&)large') !== null) {
-            this.scaleFactor = 2;
-        }
+        this.scaleFactor = this.getModel('ClientSettings').get('scaleFactor');
 
         $('body').addClass('scale-factor-' + this.scaleFactor);
 
@@ -71,10 +70,6 @@ new Backbone.Application({
             offset: 7
         });
 
-        $('#preloader').fadeOut(400, function() {
-            $(this).remove();
-        });
-        
         window.onerror = visualHUD.Function.createBuffered(this.applicationErrorHandler, 50, this);
 
         $(document).ajaxError(visualHUD.Function.bind(function(event, jqXHR, ajaxSettings, thrownError) {
@@ -88,7 +83,13 @@ new Backbone.Application({
             });
         }, this));
     },
-    
+
+    /**
+     *
+     * @param errorMsg
+     * @param url
+     * @param lineNumber
+     */
     applicationErrorHandler: function(errorMsg, url, lineNumber) {
         var browserVersion = $.browser.version;
         var browserInfo = ['\n-----------------------\n'];
@@ -144,6 +145,10 @@ new Backbone.Application({
                 });
             }, visualHUD)
         });
+    },
+
+    confirm: function(options) {
+        return new visualHUD.Views.windows.Confirm(options).show();
     }
 });
 

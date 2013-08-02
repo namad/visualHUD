@@ -15,7 +15,7 @@ visualHUD.Views.CustomHUDPresetList = visualHUD.Views.BoundList.extend({
     emptyTpl: ([
         '<div class="empty-list-message">',
             '<%= message %>',
-            '<input type="file" name="myCustomPreset" multiple="true" />',
+            '<input type="file" name="myCustomPreset" multiple="true" accept=".vhud" />',
         '</div>'
     ]).join('')
 });

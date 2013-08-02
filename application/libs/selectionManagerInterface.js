@@ -7,6 +7,8 @@ visualHUD.Libs.selectionManagerInterface = {
     select: function(element, multiple) {
         var view;
 
+        this._multiselected = multiple || false;
+
         if(element instanceof visualHUD.Views.HUDItem) {
             view = element;
         }
@@ -56,6 +58,7 @@ visualHUD.Libs.selectionManagerInterface = {
             $('body').unbind('click.deselect');
             this._deselectBinded = false;
         }
+        this._multiselected = false;
     },
 
     selectAll: function() {
@@ -91,6 +94,10 @@ visualHUD.Libs.selectionManagerInterface = {
 
     enableSelection: function() {
         this._selectionDisabled = false;
+    },
+
+    isMultilect: function() {
+        return this._multiselected;
     },
 
     clickDeselect: function(event) {

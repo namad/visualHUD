@@ -22,6 +22,7 @@ $growlSuccessBg: #54810d;
     width: 50%;
     min-width: 200px;
     max-width: 450px;
+    font-size: 13px;
 
     &.top-left {
         top: 0;
@@ -117,7 +118,7 @@ $growlSuccessBg: #54810d;
 
 .error {
     .growl-message {
-        @include growl-box-style($growlErrorBg, 60%)
+        @include growl-box-style($growlErrorBg, 60%);
     }
     a.close-message {
         @include text-shadow(0 1px darken($growlErrorBg, 20%));
@@ -126,7 +127,7 @@ $growlSuccessBg: #54810d;
 
 .warning {
     .growl-message {
-        @include growl-box-style($growlWarnBg, 55%)
+        @include growl-box-style($growlWarnBg, 55%);
     }
     a.close-message {
         @include text-shadow(0 1px darken($growlWarnBg, 20%));
@@ -135,7 +136,7 @@ $growlSuccessBg: #54810d;
 
 .success {
     .growl-message {
-        @include growl-box-style($growlSuccessBg, 60%)
+        @include growl-box-style($growlSuccessBg, 60%);
     }
     a.close-message {
         @include text-shadow(0 1px darken($growlSuccessBg, 20%));

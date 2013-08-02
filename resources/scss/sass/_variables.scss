@@ -68,6 +68,11 @@ $bevelDark:  darken($grayDark, 0);
 
 @mixin bevel-and-emboss {
     border: 1px solid;
+    border-color: $bevelLight $bevelAccent darken($grayDark, 4%);
+}
+
+@mixin top-bevel {
+    border: 1px solid;
     border-color: $bevelLight $bevelAccent $bevelDark;
 }
 

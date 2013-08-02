@@ -2,9 +2,9 @@
     width: $canvasWidth;
     height: $canvasHeight;
     background: $grayDarker no-repeat;
-    position: relative;
     overflow: hidden;
     @include strong-drop-shadow;
+    border: none;
 }
 
 .canvas-1 .hud-canvas {

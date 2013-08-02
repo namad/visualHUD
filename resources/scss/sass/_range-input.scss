@@ -46,7 +46,7 @@
             background-color: #0b81cd;
         }
         .handle {
-            cursor: pointer;
+            cursor: move;
             @include handle-hover;
             
         }

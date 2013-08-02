@@ -254,6 +254,8 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
             counter: 'hidden',
             options: this.getGameTypeFilterOptions()
         });
+
+        this.options.clientSettingsModel.on('change', this.setClientSettings, this);
     },
 
     getGameTypeFilterOptions: function() {
@@ -411,11 +413,7 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
 
     onSubmenuClick: function(event) {
         event.stopPropagation();
-
-        var listItems = this.$el.children();
-
-        listItems.filter('.active').removeClass('active');
-        $('body').unbind('click.hideMenu');
+        this.hideMenu();
     },
 
     changeCanvasOption: function(event) {
@@ -423,9 +421,6 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
         var $formControl = $(formControl);
 
         var isCheckbox = $formControl.is('[type=checkbox]');
-        var isRadiobutton = $formControl.is('[type=radio]');
-
-        var textElement = $formControl.closest('li.root-item').find('strong.item-value').text(formControl.value);
 
         if(formControl.name != '') {
 			var clientSettingsModel = this.options.clientSettingsModel;
@@ -434,6 +429,11 @@ visualHUD.Views.viewport.CanvasToolbar = Backbone.View.extend({
     },
 
     setClientSettings: function(data) {
+
+        if(data instanceof Backbone.Model) {
+            data = data.attributes;
+        }
+
         var set, attr, type, name, val, input;
 
         for(var key in data){

@@ -82,7 +82,7 @@ visualHUD.Libs.formBuilderMixin = {
                 '0': 'Any Game Type',
                 'CG_SHOW_ANYNONTEAMGAME': 'Any Non Team Game',
                 'CG_SHOW_ANYTEAMGAME': 'Any Team Game',
-                'CG_SHOW_CLAN_ARENA': 'Clan Arenay Only',
+                'CG_SHOW_CLAN_ARENA': 'Clan Arena Only',
                 'CG_SHOW_TOURNAMENT': 'Duel Only',
                 'CG_SHOW_IF_WARMUP': 'Warm-up Only',
                 'CG_SHOW_IF_NOT_WARMUP': 'Game Only (Not Warm-up)',

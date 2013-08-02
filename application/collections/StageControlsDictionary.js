@@ -112,8 +112,8 @@ visualHUD.Collections.StageControlsDictionary = visualHUD.Collections.Dictionary
                 'id': 'customDefinition',
                 'name': 'customDefinition',
                 'itemType': 'customDefinition',
-                'label': 'Custom Definition',
-                'cssClass': 'lib-element-definition'
+                'label': 'Custom Definition <small>Not implemented yet</small>',
+                'cssClass': 'lib-element-definition disabled'
             }
         ];
     }

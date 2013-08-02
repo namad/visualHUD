@@ -47,6 +47,10 @@
                 "text":"colorHelper.js",
                 "path":"../application/libs/"
             },
+            {
+                "text":"importHelper.js",
+                "path":"../application/libs/"
+            },
 
             {
                 "text":"DragZoneBase.js",
@@ -86,33 +90,32 @@
                 "text":"HUDPresets.js",
                 "path":"../application/collections/"
             },
-
+            {
+                "text":"CustomHUDPresets.js",
+                "path":"../application/collections/"
+            },
             {
                 "text":"Viewport.js",
                 "path":"../application/views/"
             },
             {
                 "text":"TopBar.js",
-                "path":"../application/views/"
+                "path":"../application/views/viewport/"
             },
             {
                 "text":"CanvasToolbar.js",
-                "path":"../application/views/"
+                "path":"../application/views/viewport/"
             },
             {
                 "text":"Canvas.js",
-                "path":"../application/views/"
-            },
-            {
-                "text":"HUDItem.js",
-                "path":"../application/views/"
+                "path":"../application/views/viewport/"
             },
             {
                 "text":"StageControls.js",
-                "path":"../application/views/"
+                "path":"../application/views/viewport/"
             },
             {
-                "text":"GroupActionsPanel.js",
+                "text":"HUDItem.js",
                 "path":"../application/views/"
             },
             {
@@ -120,15 +123,39 @@
                 "path":"../application/views/"
             },
             {
-                "text":"Window.js",
+                "text":"WindowBase.js",
+                "path":"../application/views/windows/"
+            },
+            {
+                "text":"Download.js",
+                "path":"../application/views/windows/"
+            },
+            {
+                "text":"ImportHUD.js",
+                "path":"../application/views/windows/"
+            },
+            {
+                "text":"ImportImage.js",
+                "path":"../application/views/windows/"
+            },
+            {
+                "text":"Feedback.js",
+                "path":"../application/views/windows/"
+            },
+            {
+                "text":"Confirm.js",
+                "path":"../application/views/windows/"
+            },            
+            {
+                "text":"BoundList.js",
                 "path":"../application/views/"
             },
             {
-                "text":"DownloadWindow.js",
+                "text":"CustomHUDPresetList.js",
                 "path":"../application/views/"
             },
             {
-                "text":"LoadWindow.js",
+                "text":"SystemHUDPresetList.js",
                 "path":"../application/views/"
             },
             {
@@ -159,8 +186,45 @@
             {
                 "text":"Viewport.js",
                 "path":"../application/controllers/"
-            }]
-    }, {
+            },
+            {
+                "text":"HistoryManager.js",
+                "path":"../application/controllers/"
+            }
+        ]
+    },
+    {
+        "name":"visualHUD_HelpSite",
+        "file":"help-site.js",
+        "isDebug":true,
+        "fileIncludes":[
+            {
+                "text":"helpsite.js",
+                "path":"../application/"
+            },
+            {
+                "text":"HelpRouter.js",
+                "path":"../application/routers/"
+            },
+            {
+                "text":"Growl.js",
+                "path":"../application/widgets/"
+            },
+            {
+                "text":"utility.js",
+                "path":"../application/libs/"
+            },
+            {
+                "text":"HelpPageViewport.js",
+                "path":"../application/views/"
+            },
+            {
+                "text":"DictionaryAbstract.js",
+                "path":"../application/collections/"
+            }
+        ]
+    },
+    {
         "name":"visualHUD_CoreDependencies",
         "file":"core.js",
         "isDebug":true,
@@ -188,8 +252,15 @@
             {
                 "text":"rangeinput.js",
                 "path":"../resources/js/"
-            }              
-
+            },
+            {
+                "text":"modernizr.custom.16746.js",
+                "path":"../resources/js/"
+            },
+            {
+                "text":"jquery.scrollTo-1.4.3.1.js",
+                "path":"../resources/js/"
+            }
         ]
     }],
     "resources":[]

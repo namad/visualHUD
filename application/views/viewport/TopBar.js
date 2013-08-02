@@ -5,7 +5,7 @@ visualHUD.Views.viewport.TopBar = Backbone.View.extend({
         '<div class="app-logo popover-action" data-popover="logo"><span>VisualHUD</span></div>',
         '<div class="toolbar-main global-actions">',
             '<button value="downloadHUD" class="button" id="downloadButton"><span class="w-icon download">Download</span></button>',
-            '<span class="file-input" data-tooltip="Open *.vhud file"><span class="btn button-aux"><span class="w-icon open">Open</span><input type="file" name="customHUD"></span><span class="file-name hidden">No file selected</span></span>',
+            '<span class="file-input" data-tooltip="Open *.vhud file"><span class="btn button-aux"><span class="w-icon open">Open</span><input type="file" name="customHUD" accept=".vhud"></span><span class="file-name hidden">No file selected</span></span>',
             '<button value="loadPreset" class="button-aux" id="loadPresetButton"><span class="w-icon load" data-tooltip="Import Preset <small>(I)</small>">Import</span></button>',
         '</div>',
         '<div class="toolbar-main hud-actions">',

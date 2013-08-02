@@ -3,9 +3,10 @@
 .xpk-window {
     left: 0;
     position: absolute;
-    top: 0;
+    top: 50%;
     width: 100%;
     z-index: 100;
+    font-size: 13px;
 }
 
 .xpk-mwindow-wrap {
@@ -15,7 +16,9 @@
     -moz-box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.9);
     -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 2px 12px;
     border-top: 1px solid #515151;
-
+    opacity: 1;
+    @include scale(1);
+    @include transition(all 300ms cubic-bezier(0.77, 0, 0.175, 1));
 }
 
 .xpk-mwindow-content {
@@ -31,8 +34,10 @@
     overflow: hidden !important;
 }
 
-.xpk-win-show .xpk-win-content {
-    display: none !important;
+.xpk-win-show {
+    @include transition(none);
+    opacity: 0;
+    @include scale(0);
 }
 
 .xpk-win-head {

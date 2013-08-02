@@ -134,7 +134,7 @@ visualHUD.Views.HUDItem = Backbone.View.extend({
         this.getForm().remove();
         this.options.formView = null;
 
-        this.on('destroy', [this.model]);
+        this.trigger('destroy', [this.model]);
     },
 
     onModelUpdate: function(record, event) {

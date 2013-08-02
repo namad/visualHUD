@@ -15,7 +15,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
     },
     html: ([
         '<div class="mb-20">',
-        'To add more presets, click [Browse For Presets...] button and choose *.vhud files to import. Also you can simply drag and drop these files right into the browser window.<a href="help/#import" target="help" class="ml-10">Learn more</a>',
+        'To add more presets, click [Browse For Presets...] button and choose <code><strong>*.vhud</strong></code> files to import. Also you can simply drag and drop these files right into the browser window.<a href="help/#import" target="help" class="ml-10">Learn more</a>',
         '</div>'
     ]).join(''),
 
@@ -365,6 +365,7 @@ visualHUD.Views.windows.ImportHUD = visualHUD.Views.WindowBase.extend({
                             {
                                 type: 'fileInput',
                                 text: 'Browse For Presets...',
+                                accept: '.vhud',
                                 multiple: true,
                                 name: 'myCustomPreset',
                                 wrap: false
