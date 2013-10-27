@@ -13,7 +13,7 @@ visualHUD.Controllers.HistoryManager = Backbone.Controller.extend({
         this.undoHistrory = [];
         this.redoHistrory = [];
 
-        this.addListeners({
+        this.on({
             'keyboard': {
                 'undo': this.undo
             }

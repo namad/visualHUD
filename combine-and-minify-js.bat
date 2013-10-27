@@ -1,0 +1,1 @@
+jsbuilder --projectFile .\deploy\vhud.json --homeDir .\resources\js  --verbose

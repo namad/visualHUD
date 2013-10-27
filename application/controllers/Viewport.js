@@ -27,7 +27,7 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
     ],
 
     initialize: function(options) {
-        this.addListeners({
+        this.on({
             'Viewport': {
                 render: this.onViewportRender
             },
@@ -146,7 +146,11 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
      */
     downloadHUD: function() {
         var HUDItemsCollection = this.getCollection('HUDItems');
-        var downloadWindow = this.getApplicationView('windows.Download');
+        var hudName = this.getModel('ClientSettings').get('HUDName');
+
+        var savedRecord = this.getCollection('CustomHUDPresets').find(function(record) {
+            return record.get('name') === hudName;
+        });
 
         if(!this.getApplicationView('windows.Download')) {
 
@@ -154,7 +158,8 @@ visualHUD.Controllers.Viewport = Backbone.Controller.extend({
 
         if(HUDItemsCollection.length > 0) {
             this.getApplicationView('windows.Download')
-                .setHUDName(this.getModel('ClientSettings').get('HUDName'))
+                .setSavePresetCheckboxLabel(savedRecord != null)
+                .setHUDName(hudName)
                 .show();
         }
         else {

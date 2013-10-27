@@ -42,12 +42,12 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
         }
 
         if(event.keyCode == this.keyCodeMap.D) {
-            this.fireEvent('keyboard', 'download');
+            this.trigger('keyboard', 'download');
             return false;
         }
 
         if(event.keyCode == this.keyCodeMap.I) {
-            this.fireEvent('keyboard', 'import');
+            this.trigger('keyboard', 'import');
             return false;
         }
 
@@ -55,35 +55,35 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             var action = window.confirm(visualHUD.messages.CONFIRM_APPLICATION_RESET);
 
             if(action == true) {
-                this.fireEvent('keyboard', 'reset');
+                this.trigger('keyboard', 'reset');
             }
 
             return action;
         }
 
         if(event.keyCode == this.keyCodeMap.DEL) {
-            this.fireEvent('keyboard', 'delete');
+            this.trigger('keyboard', 'delete');
             return false;
         }
 
         if(event.keyCode == this.keyCodeMap.TAB){
-            this.fireEvent('keyboard', 'fullscreen.toggle', [event]);
+            this.trigger('keyboard', 'fullscreen.toggle', [event]);
             return false;
         }
 
         if(event.keyCode == this.keyCodeMap.V && event.ctrlKey){
-            this.fireEvent('keyboard', 'clone', [event]);
+            this.trigger('keyboard', 'clone', [event]);
             return false;
         }
 
         if(event.keyCode == this.keyCodeMap.Z && event.ctrlKey){
-            this.fireEvent('keyboard', 'undo', [event]);
+            this.trigger('keyboard', 'undo', [event]);
             return false;
         }
 
         if(this.isArrangeKeyPressed(event) && event.ctrlKey) {
             var arrangeAction = this.getArrangeAction(event);
-            this.fireEvent('keyboard', 'arrange', [arrangeAction]);
+            this.trigger('keyboard', 'arrange', [arrangeAction]);
             return false;
         }
 
@@ -91,12 +91,12 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             var delta = this.getMoveDelta(event);
             var direction = this.getMoveDirection(event.keyCode);
 
-            this.fireEvent('keyboard', 'move', [direction, delta]);
+            this.trigger('keyboard', 'move', [direction, delta]);
             return false;
         }
 
         if(event.keyCode == this.keyCodeMap.A && event.ctrlKey) {
-            this.fireEvent('keyboard', 'select.all', [event]);
+            this.trigger('keyboard', 'select.all', [event]);
             return false;
         }
 
@@ -104,7 +104,7 @@ visualHUD.Controllers.KeyboardManager = Backbone.Controller.extend({
             event.stopPropagation();
             event.preventDefault();
 
-            this.fireEvent('keyboard', 'group', [event]);
+            this.trigger('keyboard', 'group', [event]);
             return false;
         }
     },

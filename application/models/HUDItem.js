@@ -305,6 +305,14 @@ visualHUD.Models.HUDItem = Backbone.Model.extend({
             }
         }
 
+        if(data.name == 'accuracyIndicator') {
+            this.set({
+                itemType: "general",
+                iconStyle: 0,
+                name: 'medal'
+            }, {silent: true});
+        }
+
         if(data.name == 'powerupIndicator' && data.iconStyle != null) {
             this.set({'iconStyle': null}, {silent: true});
         }

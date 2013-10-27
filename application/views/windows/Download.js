@@ -80,6 +80,19 @@ visualHUD.Views.windows.Download = visualHUD.Views.WindowBase.extend({
         this.on('cancel', this.hide, this);
     },
 
+    setSavePresetCheckboxLabel: function(isSavedPreset){
+        var savePresetCheckbox = this.$content.find('[name=save_preset]'),
+            checkboxLabel = savePresetCheckbox.next('.box-label');
+
+        if(isSavedPreset) {
+            checkboxLabel.text('Update saved custom preset');
+        }
+        else {
+            checkboxLabel.text('Save as custom preset');
+        }
+        return this;
+    },
+
     setHUDName: function(name) {
         if(name) {
             this.$el.find('input[name=hud_name]').val(name);

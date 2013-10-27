@@ -24,7 +24,7 @@ visualHUD.Controllers.HUDManager = Backbone.Controller.extend({
     AUTOSAVE_TIMEOUT: 300000,
 
     initialize: function(options) {
-        this.addListeners({
+        this.on({
             'Viewport': {
                 'import.image': this.importImage,
                 'load.text': this.loadHUDFile

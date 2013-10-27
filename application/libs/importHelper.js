@@ -46,7 +46,7 @@ visualHUD.Libs.importHelper = {
 
         var processFile = function(file) {
             var isImage = file.type.match('image.*') && this.checkImageSize(file) == true && imageProcessed == false;
-            var isVhudFile = file.type.match('text.*') || file.name.match('vhud$');
+            var isVhudFile = !!(file.type.match('text.*') || file.name.match('vhud$'));
 
             switch(true) {
                 case isImage: {

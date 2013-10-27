@@ -1,0 +1,82 @@
+[
+    {
+        name: 'visible',
+        values: ['0','1','MENU_TRUE','MENU_FALSE']
+    },
+    {
+        name: 'rect'
+    },
+    {
+        name: 'text'
+    },
+    {
+        name: 'textscale'
+    },
+    {
+        name: 'textstyle',
+        values: ['0','1', '3', '6', 'ITEM_TEXTSTYLE_BLINK','ITEM_TEXTSTYLE_SHADOWED', 'ITEM_TEXTSTYLE_SHADOWEDMORE']
+    },
+    {
+        name: 'style',
+        values: ['WINDOW_STYLE_FILLED', 'WINDOW_STYLE_GRADIENT', 'WINDOW_STYLE_SHADER', 'WINDOW_STYLE_TEAMCOLOR']
+    },
+    {
+        name: 'background'
+    },
+    {
+        name: 'ownerdraw',
+        values: [
+            'CG_PLAYER_HEALTH', 'CG_PLAYER_ARMOR_VALUE', 'CG_PLAYER_AMMO_VALUE',
+            'CG_PLAYER_ARMOR_ICON', 'CG_PLAYER_AMMO_ICON', 'CG_PLAYER_ARMOR_ICON2D', 'CG_PLAYER_AMMO_ICON2D',
+            'CG_PLAYER_HEALTH_BAR_100', 'CG_PLAYER_HEALTH_BAR_200', 'CG_PLAYER_ARMOR_BAR_100', 'CG_PLAYER_ARMOR_BAR_200',
+            'CG_GAME_TYPE_ICON', 'CG_GAME_TYPE', 'CG_CAPFRAGLIMIT', 'CG_LEVELTIMER', 'CG_ROUNDTIMER',
+            'CG_1STPLACE', 'CG_2NDPLACE', 'CG_1ST_PLACE_SCORE', 'CG_2ND_PLACE_SCORE', 'CG_PLAYER_SCORE',
+            'CG_MATCH_WINNER', 'CG_PLAYER_HASFLAG', 'CG_PLAYER_HASFLAG2D', 'CG_RED_CLAN_PLYRS', 'CG_BLUE_CLAN_PLYRS',
+            'CG_KILLER', 'CG_PLAYER_OBIT', 'CG_MAP_NAME', 'CG_PLAYER_LOCATION', 'CG_AREA_NEW_CHAT',
+            'CG_FOLLOW_PLAYER_NAME', 'CG_PLAYER_HEAD', 'CG_PLAYER_ITEM', 'CG_CTF_POWERUP', 'CG_AREA_POWERUP',
+            'CG_TEAM_COLOR', 'CG_TEAM_COLORIZED'
+        ]
+    },
+    {
+        name: 'special'
+    },
+    {
+        name: 'align',
+        values: ['HUD_HORIZONTAL', 'HUD_VERTICAL ']
+    },
+    {
+        name: 'cvar'
+    },
+    {
+        name: 'cvarTest'
+    },
+    {
+        name: 'decoration'
+    },
+    {
+        name: 'showCvar'
+    },
+    {
+        name: 'hideCvar'
+    },
+    {
+        name: 'forecolor;
+    },
+    {
+        name: 'backcolor'
+    },
+    {
+        name: 'addColorRange'
+    },
+    {
+        name: 'ownerdrawflag',
+        values: [
+            'CG_SHOW_IF_PLYR_IS_FIRST_PLACE', 'CG_SHOW_IF_PLYR_IS_NOT_FIRST_PLACE', 'CG_SHOW_IF_RED_IS_FIRST_PLACE',
+            'CG_SHOW_IF_BLUE_IS_FIRST_PLACE', 'CG_SHOW_IF_PLYR_IS_ON_RED', 'CG_SHOW_IF_PLYR_IS_ON_BLUE',
+            'CG_SHOW_IF_PLAYER_HAS_FLAG', 'CG_SHOW_YOURTEAMHASENEMYFLAG', 'CG_SHOW_OTHERTEAMHASFLAG',
+            'CG_SHOW_BLUE_TEAM_HAS_REDFLAG', 'CG_SHOW_RED_TEAM_HAS_BLUEFLAG',
+            'CG_SHOW_ANYTEAMGAME', 'CG_SHOW_ANYNONTEAMGAME', 'CG_SHOW_CTF', 'CG_SHOW_CLAN_ARENA', 'CG_SHOW_TOURNAMENT',
+            'CG_SHOW_HEALTHCRITICAL', 'CG_SHOW_HEALTHOK', 'CG_SHOW_IF_WARMUP', 'CG_SHOW_IF_NOT_WARMUP'
+        ]
+    }
+]

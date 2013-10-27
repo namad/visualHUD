@@ -142,7 +142,7 @@ visualHUD.Collections.HUDItemTemplates = visualHUD.Collections.DictionaryAbstrac
                 'id': 'chatArea',
                 'itemType': 'chatArea',
                 'cssClass': 'chat-area',
-                template: [
+                'template': [
                     '<div class="hud-item-box">',
                     '<ul class="chat-messages">',
                         '<li class="message-0">',
